@@ -1,0 +1,9 @@
+*.py[cod]
+*.so
+*.egg
+*.egg-info
+log/base_log/
+report/allure_report
+report/html_report
+report/error_report
+__pycache__

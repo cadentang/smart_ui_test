@@ -1,0 +1,127 @@
+# 被测对象的配置
+base_config:
+  test0:
+      main_station_url: http://w0.highso.com.cn
+      mysql_3306: {
+               ip_or_domain: 192.168.0.1,
+               port: 3306,
+               user: haixue,
+               password: haixue,
+               database: [haixue, highso, live, push, watchlog_service, survey_service]
+      }
+      mysql_3307: {
+        ip_or_domain: 192.168.0.1,
+        port: 3307,
+        user: haixue,
+        password: haixue,
+        database: [haixue, highso, live, push, watchlog_service, survey_service]
+      }
+      mysql_3308: {
+        ip_or_domain: 192.168.0.1,
+        port: 3306,
+        user: haixue,
+        password: haixue,
+        database: [haixue, highso, live, push, watchlog_service, survey_service]
+      }
+
+  reg:
+      main_station_url: http://w1.highso.com.cn
+      mysql_3306: {
+        ip_or_domain: 192.168.0.1,
+        port: 3306,
+        user: haixue,
+        password: haixue,
+        database: [haixue, highso, live, push, watchlog_service, survey_service]
+      }
+      mysql_3307: {
+        ip_or_domain: 192.168.0.1,
+        port: 3307,
+        user: haixue,
+        password: haixue,
+        database: [haixue, highso, live, push, watchlog_service, survey_service]
+      }
+      mysql_3308: {
+        ip_or_domain: 192.168.0.1,
+        port: 3306,
+        user: haixue,
+        password: haixue,
+        database: [haixue, highso, live, push, watchlog_service, survey_service]
+      }
+
+  stage:
+      main_station_url: http://w2.highso.com.cn
+      mysql_3306: {
+        ip_or_domain: 123.126.133.244,
+        port: 3306,
+        user: mastertechdb2,
+        password: MasterDB2tech!@#20170601,
+        database: [haixue, highso, live, push, watchlog_service, survey_service]
+      }
+      mysql_3307: {
+        ip_or_domain: 192.168.0.1,
+        port: 3307,
+        user: haixue,
+        password: haixue,
+        database: [haixue, highso, live, push, watchlog_service, survey_service]
+      }
+      mysql_3308: {
+        ip_or_domain: 192.168.0.1,
+        port: 3306,
+        user: haixue,
+        password: haixue,
+        database: [haixue, highso, live, push, watchlog_service, survey_service]
+      }
+
+
+# 用例运行时配置
+run_config:
+  # 日志配置
+  log:
+    file_name: test.log      # 输出日志文件名
+    backup: 5                # 备份
+    console_level: WARNING  # 控制台输出等级
+    file_level: DEBUG       # 文件输出等级
+    pattern: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'  # 打印输出格式
+
+  # 全局隐式等待时间，单位为秒
+  time_out:
+    - 5
+
+  # selenium、appium服务hub节点、node节点
+  service:
+    hub: '192.168.0.25'
+    node: ['192.168.0.25', '192.168.0.103']
+
+  # 用例运行的环境
+  envrinment:
+    - test0
+    - test1
+    - test2
+    - reg
+    - stage
+    - auto
+    - prod
+
+  # 用例运行的用户端
+  user_port:
+    - pc
+    - andriod
+    - ios
+    - h5
+    - min_program
+
+  # 运行方式，local：本地运行，distributed：分布式运行
+  pattern:
+    - local
+    - distributed
+
+  # 项目列表，all：运行所有项目
+  project_list:
+    - all
+    - main_station
+
+  # 用例运行的浏览器
+  browser:
+    - chrome
+    - firfox
+    - ie
