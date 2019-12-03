@@ -2,7 +2,8 @@
 *.so
 *.egg
 *.egg-info
-log/base_log/
+.idea
+*.log
 report/allure_report
 report/html_report
 report/error_report
