@@ -3,8 +3,4 @@
 *.egg
 *.egg-info
 .idea
-*.log
-report/allure_report
-report/html_report
-report/error_report
 __pycache__
