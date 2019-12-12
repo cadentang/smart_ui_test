@@ -4,8 +4,6 @@ from utils.get_parser import get_arg
 from utils.base_path import BASE_CONFIG_PATH
 from utils.get_log import logger
 
-global  globle_arg
-globle_arg = None
 
 class ReadConfig:
     """ 获取基础配置文件信息"""
@@ -18,7 +16,7 @@ class ReadConfig:
                 'project': 'main_station',
                 'user_port': 'pc',
                 'pattern': 'local',
-                'browser': 'chrome'
+                'browser': '79'
             }
         """
         base_yaml = YamlReadAndWrite(BASE_CONFIG_PATH)
@@ -39,6 +37,7 @@ class ReadConfig:
         config_dict["pattern"] = self.run_arg["pattern"]
         config_dict["project_list"] = self.run_arg["project"]
         config_dict["browser"] = self.run_arg["browser"]
+        config_dict["version"] = self.run_arg["version"]
 
         for item in self.base_config[0]["base_config"]:
             if self.run_arg["env"] == item:
@@ -56,10 +55,5 @@ class ReadConfig:
 
         return config_dict
 
-
-#
-# if __name__ == "__main__":
-#     read_config = ReadConfig(get_arg())
-#     read_config.get_config()
 
 

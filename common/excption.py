@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
-__author__ = 'caden'
 
 
 class MyException(Exception):
-    """
-    自定义异常
-    """
+    """自定义异常"""
 
     def __init__(self, msg=None, screen=None, stacktrace=None):
         self.msg = msg
@@ -23,21 +20,15 @@ class MyException(Exception):
 
 
 class PageSelectException(MyException):
-    """
-    下拉框异常
-    """
+    """下拉框异常"""
     pass
 
 
 class PageElementError(MyException):
-    """
-    Raises an error using the PagElement class
-    """
+    """页面元素异常"""
     pass
 
 
 class FindElementTypesError(MyException):
-    """
-    Find element types Error
-    """
+    """查找元素类型错误"""
     pass

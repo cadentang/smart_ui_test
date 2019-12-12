@@ -14,6 +14,7 @@ def get_arg():
             local: selenium,appium服务均在本地启动
             distributed：分布式执行，selenium，appium服务在远端运行，执行时临时注册node节点
     5.--browser: 浏览器运行列表:["chrome", "firefox", "ie"]
+    6.--version: 运行的版本:["78"]，这个版本只写大的版本，如果是andriod或者iOS运行是模拟器的版本
     """
     run_arg = {}
     ENV_LIST = ["test0", "test1", "test2", "reg", "stage", "auto", "prod"]
@@ -28,6 +29,7 @@ def get_arg():
     parser.add_argument('--user_port', type=str, default="pc")
     parser.add_argument('--pattern', type=str, default="local")
     parser.add_argument('--browser', type=str, default="chrome")
+    parser.add_argument('--version', type=str, default=None)
     args = parser.parse_args()
     if args.env in ENV_LIST:
         run_arg["env"] = args.env
@@ -53,6 +55,8 @@ def get_arg():
         run_arg["browser"] = args.browser
     else:
         run_arg["browser"] = "chrome"
+
+    run_arg["version"] = args.version
 
     return run_arg
 

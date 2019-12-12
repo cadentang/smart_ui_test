@@ -1,24 +1,19 @@
 # -*- coding: utf-8 -*-
-__author__ = 'caden'
-"""
-description:对MySQL数据库相关操作
-"""
 import pymysql
 import xlwt
-
-from utils.config import read_config
+from utils.global_variable import get_value
+from utils.get_log import logger
 
 
 class Mysql:
-
-    def __init__(self):
-        env = read_config.get_run_config()["envrinment"]
-        database_config = read_config.get_base_config(env)["mysql_3306"]
+    """数据库操作封装"""
+    def __init__(self, mysql_port, database):
+        database_config = get_value("config_dict")[mysql_port]
         self.host = database_config["ip_or_domain"]
         self.port = database_config["port"]
         self.username = database_config["user"]
         self.password = database_config["password"]
-        self.database = "highso"
+        self.database = database
 
         # 数据库连接配置
         self.config = {
@@ -32,57 +27,42 @@ class Mysql:
         self.db_connect = None
         self.cursor = None
 
-    def connectDB(self):
-        """
-        连接数据库
-        """
+    def connect_db(self):
+        """连接数据库"""
         try:
             self.db_connect = pymysql.connect(**self.config)
             # 创建游标
             self.cursor = self.db_connect.cursor()
-            print("数据库连接成功!")
-        except ConnectionError as ex:
-            print(str(ex))
+            logger.info(f"数据库连接成功，配置信息：{self.config}")
+        except ConnectionError as e:
+            logger.error(f"数据库连接失败，失败信息：{str(e)}")
 
-    def executeSQL(self, sql_):
-        """
-        执行sql
-        """
-        self.connectDB()
-        self.cursor.execute(sql_)
+    def execute_sql(self, sql):
+        """执行sql"""
+        self.connec_db()
+        self.cursor.execute(sql)
         value = self.cursor.fetchall()
         self.db_connect.commit()
         return value
 
     def get_all(self, cursor):
-        """
-        得到所有执行sql后的结果
-        """
+        """得到所有执行sql后的结果"""
         value = cursor.fetchall()
         return value
 
     def get_one(self, cursor):
-        """
-        得到一条sql语句执行结果
-        :param cursor:
-        :return:
-        """
+        """得到一条sql语句执行结果"""
         value = cursor.fetchone()
         return value
 
-    def closeDB(self):
-        """
-        关闭数据库连接
-        :return:
-        """
+    def close_db(self):
+        """关闭数据库连接"""
         self.db_connect.close()
-        print("关闭数据库成功！")
 
-    def export(self, sql_):
-        # 查询的结果导出到Excel中
-        results = self.executeSQL(sql_)
+    def export(self, sql, filename):
+        """查询的结果导出到Excel中"""
+        results = self.execute_sql(sql)
         self.cursor.scroll(0, mode='absolute')
-        filename = '123.xls'  # 定义Excel名字
 
         # 获取MYSQL里面的数据字段名称
         fields = self.cursor.description

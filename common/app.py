@@ -4,9 +4,9 @@ import sys
 from importlib import import_module
 # from pages.main_station import main_station_login_page
 
-# 属性拦截，访问/pages下面所有的页面时都会先经过此属性拦截类
-class App:
 
+class App:
+    """属性拦截，访问/pages下面所有的页面时都会先经过此属性拦截类"""
     def __init__(self, driver):
         self._driver = driver
 

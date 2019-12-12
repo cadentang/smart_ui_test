@@ -1,35 +1,21 @@
 # -*- coding: utf-8 -*-
-__author__ = 'caden'
-"""
-description:页面对象及页面对象的常见操作
-"""
 import os
 import datetime
 from time import sleep
 
 import allure
+from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 
 from common.base_pages import BasePages
 from common.excption import PageSelectException
 from utils.get_log import logger
-# from common.element import PageElement
+from utils.base_path import ERROR_PICTURE_PATH
 
-
-
-class SeleniumPages(BasePages):
-    """
-    页面对象
-    """
-    def __init__(self, driver):
-        super().__init__(driver)
-
-    # def __getattribute__(self, attr):
-    #     if attr.endswith("btn"):
-    #         return PageElement(attr)
 
 class PageWait:
     """页面等待，可通过设置此值等待页面元素加载完成"""
@@ -78,7 +64,6 @@ class PageAlert:
                     return result
                 else:
                     logger.info("alert不存在")
-                return False
             elif type_ == 'yes':
                 result.accept()
             elif type_ == 'no':
@@ -87,7 +72,6 @@ class PageAlert:
                 logger.info("type_参数类型 错误，仅可为yes、no、或''")
         except Exception as e:
             logger.info("警告框处理发生异常，异常信息：%s" % str(e))
-            return False
 
     @property
     def get_alert_text(self):
@@ -190,7 +174,6 @@ class PageKeyOperation:
                 element.send_keys(key, control)
         except Exception as e:
             logger.error(f"键盘操作失败,异常信息:{str(e)}")
-            return False
 
 
 class PageMouse:
@@ -208,8 +191,7 @@ class PageMouse:
         try:
             ActionChains(self.driver).move_to_element(element).perform()
         except Exception as e:
-            logger.error("鼠标悬停操作失败,异常信息:%s" % str(e))
-            return False
+            logger.error(f"鼠标悬停操作失败,异常信息: {str(e)}")
 
     def context_click(self, element):
         """
@@ -220,21 +202,18 @@ class PageMouse:
         try:
             ActionChains(self.driver).context_click(element).perform()
         except Exception as e:
-            logger.error("鼠标右击失败,异常信息:%s" % str(e))
-            return False
+            logger.error(f"鼠标右击失败,异常信息: {str(e)}")
 
     def double_click(self, element):
         """
         鼠标双击
         :param element:
-        :param driver:
         :return:
         """
         try:
             ActionChains(self.driver).double_click(element).perform()
         except Exception as e:
-            logger.error("鼠标右击失败,异常信息:%s" % str(e))
-            return False
+            logger.error(f"鼠标右击失败,异常信息: {str(e)}")
 
     def click_and_hold(self, element):
         """
@@ -246,7 +225,6 @@ class PageMouse:
             ActionChains(self.driver).click_and_hold(element).perform()
         except Exception as e:
             logger.error("按住左键不放失败,异常信息:%s" % str(e))
-            return False
 
     def drag_and_drop_by_offset(self, element, xoffset, yoffset):
         """
@@ -260,7 +238,6 @@ class PageMouse:
             ActionChains(self.driver).drag_and_drop_by_offset(element, xoffset, yoffset).perform()
         except Exception as e:
             logger.error("拖动元素失败,异常信息:%s" % str(e))
-            return False
 
     def move_by_offset(self, xoffset, yoffset):
         """
@@ -273,7 +250,6 @@ class PageMouse:
             ActionChains(self.driver).move_by_offset(xoffset, yoffset).perform()
         except Exception as e:
             logger.error("鼠标移动失败,异常信息:%s" % str(e))
-            return False
 
     def move_to_element_with_offset(self, element, x, y):
         """
@@ -288,7 +264,6 @@ class PageMouse:
             ActionChains(self.driver).move_to_element_with_offset(element, x, y).perform()
         except Exception as e:
             logger.error("鼠标移动失败,异常信息:%s" % str(e))
-            return False
 
     def release(self, element=None):
         """
@@ -300,7 +275,6 @@ class PageMouse:
             ActionChains(self.driver).context_click(element).perform()
         except Exception as e:
             logger.error("鼠标操作失败,异常信息:%s" % str(e))
-            return False
 
 class PageLoadOrUploadFile:
     # TODO windows方式上传还有bug，待补充
@@ -354,17 +328,36 @@ class PageLoadOrUploadFile:
 
 class PageScreenShot:
     """截图操作封装"""
-    def __init__(self, img_doc):
+    def __init__(self, img_doc, driver):
         screen_shot_path = os.path.join(ERROR_PICTURE_PATH, str(datetime.now().strftime("%Y%m%d")))
         if not os.path.exists(screen_shot_path):
             os.makedirs(screen_shot_path)
         file_name = screen_shot_path + "\\{}_{}.png".format(datetime.strftime(datetime.now(), "%Y%m%d%H%M%S"), img_doc)
 
-        self.driver.get_screenshot_as_file(file_name)
+        driver.get_screenshot_as_file(file_name)
         with open(file_name, mode='rb') as f:
             file = f.read()
         allure.attach(file, img_doc, allure.attachment_type.PNG)
-        logger.info("页面截图文件保存在：{}".format(file_name))
+        logger.info(f"页面截图文件保存在：{file_name}")
+
+
+class SeleniumPages(BasePages):
+    """
+    selenium页面对象
+    """
+    def __init__(self, driver: WebDriver):
+        super().__init__(driver)
+
+    # def __getattribute__(self, attr):
+    #     if attr.endswith("btn"):
+    #         return PageElement(attr)
+
+    @property
+    def page_shot(self):
+        PageScreenShot(self.__doc__, self.driver)
+
+
+
 
 
 

@@ -1,0 +1,17 @@
+# 浏览器类型和driver对应关系
+run_config:
+  # selenium、appium服务hub节点、node节点
+  service:
+    hub: '192.168.0.25'
+    node: ['192.168.0.25', '192.168.0.103']
+
+  # 用例运行的环境
+  envrinment:
+    - test0
+    - test1
+    - test2
+    - reg
+    - stage
+    - auto
+    - prod
+

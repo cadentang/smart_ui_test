@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-__author__ = 'caden'
-"""
-description:元素定位
-"""
 import types
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select

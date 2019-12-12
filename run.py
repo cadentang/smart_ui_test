@@ -1,30 +1,17 @@
 # -*- coding: utf-8 -*-
-__author__ = 'caden'
-"""
-description: 用例执行入口
-"""
 import sys
 import os
 import time
 from datetime import datetime
-
 import pytest
-from utils.operation_cmd import RunCmd
+
 from utils.config import ReadConfig
 from utils.get_log import logger
-from utils.base_path import ALLURE_REPORT_PATH, HTML_REPORT_PATH, TEST_CASE_PATH
+from utils.base_path import LOG_PATH, BASE_LOG_PATH, ALLURE_REPORT_PATH, HTML_REPORT_PATH, \
+    TEST_CASE_PATH, ERROR_PICTURE_PATH
 from utils.get_parser import get_arg
 from utils import global_variable
-
-
-
-def change_to_html(xml_report_path, html_report_path):
-    # 使用allure将xml报告生成为html报告
-    cmd = 'allure generate %s -o %s' % (xml_report_path, html_report_path)
-    try:
-        RunCmd().run_cmd(cmd)
-    except Exception as e:
-        logger.error(f"报告转换失败,请手动转化，失败信息：{str(e)}")
+from utils.get_allure import change_to_html
 
 
 if __name__ == "__main__":
@@ -40,6 +27,19 @@ if __name__ == "__main__":
         忽略key_words_2命名规则的文件、类及方法
         pytest -m "mark_name"	需要在指定case方法上添加@pytest.mark.mark_name来指定方法属于哪个mark
     """
+    if not os.path.exists(LOG_PATH):
+        os.mkdir(LOG_PATH)
+    if not os.path.exists(BASE_LOG_PATH):
+        os.mkdir(BASE_LOG_PATH)
+    if not os.path.exists(TEST_CASE_PATH):
+        os.mkdir(TEST_CASE_PATH)
+    if not os.path.exists(ALLURE_REPORT_PATH):
+        os.mkdir(ALLURE_REPORT_PATH)
+    if not os.path.exists(HTML_REPORT_PATH):
+        os.mkdir(HTML_REPORT_PATH)
+    if not os.path.exists(ERROR_PICTURE_PATH):
+        os.mkdir(ERROR_PICTURE_PATH)
+
     now_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
     # 建立allure生成原始报告的目录
     xml_now_report_path = os.path.join(ALLURE_REPORT_PATH, str(datetime.now().strftime("%Y%m%d")))
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     global_variable.set_value("get_arg", globle_arg)
     global_variable.set_value("config_dict", ReadConfig(globle_arg).get_config())
 
-    pytest.main(["-vs", f"--alluredir={xml_report_path}", TEST_CASE_PATH])
+    pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH, '--workers=1','--tests-per-worker=5'])
     time.sleep(10)
 
     # 使用allure将xml报告生成为html报告
