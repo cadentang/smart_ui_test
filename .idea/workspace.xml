@@ -2,32 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e064015f-42fa-499c-8c08-10e0b307a264" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/config/browser_match_driver.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/get_allure.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/request_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/base_pages.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/base_pages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/element.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/element.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/excption.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/excption.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/grid.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/grid.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/selenium_driver.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/selenium_driver.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/selenium_pages.py" beforeDir="false" afterPath="$PROJECT_DIR$/common/selenium_pages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drivers/chrome/chromedriver_win_78.0.3904.105.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/drivers/chrome/chromedriver_win_78.0.3904.70.exe" beforeDir="false" afterPath="$PROJECT_DIR$/drivers/chrome/chromedriver_win_78.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/main_station/main_station_home_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/main_station/main_station_home_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/main_station/main_station_login_page.py" beforeDir="false" afterPath="$PROJECT_DIR$/pages/main_station/main_station_login_page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_case/test_main_station/conftest.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_case/test_main_station/conftest.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_case/test_main_station/test_main_station_login/test_main_station_login.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_case/test_main_station/test_main_station_login/test_main_station_login.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/base_path.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/base_path.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/get_log.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/get_log.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/get_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/get_parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/global_variable.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/global_variable.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/operation_mysql.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/operation_mysql.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/operation_yaml.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/operation_yaml.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -86,8 +63,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pages/main_station/main_station_home_page.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="577">
-              <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+            <state relative-caret-position="425">
+              <caret line="17" column="48" lean-forward="true" selection-start-line="17" selection-start-column="48" selection-end-line="17" selection-end-column="48" />
               <folding>
                 <element signature="e#24#54#0" expanded="true" />
               </folding>
@@ -148,7 +125,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/utils/global_variable.py" />
         <option value="$PROJECT_DIR$/utils/get_parser.py" />
         <option value="$PROJECT_DIR$/utils/allure.py" />
@@ -171,6 +147,7 @@
         <option value="$PROJECT_DIR$/common/selenium_driver.py" />
         <option value="$PROJECT_DIR$/pages/main_station/main_station_login_page.py" />
         <option value="$PROJECT_DIR$/common/element.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/pages/main_station/main_station_home_page.py" />
       </list>
     </option>
@@ -232,12 +209,6 @@
             <path>
               <item name="haixue-test-ui" type="b2602c69:ProjectViewProjectNode" />
               <item name="haixue-test-ui" type="462c0819:PsiDirectoryNode" />
-              <item name="drivers" type="462c0819:PsiDirectoryNode" />
-              <item name="chrome" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="haixue-test-ui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="haixue-test-ui" type="462c0819:PsiDirectoryNode" />
               <item name="log" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -250,27 +221,6 @@
               <item name="haixue-test-ui" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
               <item name="main_station" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="haixue-test-ui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="haixue-test-ui" type="462c0819:PsiDirectoryNode" />
-              <item name="report" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="haixue-test-ui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="haixue-test-ui" type="462c0819:PsiDirectoryNode" />
-              <item name="resource" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="haixue-test-ui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="haixue-test-ui" type="462c0819:PsiDirectoryNode" />
-              <item name="test_case" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="haixue-test-ui" type="b2602c69:ProjectViewProjectNode" />
-              <item name="haixue-test-ui" type="462c0819:PsiDirectoryNode" />
-              <item name="test_case" type="462c0819:PsiDirectoryNode" />
-              <item name="test_main_station" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="haixue-test-ui" type="b2602c69:ProjectViewProjectNode" />
@@ -444,7 +394,7 @@
       <workItem from="1575903896205" duration="4142000" />
       <workItem from="1576039838188" duration="1523000" />
       <workItem from="1576070515857" duration="9165000" />
-      <workItem from="1576119086016" duration="35000" />
+      <workItem from="1576119086016" duration="946000" />
     </task>
     <task id="LOCAL-00001" summary="提交忽略文件">
       <created>1575370651137</created>
@@ -460,7 +410,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575370863002</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="提交示例及log文件和report自动创建">
+      <created>1576119165586</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1576119165586</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -469,7 +426,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47693000" />
+    <option name="totallyTimeSpent" value="48604000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1513" height="983" extended-state="6" />
@@ -489,7 +446,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.25469485" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.20422535" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.20422535" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -504,7 +461,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="提交忽略文件" />
     <MESSAGE value="补齐文件" />
-    <option name="LAST_COMMIT_MESSAGE" value="补齐文件" />
+    <MESSAGE value="提交示例及log文件和report自动创建" />
+    <option name="LAST_COMMIT_MESSAGE" value="提交示例及log文件和report自动创建" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/business/main_statin/main_station_login_business.py">
@@ -591,13 +549,6 @@
           <folding>
             <element signature="e#24#33#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
         </state>
       </provider>
     </entry>
@@ -758,10 +709,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" column="7" lean-forward="true" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pages/main_station/main_station_home_page.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="577">
-          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+        <state relative-caret-position="425">
+          <caret line="17" column="48" lean-forward="true" selection-start-line="17" selection-start-column="48" selection-end-line="17" selection-end-column="48" />
           <folding>
             <element signature="e#24#54#0" expanded="true" />
           </folding>
