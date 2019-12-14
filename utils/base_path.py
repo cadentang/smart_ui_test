@@ -11,7 +11,7 @@ TEST_REPORT_PATH = os.path.join(PROJECT_ROOT_DIR, "report/")  # 测试报告路�
 DRIVER_PATH = os.path.join(PROJECT_ROOT_DIR, "drivers")  # 浏览器driver路径
 RESOURCE_PATH = os.path.join(PROJECT_ROOT_DIR, "resource")  # 测试资源路径，如图片、音频、文件等
 TEST_CASE_PATH = os.path.join(PROJECT_ROOT_DIR, "test_case")  # 测试用例路径
-ERROR_PICTURE_PATH = os.path.join(PROJECT_ROOT_DIR, "error_picture")  # 错误截图
+ERROR_PICTURE_PATH = os.path.join(PROJECT_ROOT_DIR, "report/error_picture")  # 错误截图
 PAGES_PATH = os.path.join(PROJECT_ROOT_DIR, "pages")  # 页面对象路径
 BUSINESS_PATH = os.path.join(PROJECT_ROOT_DIR, "business")  # 业务层封装路径
 
