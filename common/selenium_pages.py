@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-import datetime
+from datetime import datetime
 from time import sleep
 
 import allure

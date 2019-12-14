@@ -25,7 +25,7 @@ base_config:
       }
 
   reg:
-      main_station_url: http://w1.highso.com.cn
+      main_station_url: http://w1.highso.com.cn/v5
       mysql_3306: {
         ip_or_domain: 192.168.0.1,
         port: 3306,
@@ -125,3 +125,4 @@ run_config:
     - chrome
     - firfox
     - ie
+    - safari

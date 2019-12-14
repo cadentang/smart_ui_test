@@ -1,26 +1,27 @@
 # -*- coding: utf-8 -*-
 import time
 import pytest
+import allure
 from selenium import webdriver
 from common.selenium_driver import SeleniumDriver
-from utils.global_variable import get_value
+from utils.global_variable import get_value, judg_dicit
 
 # 本地调试可设置该URL
-MAIN_STATION_URL = "http://w2.highso.com.cn"
+MAIN_STATION_URL = "http://w0.highso.com.cn/v5"
 
 @pytest.fixture(scope="function", autouse=True)
 def get_driver():
     global driver
-
-    globle_arg = get_value("config_dict")
-    if globle_arg is not None:
-        driver = SeleniumDriver(browser_type=globle_arg["browser"], version=globle_arg["version"], implicitly_wait=globle_arg["time_out"],
-                                pattern=globle_arg["pattern"]).driver()
-        driver.get(globle_arg["env_config"]["main_station_url"])
-    else:
-        driver = SeleniumDriver().driver()
-        driver.get(MAIN_STATION_URL)
-
+    with allure.step("启动浏览器"):
+        # 如果全局变量字典为{}则代表使用调式模式，默认使用test0环境
+        if judg_dicit():
+            globle_arg = get_value("config_dict")
+            driver = SeleniumDriver(browser_type=globle_arg["browser"], version=globle_arg["version"], implicitly_wait=globle_arg["time_out"],
+                                    pattern=globle_arg["pattern"], platform=get_value("platform")).driver()
+            driver.get(globle_arg["env_config"]["main_station_url"])
+        else:
+            driver = SeleniumDriver().driver()
+            driver.get(MAIN_STATION_URL)
     # webdriver.Remote(command_executor="http://39.107.127.90:9999/wd/hub", desired_capabilities={
     #                               'platform': 'windows',
     #                               'browserName': 'chrome',
@@ -30,5 +31,6 @@ def get_driver():
     #                           })
     yield driver
 
-    time.sleep(5)
-    driver.quit()
+    with allure.step("关闭浏览器"):
+        time.sleep(5)
+        driver.quit()

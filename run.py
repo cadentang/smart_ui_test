@@ -2,6 +2,7 @@
 import sys
 import os
 import time
+import platform
 from datetime import datetime
 import pytest
 
@@ -39,7 +40,15 @@ if __name__ == "__main__":
         os.mkdir(HTML_REPORT_PATH)
     if not os.path.exists(ERROR_PICTURE_PATH):
         os.mkdir(ERROR_PICTURE_PATH)
-
+    platform_name = platform.platform()
+    if "Windows" in platform_name:
+        platform_target = "win"
+    elif "Linux" in platform_name:
+        platform_target = "linux"
+    elif "Mac" in platform_name:
+        platform_target = "win"
+    else:
+        ValueError("注意检查程序运行平台信息")
     now_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
     # 建立allure生成原始报告的目录
     xml_now_report_path = os.path.join(ALLURE_REPORT_PATH, str(datetime.now().strftime("%Y%m%d")))
@@ -61,9 +70,11 @@ if __name__ == "__main__":
     global_variable._init()
     globle_arg = get_arg()
     global_variable.set_value("get_arg", globle_arg)
+    global_variable.set_value("platform", platform_target)
     global_variable.set_value("config_dict", ReadConfig(globle_arg).get_config())
 
-    pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH, '--workers=1','--tests-per-worker=5'])
+    pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH])
+    # pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH, '--workers=1','--tests-per-worker=5'])
     time.sleep(10)
 
     # 使用allure将xml报告生成为html报告

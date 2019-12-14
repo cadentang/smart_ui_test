@@ -1,42 +1,61 @@
 # -*- coding: utf-8 -*-
+import time
 import allure
 import pytest
-import time
 
-from data.main_station.main_station_login_data import main_station_login_data
-from business.main_statin.main_station_login_business import MainStationLoginBusiness
+from data.main_station.main_station_login_data import login_data
+from pages.main_station.main_station_home_page import MainStationHomePage
+from pages.main_station.main_station_login_page import MainStationLoginPage
+from common.selenium_pages import PageScreenShot
 from utils.get_log import logger
 
 
-@allure.feature("主站登录测试用例")
+@allure.feature("主站登录测试")
 class TestMainStationLogin:
 
     @allure.story("测试登录成功")
     @allure.title("测试手机号码登录成功")
-    @allure.description_html("主站登录，手机号登录成功")
-    @allure.severity(allure.severity_level.CRITICAL)
-    def test_phone_logion_success(self, get_driver):
-        logger.info("=====开始运行登录=====")
-        MainStationLoginBusiness(get_driver).login("19983271081", "123456")
-        time.sleep(2)
+    @allure.description("主站登录，手机号登录成功")
+    @allure.severity(allure.severity_level.BLOCKER)
+    @pytest.mark.parametrize("data", login_data["success_phone_data"][0])
+    @allure.testcase("https://www.tapd.cn/21492081/sparrow/tcase/view/1121492081001060614?url_cache_key=8662d02ef87d3c98ec427ad7967c7c2b", "正确账号+正确密码登录")
+    @allure.link("https://www.tapd.cn/21492081/prong/stories/view/1121492081001051127?url_cache_key=99f5c5016553580e8040b1bc2b0d5cb5&action_entry_type=story_tree_list", "link需求问题链接")
+    @allure.issue("https://www.tapd.cn/21492081/sparrow/tcase/view/1121492081001060614?url_cache_key=8662d02ef87d3c98ec427ad7967c7c2b", "bug问题链接")
+    def test_phone_logion_success(self, get_driver, data):
+        MainStationHomePage(get_driver).go_to_login_page().to_login(data[0], data[1], data[2])
+        PageScreenShot(login_data["success_phone_data"][1], get_driver)
         assert "/course/progressive/index.do" in get_driver.current_url
-        logger.info("=====结束运行登录=====")
 
-    def testcase_01(self):
-        time.sleep(2)
-        print('这里是testcase_01')
+    @allure.story("测试登录成功")
+    @allure.title("邮箱账号密码正确")
+    @allure.description("主站登录，邮箱账号登录成功")
+    @allure.severity(allure.severity_level.CRITICAL)
+    @pytest.mark.parametrize("data", login_data["success_email_data"][0])
+    def test_email_logion_success(self, get_driver, data):
+        MainStationHomePage(get_driver).go_to_login_page().to_login(data[0], data[1], data[2])
+        PageScreenShot(login_data["success_email_data"][1], get_driver)
+        assert "/course/progressive/index.do" in get_driver.current_url
 
-    def testcase_02(self):
-        time.sleep(4)
-        print('这里是testcase_02')
+    @allure.story("测试登录失败")
+    @allure.title("测试手机号码不存在登录失败")
+    @allure.description("主站登录，测试手机号码不存在登录失败")
+    @allure.severity(allure.severity_level.NORMAL)
+    @pytest.mark.parametrize("data", login_data["fail_data_phone_error"][0])
+    def test_phone_logion_phone_error(self, get_driver, data):
+        page = MainStationHomePage(get_driver).go_to_login_page().to_login_failure(data[1], data[2])
+        PageScreenShot(login_data["fail_data_phone_error"][1], get_driver)
+        assert page.error_message_p
 
-    def testcase_03(self):
-        time.sleep(5)
-        print('这里是testcase_03')
+    @allure.story("测试登录失败")
+    @allure.title("测试密码错误登录失败")
+    @allure.description("主站登录，手机号正确，密码错误,登录失败")
+    @allure.severity(allure.severity_level.MINOR)
+    @pytest.mark.parametrize("data", login_data["fail_data_password_error"][0])
+    def test_phone_logion_password_error(self, get_driver, data):
+        page = MainStationHomePage(get_driver).go_to_login_page().to_login_failure(data[1], data[2])
+        PageScreenShot(login_data["fail_data_password_error"][1], get_driver)
+        assert page.error_message_p
 
-    def testcase_04(self):
-        time.sleep(9)
-        print('这里是testcase_04')
 
 
 

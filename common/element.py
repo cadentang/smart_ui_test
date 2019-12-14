@@ -37,6 +37,7 @@ class Element:
     """单个页面元素"""
     def __init__(self, context=False, timeout=5, describe=None, **kwargs):
         self.time_out = timeout
+        self.describe = describe
         if not kwargs:
             raise ValueError("请传入一个定位！")
         if len(kwargs) > 1:
@@ -130,13 +131,10 @@ class Element:
     def __get__(self, instance, owner, context=None):
         if not instance:
             return None
-
         if not context and self.has_context:
             return lambda ctx: self.__get__(instance, owner, context=ctx)
-
         if not context:
             driver = instance.driver
-
         return self.find(driver)
 
     def __set__(self, instance, value):

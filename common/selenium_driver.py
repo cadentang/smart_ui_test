@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 import os
-import time
 
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome import options
-from selenium.common.exceptions import InvalidArgumentException
 
 from common.base_driver import BaseDriver
 from utils.get_log import logger
@@ -20,10 +18,12 @@ SAFARI_PATH = DRIVER_PATH + '\\safari\\'
 class SeleniumDriver(BaseDriver):
     """selenium driver类"""
     def __init__(self, maximize_window=True, implicitly_wait=10, selenium_grid_url=None,
-                 browser_type="chrome", version=None, pattern="local"):
+                 browser_type="chrome", version=None, pattern="local", platform="win"):
 
         self.browser_type = browser_type
+        self.platform = platform
 
+        # 如果version为空，则给每个类型的浏览器设定一个默认版本
         if browser_type == "chrome" and version == None:
             self.version = "78"
         elif browser_type == "firefox" and version == None:
@@ -44,13 +44,17 @@ class SeleniumDriver(BaseDriver):
         """实例化返回一个driver"""
         if self.pattern == "local":
             if self.browser_type == "chrome":
-                self.driver = webdriver.Chrome(executable_path=self.get_driver_path(self.browser_type, self.version))
+                self.driver = webdriver.Chrome(executable_path=self.get_driver_path(self.browser_type,
+                                                                                    self.version, self.platform))
             elif self.browser_type == "firefox":
-                self.driver = webdriver.Firefox(executable_path=self.get_driver_path(self.browser_type, self.version))
+                self.driver = webdriver.Firefox(executable_path=self.get_driver_path(self.browser_type,
+                                                                                     self.version, self.platform))
             elif self.browser_type == "ie":
-                self.driver = webdriver.Ie(executable_path=self.get_driver_path(self.browser_type, self.version))
+                self.driver = webdriver.Ie(executable_path=self.get_driver_path(self.browser_type,
+                                                                                self.version, self.platform))
             elif self.browser_type == "safari":
-                self.driver = webdriver.Safari(executable_path=self.get_driver_path(self.browser_type, self.version))
+                self.driver = webdriver.Safari(executable_path=self.get_driver_path(self.browser_type,
+                                                                                    self.version, self.platform))
             else:
                 raise ValueError(f"暂不支持{self.browser_type}该浏览器!")
 
@@ -79,7 +83,7 @@ class SeleniumDriver(BaseDriver):
 
         return self.driver
 
-    def get_driver_path(self, version, browser_type, platform):
+    def get_driver_path(self, browser_type, version, platform):
         """根据浏览器类型及版本获取不同的driver路径"""
 
         if browser_type == "chrome":
@@ -109,10 +113,14 @@ class SeleniumDriver(BaseDriver):
 
         if os.path.isdir(browser_path):
             driver_files = os.listdir(browser_path)
+            driver_path = None
             if len(driver_files) != 0:
                 for driver_file in driver_files:
                     if platform in driver_file and version in driver_file:
                         driver_path = browser_path + "\\" + driver_file
+                    else:
+                        continue
+                    if driver_path is not None:
                         return driver_path
                     else:
                         raise ValueError(f"在路径{browser_path}下找不到平台{platform}和版本{version}对应的driver")
@@ -122,6 +130,7 @@ class SeleniumDriver(BaseDriver):
             raise ValueError(f"browser_path：{browser_path}不是目录")
 
     def set_chrome_option(self):
+        """暂时不要使用此功能，有bug"""
         options = webdriver.ChromeOptions()
         prefs = {}
         # 避免密码提示框的弹出
@@ -139,7 +148,7 @@ class SeleniumDriver(BaseDriver):
         options.add_argument('--hide-scrollbars')  # 隐藏滚动条, 应对一些特殊页面
         options.add_argument('blink-settings=imagesEnabled=false')  # 不加载图片, 提升速度
         options.add_argument('--headless')  # 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
-        options.binary_location = r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"  # 手动指定使用的浏览器位置
+        options.binary_location = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"  # 手动指定使用的浏览器位置
 
     def get_driver(self):
         return self.driver

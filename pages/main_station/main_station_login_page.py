@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from time import sleep
+import allure
 from common.element import Element
 from common.selenium_pages import SeleniumPages
 
@@ -21,19 +23,33 @@ class MainStationLoginPage(SeleniumPages):
     auto_login_input = Element(id_="autoLogon", describe="自动登录")
     forget_login_a = Element(xpath="//a[starts-with(@class,'loginFormForgot')]", describe="忘记密码")
 
+    @allure.step("登录成功")
     def to_course_page(self, username, password):
-        """登录成功进入课程页面"""
         self.username_input = username
         self.password_input = password
         self.login_button.click()
         from pages.main_station.main_station_course_page import MainStationCoursePage
         return MainStationCoursePage(self.driver)
 
+    @allure.step("登录失败")
     def to_login_failure(self, username, password):
-        """登录失败"""
         self.username_input = username
         self.password_input = password
         self.login_button.click()
         return self
+
+    @allure.step("登录")
+    def to_login(self, user_type, username, password):
+        self.username_input = username
+        self.password_input = password
+        self.login_button.click()
+        sleep(2)
+        if user_type == "jj":
+            from pages.main_station.main_station_jj_page import MainStationJJPage
+            return MainStationJJPage(self.driver)
+        else:
+            from pages.main_station.main_station_course_page import MainStationCoursePage
+            return MainStationCoursePage(self.driver)
+
 
 
