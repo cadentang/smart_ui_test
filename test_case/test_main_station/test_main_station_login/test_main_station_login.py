@@ -8,6 +8,7 @@ from pages.main_station.main_station_home_page import MainStationHomePage
 from pages.main_station.main_station_login_page import MainStationLoginPage
 from common.selenium_pages import PageScreenShot
 from utils.get_log import logger
+from utils.global_variable import get_value
 
 
 @allure.feature("主站登录测试")

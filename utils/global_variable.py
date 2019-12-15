@@ -18,7 +18,7 @@ def get_value(key,value=None):
         return value
 
 def judg_dicit():
-    if _init() == {}:
-        return False
-    else:
+    if get_value("get_arg"):
         return True
+    else:
+        return False

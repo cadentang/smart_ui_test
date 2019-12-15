@@ -13,6 +13,7 @@ from utils.base_path import LOG_PATH, BASE_LOG_PATH, ALLURE_REPORT_PATH, HTML_RE
 from utils.get_parser import get_arg
 from utils import global_variable
 from utils.get_allure import change_to_html
+from utils.get_allure import build_environment_file, get_environment_list
 
 
 if __name__ == "__main__":
@@ -72,6 +73,9 @@ if __name__ == "__main__":
     global_variable.set_value("get_arg", globle_arg)
     global_variable.set_value("platform", platform_target)
     global_variable.set_value("config_dict", ReadConfig(globle_arg).get_config())
+
+    # 将环境信息置于xml报告路径下，转化为html报告后在html中呈现
+    build_environment_file(xml_report_path, get_environment_list())
 
     pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH])
     # pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH, '--workers=1','--tests-per-worker=5'])

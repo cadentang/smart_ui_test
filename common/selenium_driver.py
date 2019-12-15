@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import threading
 
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -150,11 +151,19 @@ class SeleniumDriver(BaseDriver):
         options.add_argument('--headless')  # 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
         options.binary_location = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"  # 手动指定使用的浏览器位置
 
-    def get_driver(self):
-        return self.driver
-
     def quit_driver(self):
         self.driver.quit()
 
     def close_driver(self):
         self.driver.close()
+
+    def get_driver(self):
+        return self.driver()
+    # __instance = None  # 定义一个类属性
+    # __instance_lock = threading.Lock()  # 加锁
+    #
+    # def get_driver(self):
+    #     with self.__instance_lock:
+    #         if not self.__instance:
+    #             self.__instance = self.driver()
+    #     return self.__instance

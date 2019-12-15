@@ -28,3 +28,9 @@
 - report：测试报告
 
 ### 项目运行架构
+![项目设计架构](resource/picture/reademe/项目设计架构.png)
+
+
+![项目运行流程](resource/picture/reademe/项目运行流程.png)
+
+### Page Object Model
