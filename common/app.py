@@ -6,11 +6,13 @@ from importlib import import_module
 
 
 class App:
-    """属性拦截，访问/pages下面所有的页面时都会先经过此属性拦截类"""
+    """属性拦截，访问/pages下面所有的页面和/business时都会先经过此属性拦截类，
+        在使用app实例类调用的时候才会生效
+    """
     def __init__(self, driver):
         self._driver = driver
 
-    # 属性拦截，获取应用的一个目标页面对象
+    # 属性拦截，获取应用的一个目标页面对象或者一个场景对象
     def __getattribute__(self, attr):
         goal_page = None
         goal_business = None

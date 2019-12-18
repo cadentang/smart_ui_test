@@ -35,7 +35,8 @@ LOCATOR_LIST = {
 
 class Element:
     """单个页面元素"""
-    def __init__(self, context=False, timeout=5, describe=None, **kwargs):
+    def __init__(self, context=False, timeout=5,
+                 describe=None, **kwargs):
         self.time_out = timeout
         self.describe = describe
         if not kwargs:
@@ -72,6 +73,31 @@ class Element:
         else:
             return self.get_element(driver)
 
+    def __get__(self, instance, owner, context=None):
+        if not instance:
+            return None
+        if not context and self.has_context:
+            return lambda con: self.__get__(instance, owner, context=con)
+        if not context:
+            driver = instance.driver
+        return self.find(driver)
+
+    def __set__(self, instance, value):
+        if self.has_context:
+            raise ValueError("描述符不支持这这种形式")
+        elem = self.__get__(instance, instance.__class__)
+        if not elem:
+            raise ValueError("元素未找到，不能设置值")
+        elem.send_keys(value)
+
+    # def __getattribute__(self, attr):
+    #     if attr.startswith('p_') or attr.startswith('_p_'):
+    #         _proxy = self.resolve_poco(self._dict[attr][1])  #获取对应元素操作对象的代理
+    #         _proxy._name = self._dict[attr][0]   #绑定注释信息
+    #         _proxy.click = types.MethodType(allure_click, _proxy)  #绑定click方法
+    #         return _proxy
+    #     else:
+    #         return object.__getattribute__(self, attr)
     # def is_selected(self, driver):
     #     """判断元素是否被选中，返回bool值 及点（选中/取消选中）"""
     #
@@ -118,33 +144,6 @@ class Element:
         else:
             logger.info(f"定位到元素的个数：{n}")
             return True
-
-    # def __getattribute__(self, attr):
-    #     if attr.startswith('p_') or attr.startswith('_p_'):
-    #         _proxy = self.resolve_poco(self._dict[attr][1])  #获取对应元素操作对象的代理
-    #         _proxy._name = self._dict[attr][0]   #绑定注释信息
-    #         _proxy.click = types.MethodType(allure_click, _proxy)  #绑定click方法
-    #         return _proxy
-    #     else:
-    #         return object.__getattribute__(self, attr)
-
-    def __get__(self, instance, owner, context=None):
-        if not instance:
-            return None
-        if not context and self.has_context:
-            return lambda ctx: self.__get__(instance, owner, context=ctx)
-        if not context:
-            driver = instance.driver
-        return self.find(driver)
-
-    def __set__(self, instance, value):
-        if self.has_context:
-            raise ValueError("描述符不支持这这种形式")
-        elem = self.__get__(instance, instance.__class__)
-        if not elem:
-            raise ValueError("元素未找到，不能设置值")
-        elem.send_keys(value)
-
 
 class Elements(Element):
     """

@@ -24,8 +24,9 @@ class TestMainStationLogin:
     @allure.issue("https://www.tapd.cn/21492081/sparrow/tcase/view/1121492081001060614?url_cache_key=8662d02ef87d3c98ec427ad7967c7c2b", "bug问题链接")
     def test_phone_logion_success(self, get_driver, data):
         MainStationHomePage(get_driver).go_to_login_page().to_login(data[0], data[1], data[2])
-        PageScreenShot(login_data["success_phone_data"][1], get_driver)
-        assert "/course/progressive/index.do" in get_driver.current_url
+        with allure.step("截图"):
+            PageScreenShot(login_data["success_phone_data"][1], get_driver)
+        assert "/v5/my" in get_driver.current_url
 
     @allure.story("测试登录成功")
     @allure.title("邮箱账号密码正确")
@@ -35,7 +36,7 @@ class TestMainStationLogin:
     def test_email_logion_success(self, get_driver, data):
         MainStationHomePage(get_driver).go_to_login_page().to_login(data[0], data[1], data[2])
         PageScreenShot(login_data["success_email_data"][1], get_driver)
-        assert "/course/progressive/index.do" in get_driver.current_url
+        assert "/v5/my" in get_driver.current_url
 
     @allure.story("测试登录失败")
     @allure.title("测试手机号码不存在登录失败")
@@ -56,6 +57,7 @@ class TestMainStationLogin:
         page = MainStationHomePage(get_driver).go_to_login_page().to_login_failure(data[1], data[2])
         PageScreenShot(login_data["fail_data_password_error"][1], get_driver)
         assert page.error_message_p
+
 
 
 

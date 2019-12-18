@@ -15,6 +15,7 @@ from utils.global_variable import get_value, judg_dicit
 # # 本地调试可设置该URL
 MAIN_STATION_URL = "http://w0.highso.com.cn/v5"
 driver = None
+
 globle_arg = get_value("config_dict")
 
 
@@ -24,8 +25,11 @@ def get_driver():
     with allure.step("启动浏览器"):
         # 如果全局变量字典为{}则代表使用调式模式，默认使用test0环境
         if judg_dicit():
-            driver = SeleniumDriver(browser_type=globle_arg["browser"], version=globle_arg["version"], implicitly_wait=globle_arg["time_out"],
-                                    pattern=globle_arg["pattern"], platform=get_value("platform")).driver()
+            driver = SeleniumDriver(browser_type=globle_arg["browser"],
+                                    version=globle_arg["version"],
+                                    implicitly_wait=globle_arg["time_out"],
+                                    pattern=globle_arg["pattern"],
+                                    platform=get_value("platform")).driver()
         else:
             driver = SeleniumDriver().driver()
             driver.get(MAIN_STATION_URL)
@@ -45,7 +49,7 @@ def get_driver():
 @pytest.fixture(scope="function", autouse=True)
 def get_url():
     """浏览器输入url"""
-    time.sleep(1)
+    time.sleep(2)
     if judg_dicit():
         driver.get(globle_arg["env_config"]["main_station_url"])
     else:

@@ -18,8 +18,9 @@ SAFARI_PATH = DRIVER_PATH + '\\safari\\'
 
 class SeleniumDriver(BaseDriver):
     """selenium driver类"""
-    def __init__(self, maximize_window=True, implicitly_wait=10, selenium_grid_url=None,
-                 browser_type="chrome", version=None, pattern="local", platform="win"):
+    def __init__(self, maximize_window=True, implicitly_wait=10,
+                 selenium_grid_url=None,browser_type="chrome",
+                 version=None, pattern="local", platform="win"):
 
         self.browser_type = browser_type
         self.platform = platform

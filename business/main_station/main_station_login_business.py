@@ -15,6 +15,4 @@ class MainStationLoginBusiness:
         :return:
         """
         app = App(self.driver)
-        app.main_station_login_page.username_input = phone
-        app.main_station_login_page.password_input = pwd
-        app.main_station_login_page.login_button.click()
+        app.main_station_login_page.to_course_page(phone, pwd)
