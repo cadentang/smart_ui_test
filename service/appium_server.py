@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
-__author__ = 'caden'
-
 import os
 import socket
 import multiprocessing
 import subprocess
 from time import sleep
 
-from common.check_port import check_port, release_port
-from common.desired_caps import appium_desired
-from common.log import logging
+import yaml
+from appium.webdriver import webdriver
 
+from utils.get_log import logging
 
 devices_list = ['127.0.0.1:62025']
 
@@ -19,32 +17,28 @@ class StartAppiumServer:
     def __init__(self):
         pass
 
-
     def appium_start(self, host, port):
         """启动appium服务"""
         bootstrap_port = str(port + 1)
         cmd = 'start /b appium -a ' + host + ' -p ' + str(port) + ' -bp ' + str(bootstrap_port)
-        subprocess.Popen(cmd, shell=True, stdout=open('../log/appium_log/' + str(port) + '.log', 'a'),
+        subprocess.Popen(cmd, shell=True, stdout=open('./' + str(port) + '.log', 'a'),
                          stderr=subprocess.STDOUT)
 
-
-    def start_appium_action(host, port):
+    def start_appium_action(self, host, port):
         """启动appium时检查端口是否可用"""
         if check_port(host, port):
-            appium_start(host, port)
+            self.appium_start(host, port)
         else:
-            logging.info('appium %s %s 启动失败，开始释放端口' % (host, port))
+            logging.info(f'appium {host} {port} 启动失败，开始释放端口')
             release_port(port)
-            appium_start(host, port)
+            self.appium_start(host, port)
 
-
-    def start_devices_action(host, port):
+    def start_devices_action(self, host, port):
         """启动测试对象"""
-        driver = appium_desired(host, port)
+        driver = appium_desired(self, host, port)
         return driver
 
-
-    def multi_appium_start(host):
+    def multi_appium_start(self, host):
         """多进程启动appium服务"""
         logging.info("====appium服务开始启动====")
         appium_process = []
@@ -52,7 +46,7 @@ class StartAppiumServer:
         for i in range(len(devices_list)):
             port = 4723 + 2*i
             # 依次开启进程，将进程添加到进程组里面
-            appium_service = multiprocessing.Process(target=start_appium_action, args=(host, port))
+            appium_service = multiprocessing.Process(target=self.start_appium_action, args=(host, port))
             appium_process.append(appium_service)
 
         for appium in appium_process:
@@ -62,8 +56,7 @@ class StartAppiumServer:
         sleep(10)
         logging.info("====appium服务启动结束====")
 
-
-    def multi_devices_start(host):
+    def multi_devices_start(self, host):
         """多进程启动测试对象"""
         logging.info("====测试对象开始启动====")
         desired_process = []
@@ -76,7 +69,7 @@ class StartAppiumServer:
             port = 4723 + 2 * i
             # desired = multiprocessing.Process(target=start_devices_action, args=(host, port))
             # desired_process.append(desired)
-            results.append(p.apply_async(start_devices_action, (host, port)))
+            results.append(p.apply_async(self.start_devices_action, (host, port)))
             pid.append(os.getpid())
 
         for desired in desired_process:
@@ -92,11 +85,10 @@ class StartAppiumServer:
         logging.info("====测试对象启动完毕====")
         return driver_list
 
-
-    def main_run(host):
+    def main_run(self, host):
         """启动appium和测试对象的函数"""
-        multi_appium_start(host)
-        driver_d = multi_devices_start(host)
+        self.multi_appium_start(host)
+        driver_d = self.multi_devices_start(host)
         return driver_d
 
 
@@ -107,15 +99,15 @@ def check_port(host, port):
         s.connect((host, port))
         s.shutdown(2)
     except OSError as msg:
-        logging.info("端口:%s可以被使用！" % port)
+        logging.info(f"端口:{port}可以被使用！")
         return True
     else:
-        logging.info("端口:%s已经被使用！" % port)
+        logging.info(f"端口:{port}已经被使用！")
         return False
 
 def release_port(port):
     """释放已经被占用的端口"""
-    cmd_find_pid = "netstat -aon | findstr %s" % port  # 查找该端口信息
+    cmd_find_pid = f"netstat -aon | findstr {port}"  # 查找该端口信息
 
     result = os.popen(cmd_find_pid).read()
     if str(port) and 'LISTENING' in result:
@@ -124,9 +116,46 @@ def release_port(port):
         end = result.index('\n')
         pid = result[start:end]
 
-        cmd_kill = 'taskkill -f -pid %s' % pid  # 释放该端口
+        cmd_kill = f'taskkill -f -pid {pid}'  # 释放该端口
         os.popen(cmd_kill)
     else:
-        logging.info("端口:%s可以被使用！" % port)
+        logging.info(f"端口:{port}可以被使用！")
 
+def appium_desired(host, port):
+    with open('../config/91lng_caps.yaml','r',encoding='utf-8') as file:
+        data = yaml.load(file)
+    appPackage = "com.haixue.app.android.HaixueAcademy.h4"
 
+    desired_caps = {}
+    desired_caps['platformName'] = data['platformName']
+    desired_caps['platformVersion'] = data['platformVersion']
+    desired_caps['deviceName'] = data['deviceName']
+
+    base_dir = os.path.dirname(os.path.dirname(__file__))
+    app_path = os.path.join(base_dir, 'app', data['appname'])
+    desired_caps['app'] = app_path
+
+    desired_caps['appPackage'] = data['appPackage']
+    desired_caps['appActivity'] = data['appActivity']
+    desired_caps['noReset'] = data['noReset']
+    #desired_caps['udid'] = data['udid']
+
+    desired_caps['unicodeKeyboard'] = data['unicodeKeyboard']
+    desired_caps['resetKeyboard'] = data['resetKeyboard']
+    desired_caps['automationName'] = 'uiautomator2'
+
+    logging.info('====start app====')
+    driver=webdriver.Remote('http://'+str(host)+':'+str(port)+'/wd/hub',desired_caps)
+    driver.implicitly_wait(8)
+    return driver
+
+if __name__ == "__main__":
+    start_server = StartAppiumServer().appium_start("127.0.0.1", 4723)
+
+{
+ "platformName": "OPPO R11",
+ "platformVersion":"4.4.2",
+ "deviceName": "127.0.0.1:62001 device",
+ "appPackage": "com.haixue.app.android.HaixueAcademy.h4",
+ "appActivity": "com.haixue.academy.me.LoginActivity"
+}
