@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 def get_desired_caps(desired_type, data):
+    """配置"""
     if desired_type == "selenium":
         desired_caps = {
             'platform': 'windows',
