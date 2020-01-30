@@ -3,26 +3,40 @@ import pymysql
 import xlwt
 from utils.global_variable import get_value
 from utils.get_log import logger
+from utils.config import ReadConfig
 
 
 class Mysql:
     """数据库操作封装"""
-    def __init__(self, mysql_port, database):
-        database_config = get_value("config_dict")[mysql_port]
-        self.host = database_config["ip_or_domain"]
-        self.port = database_config["port"]
-        self.username = database_config["user"]
-        self.password = database_config["password"]
-        self.database = database
+    # def __init__(self, mysql_port, database):
+    def __init__(self):
+        # if get_value("config_dict"):
+        #     database_config = get_value("config_dict")[mysql_port]
+        # else:
+        #     database_config = []
+        #
+        # self.host = database_config["ip_or_domain"]
+        # self.port = database_config["port"]
+        # self.username = database_config["user"]
+        # self.password = database_config["password"]
+        # self.database = database
+        self.config = {
+            'host': '123.126.133.227',
+            'port': 3307,
+            'user': 'reg-dev',
+            'password': 'HaixueCd-reg-dev',
+            # 'db': 'haixue_cms'
+            'db': 'highso'
+        }
 
         # 数据库连接配置
-        self.config = {
-            'host': str(self.host),
-            'user': self.username,
-            'password': self.password,
-            'port': int(self.port),
-            'db': self.database
-        }
+        # self.config = {
+        #     'host': str(self.host),
+        #     'user': self.username,
+        #     'password': self.password,
+        #     'port': int(self.port),
+        #     'db': self.database
+        # }
 
         self.db_connect = None
         self.cursor = None
@@ -39,7 +53,7 @@ class Mysql:
 
     def execute_sql(self, sql):
         """执行sql"""
-        self.connec_db()
+        self.connect_db()
         self.cursor.execute(sql)
         value = self.cursor.fetchall()
         self.db_connect.commit()

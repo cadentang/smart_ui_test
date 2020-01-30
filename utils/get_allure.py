@@ -59,14 +59,14 @@ def get_environment_list():
         environment_list.append(d)
     return environment_list
 
-if __name__ == "__main__":
-    managerList = [{'name': 'joy'},
-                   {'name': 'tom'},
-                   {'name': 'ruby'}]
-    qq = get_arg()
-    print(qq)
-    print(get_environment_list())
-    build_environment_file(PROJECT_ROOT_DIR, get_environment_list())
+# if __name__ == "__main__":
+#     managerList = [{'name': 'joy'},
+#                    {'name': 'tom'},
+#                    {'name': 'ruby'}]
+#     qq = get_arg()
+#     print(qq)
+#     print(get_environment_list())
+#     build_environment_file(PROJECT_ROOT_DIR, get_environment_list())
     # dict = {"key": "12", "value": "34"}
     # for key, value in zip(dict.keys(), dict.values()):
     #     print(key)

@@ -1,5 +1,21 @@
 # -*- coding: utf-8 -*-
 import sys
+sys.path.append("..")
+sys.path.append("..\\business")
+sys.path.append("..\\common")
+sys.path.append("..\\component")
+sys.path.append("..\\config")
+sys.path.append("..\\data")
+sys.path.append("..\\drivers")
+sys.path.append("..\\extend")
+sys.path.append("..\\log")
+sys.path.append("..\\pages")
+sys.path.append("..\\report")
+sys.path.append("..\\resource")
+sys.path.append("..\\script")
+sys.path.append("..\\service")
+sys.path.append("..\\test_case")
+sys.path.append("..\\utils")
 import os
 import time
 import platform
@@ -29,6 +45,7 @@ if __name__ == "__main__":
         忽略key_words_2命名规则的文件、类及方法
         pytest -m "mark_name"	需要在指定case方法上添加@pytest.mark.mark_name来指定方法属于哪个mark
     """
+    # 检查目录，目录不存在则新建
     if not os.path.exists(LOG_PATH):
         os.mkdir(LOG_PATH)
     if not os.path.exists(BASE_LOG_PATH):
@@ -41,15 +58,7 @@ if __name__ == "__main__":
         os.mkdir(HTML_REPORT_PATH)
     if not os.path.exists(ERROR_PICTURE_PATH):
         os.mkdir(ERROR_PICTURE_PATH)
-    platform_name = platform.platform()
-    if "Windows" in platform_name:
-        platform_target = "win"
-    elif "Linux" in platform_name:
-        platform_target = "linux"
-    elif "Mac" in platform_name:
-        platform_target = "win"
-    else:
-        ValueError("注意检查程序运行平台信息")
+
     now_time = str(datetime.now().strftime("%Y%m%d%H%M%S"))
     # 建立allure生成原始报告的目录
     xml_now_report_path = os.path.join(ALLURE_REPORT_PATH, str(datetime.now().strftime("%Y%m%d")))
@@ -66,6 +75,18 @@ if __name__ == "__main__":
     html_report_path = os.path.join(html_now_report_path, now_time)
     if not os.path.exists(html_report_path):
         os.mkdir(html_report_path)
+
+    # 获取运行的平台信息
+    platform_name = platform.platform()
+    logger.info(f"platform_name: {platform_name}" )
+    if "Windows" in platform_name:
+        platform_target = "win"
+    elif "Linux" in platform_name:
+        platform_target = "linux"
+    elif "Mac" in platform_name:
+        platform_target = "win"
+    else:
+        ValueError("注意检查程序运行平台信息")
 
     # 设置全局变量值
     global_variable._init()

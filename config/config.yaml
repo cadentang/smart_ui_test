@@ -126,3 +126,7 @@ run_config:
     - firfox
     - ie
     - safari
+
+  # 用例运行所依赖的driver路径
+  driver_path:
+    - D:\haixue_work\script\haixue_git\haixue-test-ui\drivers

@@ -14,8 +14,9 @@ def get_value(key,value=None):
     """ 得一个全局变量,不存在则返回默认值"""
     try:
         return _global_dict[key]
-    except KeyError:
-        return value
+    except:
+        
+        return False
 
 def judg_dicit():
     if get_value("get_arg"):

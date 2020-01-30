@@ -13,6 +13,7 @@ class Logger:
         logging.root.setLevel(logging.NOTSET)
         self.log_path = os.path.join(BASE_LOG_PATH, str(datetime.now().strftime("%Y%m%d%H%M%S")))
         if not os.path.exists(self.log_path):
+            print(self.log_path)
             os.mkdir(self.log_path)
         self.console_level = "WARNING"
         self.file_level = "DEBUG"

@@ -134,7 +134,6 @@ class Element:
         :param locator: 定位元素的方式和值，类型为元组，如：("id", "value1")
         :return:
         """
-        ''' 判断一组元素是否在DOM里面 （是否存在），若不存在，返回一个空的list'''
         element = self.find_elements(locator)
         n = len(element)
         if n == 0:
@@ -144,6 +143,18 @@ class Element:
         else:
             logger.info(f"定位到元素的个数：{n}")
             return True
+
+    def get_ele_attur(self, attur_name, driver):
+        """
+        获取元素的某一个属性值
+        :param attur_name: 属性名称
+        :param driver: --
+        :return: 返回值，如果没有返回False
+        """
+        return self.get_element(driver).get_attribute(attur_name)
+
+    def get_text(self):
+        pass
 
 class Elements(Element):
     """

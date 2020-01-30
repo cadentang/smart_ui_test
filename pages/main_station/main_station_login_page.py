@@ -2,10 +2,10 @@
 from time import sleep
 import allure
 from common.element import Element
-from common.selenium_pages import SeleniumPages
+from pages.main_station.main_station_base_page import MainStationBasePage
 
 
-class MainStationLoginPage(SeleniumPages):
+class MainStationLoginPage(MainStationBasePage):
     """主站登录页"""
     _username_input = Element(xpath="//*[@id='j_username']",
                               describe="用户名输入框")
@@ -15,8 +15,10 @@ class MainStationLoginPage(SeleniumPages):
                             describe="登录按钮")
     _regster_button = Element(xpath="[//div/a[contains(text(),'注册')]",
                               describe="注册按钮")
-    _error_message_p = Element(css="div.index-loginBox.index-loginBoxCheck>.index-loginHint",
-                               describe="错误信息标签")
+    _password_message_p = Element(xpath="//*[@id='root']/div/div[1]/div/div[2]/form/div[2]/div/div/div",
+                               describe="密码框错误提示标签")
+    _username_error_message_p = Element(xpath='//*[@id="root"]/div/div[1]/div/div[2]/form/div[1]/div/div/div',
+                                  describe="用户名错误提示标签")
     _auto_login_input = Element(id_="autoLogon", describe="自动登录")
     _forget_login_a = Element(xpath="//a[starts-with(@class,'loginFormForgot')]",
                               describe="忘记密码")

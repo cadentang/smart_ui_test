@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import random
 from datetime import datetime
 from time import sleep
 
@@ -82,6 +83,9 @@ class PageAlert:
 
 class PageScroll:
     """滚动条操作"""
+    def __init__(self, driver):
+        self.driver = driver
+
     def window_scroll(self, width=None, height=None):
         """
         滚动条
@@ -101,17 +105,26 @@ class PageScroll:
         js = "window.scrollTo(0,0)"
         self.driver.execute_script(js)
 
-    def js_scroll_end(self, x=0):
+    def js_scroll_end(self):
         """
-        滚动条滚到底部某个位置
-        :param x:
+        滚动条滚到底部
         :return:
         """
-        js = f"window.scrollTo({x},document.body.scrollHeight)"
-        self.driver.execute_script(js)
+        end_height = self.driver.execute_script('return document.body.scrollHeight')
+        while True:
+            self.driver.execute_script('window.scrollTo(0, document.body.scrollHeight)')
+            sleep(random.random() * 10)
+            new_height = self.driver.execute_script('return document.body.scrollHeight')
+            if new_height == end_height:
+                break
+            end_height = new_height
+
 
 class PageSwitchWindowOrFrame:
     """页面窗口切换操作"""
+    def __init__(self, driver):
+        self.driver = driver
+
     @property
     def current_window(self):
         """获取当前窗口的句柄"""
@@ -178,9 +191,8 @@ class PageKeyOperation:
 
 class PageMouse:
     """鼠标事件操作"""
-    def __init__(self, driver, element):
+    def __init__(self, driver):
         self.driver = driver
-        self.element = element
 
     def move_to_element(self, element):
         """
