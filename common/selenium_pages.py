@@ -35,6 +35,7 @@ class PageWait:
             else:
                 sleep(1)
 
+
 class PageSelect:
     """
     页面下拉框操作
@@ -48,6 +49,7 @@ class PageSelect:
             Select(select_elem).select_by_index(index)
         else:
             raise PageSelectException("value,text,index不能都为空")
+
 
 class PageAlert:
     """警告框操作"""
@@ -337,6 +339,7 @@ class PageLoadOrUploadFile:
         :return:
         """
         pass
+
 
 class PageScreenShot:
     """截图操作封装"""

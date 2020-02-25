@@ -7,7 +7,7 @@ from pages.main_station.main_station_base_page import MainStationBasePage
 class MainStationCoursePage(MainStationBasePage):
     """课程页面"""
     _more_course_div = Element(xpath="//div[starts-with(@class, 'src-pages-center-Calendar-index__moreClass')]", describe="更多课程")
-    _
+    _sign_button = Element(xpath="//div/button[contains(text(),'立即签到')]", describe="签到按钮")
 
     @allure.step("进入更多课程")
     def go_more_course(self):

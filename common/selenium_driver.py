@@ -27,7 +27,7 @@ class SeleniumDriver(BaseDriver):
 
         # 如果version为空，则给每个类型的浏览器设定一个默认版本
         if browser_type == "chrome" and version == None:
-            self.version = "78"
+            self.version = "79"
         elif browser_type == "firefox" and version == None:
             self.version = "70"
         elif browser_type == "ie" and version == None:

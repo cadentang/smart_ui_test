@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 def get_desired_caps(desired_type, data):
     """加上配置"""
     if desired_type == "selenium":

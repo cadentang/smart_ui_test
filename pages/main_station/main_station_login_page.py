@@ -13,7 +13,7 @@ class MainStationLoginPage(MainStationBasePage):
                               describe="密码输入框")
     _login_button = Element(xpath="//div/div[2]/form/div[3]/div/div/span/button",
                             describe="登录按钮")
-    _regster_button = Element(xpath="[//div/a[contains(text(),'注册')]",
+    _regster_button = Element(xpath="//div/a[contains(text(),'注册')]",
                               describe="注册按钮")
     _password_message_p = Element(xpath="//*[@id='root']/div/div[1]/div/div[2]/form/div[2]/div/div/div",
                                describe="密码框错误提示标签")
