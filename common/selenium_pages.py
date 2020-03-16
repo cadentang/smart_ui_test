@@ -115,7 +115,7 @@ class PageScroll:
         end_height = self.driver.execute_script('return document.body.scrollHeight')
         while True:
             self.driver.execute_script('window.scrollTo(0, document.body.scrollHeight)')
-            sleep(random.random() * 10)
+            sleep(random.random() * 5)
             new_height = self.driver.execute_script('return document.body.scrollHeight')
             if new_height == end_height:
                 break
@@ -196,12 +196,14 @@ class PageMouse:
     def __init__(self, driver):
         self.driver = driver
 
-    def move_to_element(self, element):
+    def move_to_element(self, element_location):
         """
         鼠标移动到某个元素上
-        :param element: 元素对象
+        :param element_location: 元素对象定位信息
         :return:
         """
+        sleep(1)
+        element = self.driver.find_element(*element_location)
         try:
             ActionChains(self.driver).move_to_element(element).perform()
         except Exception as e:

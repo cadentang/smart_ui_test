@@ -14,4 +14,4 @@ TEST_CASE_PATH = os.path.join(PROJECT_ROOT_DIR, "test_case")  # 测试用例路�
 ERROR_PICTURE_PATH = os.path.join(PROJECT_ROOT_DIR, "report/error_picture")  # 错误截图
 PAGES_PATH = os.path.join(PROJECT_ROOT_DIR, "pages")  # 页面对象路径
 BUSINESS_PATH = os.path.join(PROJECT_ROOT_DIR, "business")  # 业务层封装路径
-
+APP_PATH = os.path.join(PROJECT_ROOT_DIR, "app")  # app安装包放置的路径

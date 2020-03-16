@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from time import sleep
 import allure
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 from common.element import Element, Elements
 from common.selenium_pages import SeleniumPages, PageMouse
-from selenium import webdriver
-
 from utils.global_variable import get_value
 
 
@@ -12,12 +12,13 @@ class MainStationBasePage(SeleniumPages):
     """登录后的公共元素"""
     # 顶导航
     _haixue_logo_image = Element(css="a>img[alt='logo']", describe="嗨学logo")
-    _categoryid_a = Element(xpath=" *//div[starts-with(@class,'src-components-Wrap-UserHeader')]/a/strong",
-                            describe="当前类别")
+    # _categoryid_a = Element(xpath="*//div[starts-with(@class,'src-components-Wrap-UserHeader')]/a/strong",
+    #                         describe="当前类别")
+    _categoryid_a = (By.XPATH, "*//div[starts-with(@class,'src-components-Wrap-UserHeader')]/a/strong")
     _categoryids_ul = Elements(xpath=" *//div[starts-with(@class,'src-components-Wrap-UserHeader')]/ul",
                               describe="该用户拥有的所有类别")
     _message_svg = Element(css="div>a>span>svg", describe="消息中心")
-    _user_icon_a = Element(css="a[href='/customerCenter/home.do']", describe="用户信息")
+    _user_icon_a = Element(css="div>a[href='/v5/setting/user']", describe="用户信息")
     _user_account_a = Element(css="a[href='/customerInfo/findCustomerById.do']", describe="账号设置")
     _user_help_a = Element(css="a[href='/v5/help-center']", describe="帮助中心")
     _user_back_haixue_a = Element(css="a[href='/v5']", describe="返回官网")
@@ -28,10 +29,10 @@ class MainStationBasePage(SeleniumPages):
     _course_a = Element(css="a[href='/v5/my/course']", describe="课程")
     _exam_data_a = Element(css="a[href='/v5/my/exam-data']", describe="资料")
     _exam_a = Element(css="a[href='/exam/home/index.do']", describe="题库")
-    _question_a = Element(css="a[href='/v5/my/course']", describe="问答")
-    _message_a = Element(css="a[href='/v5/my/course']", describe="资讯")
-    _order_a = Element(css="a[href='/v5/my/course']", describe="订单")
-    _purchase_a = Element(css="a[href='/v5/my/course']", describe="选购")
+    _question_a = Element(css="a[href='/v5/my/question']", describe="问答")
+    _message_a = Element(css="a[href='/v5/my/message']", describe="资讯")
+    _order_a = Element(css="a[href='/order/myOrder/findOrderListForCustomer.do']", describe="订单")
+    _purchase_a = Element(css="a[href='/v5/my/purchase']", describe="选购")
 
     # 右侧快捷键
     _connection_head_teacher_a = Element(css="#root>div>section>main>aside>a", describe="联系班主任")
@@ -77,8 +78,9 @@ class MainStationBasePage(SeleniumPages):
         PageMouse(self.driver).move_to_element(self._user_icon_a)
         self._user_logout_a.click()
         # 目前推出登录后还是调的老接口，返回的是老页面，先通过直接输入URL返回登录页，V5重构完成后去掉此部分代码
-        aa = "http://w1.highso.com.cn/indexCourse/indexLogin.do?logout=true"
-        target_url = aa.split("indexCourse")[0] + 'v5'
+        now_url = self.driver.current_url
+        # aa = "http://w1.highso.com.cn/indexCourse/indexLogin.do?logout=true"
+        target_url = now_url.split("indexCourse")[0] + 'v5'
         self.driver.get(target_url)
 
         from pages.main_station.main_station_home_page import MainStationHomePage
@@ -109,19 +111,19 @@ class MainStationBasePage(SeleniumPages):
         return MainStationQuestionPage(self.driver)
 
     @allure.step("进入资讯页面")
-    def go_question(self):
+    def go_message(self):
         self._message_a.click()
         from pages.main_station.main_station_message_page import MainStationMessagePage
         return MainStationMessagePage(self.driver)
 
     @allure.step("进入订单页面")
-    def go_question(self):
+    def go_order(self):
         self._order_a.click()
         from pages.main_station.main_station_order_page import MainStationOrderPage
         return MainStationOrderPage(self.driver)
 
     @allure.step("进入选购页面")
-    def go_question(self):
+    def go_purchase(self):
         self._purchase_a.click()
         from pages.main_station.main_station_purchase_page import MainStationPurchasePage
         return MainStationPurchasePage(self.driver)
@@ -146,17 +148,20 @@ class MainStationBasePage(SeleniumPages):
         return navigations_dict
 
 
-if __name__ == "__main__":
-    driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
-    driver.maximize_window()
-
-    driver.get("http://w1.highso.com.cn/v5")
-    # driver.find_element_by_css_selector()
-    sleep(3)
-    from pages.main_station.main_station_home_page import MainStationHomePage
-
-    aa = MainStationHomePage(driver)
-    aa.go_to_login_page().to_login("haixue", "19983271083", "123456")
-    # aa.get_bottom_list_navigations()
-    aa.logout()
+# if __name__ == "__main__":
+#     driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
+#     driver.maximize_window()
+#     driver.get("http://w1.highso.com.cn/v5")
+#     print(driver.current_url)
+#     # driver.find_element_by_css_selector()
+#     sleep(3)
+#     from pages.main_station.main_station_home_page import MainStationHomePage
+#
+#     aa = MainStationHomePage(driver)
+#     aa.go_to_login_page().to_login("haixue", "19983271083", "123456")
+#     # aa.get_bottom_list_navigations()
+#     sleep(1)
+#     aa.switch_category("二级建造师")
+#     sleep(1)
+#     aa.logout()
 

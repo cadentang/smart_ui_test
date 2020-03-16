@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import argparse
+from utils.base_path import LOG_PATH, DRIVER_PATH
 
 def get_arg():
     """
@@ -15,14 +16,19 @@ def get_arg():
             distributed：分布式执行，selenium，appium服务在远端运行，执行时临时注册node节点
     5.--browser: 浏览器运行列表:["chrome", "firefox", "ie"]
     6.--version: 运行的版本:["78"]，这个版本只写大的版本，如果是andriod或者iOS运行是模拟器的版本
+    7.--log_path: 运行日志路径，本地调试是在项目根目录/log下，默认值，传入的日志路径为在jenkins上运行的日志存储路径，
+                  注意如果jenkins存在在slave节点上运行时，这个路径为节点机器所在的日志路径
+    8.--driver_path: 运行selenium脚本所需的driver路径
+    9.--app_path: 运行appium脚本时app安装包所在的路径
+    10.--app_path: 运行appium脚本时app安装包所在的路径
+    9.--app_path: 运行appium脚本时app安装包所在的路径
     """
     run_arg = {}
     ENV_LIST = ["test0", "test1", "test2", "reg", "stage", "auto", "prod"]
-    PROJECT_LIST = ["all", "main_station"]
+    PROJECT_LIST = ["all", "main_station", "haixue_app"]
     USER_PORT = ["pc", "andriod", "ios", "h5", "mini_program"]
     PATTERN = ["local", "distributed"]
     BROWSER = ["chrome", "firefox", "ie"]
-
     parser = argparse.ArgumentParser(description="自定义HaiXue项目python命令行参数")
     parser.add_argument('--env', type=str, default="reg")
     parser.add_argument('--project', type=str, default="main_station")
@@ -30,12 +36,26 @@ def get_arg():
     parser.add_argument('--pattern', type=str, default="local")
     parser.add_argument('--browser', type=str, default="chrome")
     parser.add_argument('--version', type=str, default=None)
+    parser.add_argument('--log_path', type=str, default=LOG_PATH)
+    parser.add_argument('--driver_path', type=str, default=DRIVER_PATH)
+    parser.add_argument('--app_path', type=str, default=None)
+    parser.add_argument('--platformName', type=str, default=None)
+    parser.add_argument('--platformVersion', type=str, default=None)
+    parser.add_argument('--deviceName', type=str, default=None)
+    parser.add_argument('--appPackage', type=str, default=None)
+    parser.add_argument('--appActivity', type=str, default=None)
+    parser.add_argument('--noReset', type=str, default=False)
+    parser.add_argument('--udid', type=str, default=False)
+    parser.add_argument('--unicodeKeyboard', type=str, default=False)
+    parser.add_argument('--resetKeyboard', type=str, default=False)
+    parser.add_argument('--automationName', type=str, default=False)
+    parser.add_argument('--bundleId', type=str, default=False)
+
     args = parser.parse_args()
     if args.env in ENV_LIST:
         run_arg["env"] = args.env
     else:
         run_arg["env"] = "reg"
-
     if args.project in PROJECT_LIST:
         run_arg["project"] = args.project
     else:
@@ -57,6 +77,19 @@ def get_arg():
         run_arg["browser"] = "chrome"
 
     run_arg["version"] = args.version
+    run_arg["log_path"] = args.log_path
+    run_arg["driver_path"] = args.driver_path
+    run_arg["app_path"] = args.app_path
+    run_arg["platformName"] = args.platformName
+    run_arg["platformVersion"] = args.platformVersion
+    run_arg["deviceName"] = args.deviceName
+    run_arg["appPackage"] = args.appPackage
+    run_arg["noReset"] = args.noReset
+    run_arg["udid"] = args.udid
+    run_arg["unicodeKeyboard"] = args.unicodeKeyboard
+    run_arg["resetKeyboard"] = args.resetKeyboard
+    run_arg["automationName"] = args.automationName
+    run_arg["bundleId"] = args.bundleId
 
     return run_arg
 

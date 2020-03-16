@@ -52,7 +52,7 @@ class MainStaionRegisterPage(MainStationBasePage):
         my = Mysql()
         my.connect_db()
         code = my.execute_sql(sql)
-        print(code)
+        # print(code)
         return code
 
     @allure.step("根据SKU选择关注对应的考试项目")
@@ -61,16 +61,16 @@ class MainStaionRegisterPage(MainStationBasePage):
         locate.find_element_by_xpath(f"//a[text()='{sku}']").click
 
 
-
-if __name__ == "__main__":
-    driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
-    driver.maximize_window()
-
-    driver.get("http://w1.highso.com.cn/v5")
-    sleep(3)
-    from pages.main_station.main_station_home_page import MainStationHomePage
-
-    aa = MainStationHomePage(driver)
-    page = aa.go_to_regster_page()
-    page.get_phone_auth_code()
-    # page.register("3456712@qq.com", "123456", "19983279999", "123456", "sss")
+#
+# if __name__ == "__main__":
+#     driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
+#     driver.maximize_window()
+#
+#     driver.get("http://w1.highso.com.cn/v5")
+#     sleep(3)
+#     from pages.main_station.main_station_home_page import MainStationHomePage
+#
+#     aa = MainStationHomePage(driver)
+#     page = aa.go_to_regster_page()
+#     page.get_phone_auth_code()
+#     # page.register("3456712@qq.com", "123456", "19983279999", "123456", "sss")

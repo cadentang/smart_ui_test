@@ -22,7 +22,7 @@ class Mysql:
         # self.database = database
         self.config = {
             'host': '123.126.133.227',
-            'port': 3307,
+            'port': 3306,
             'user': 'reg-dev',
             'password': 'HaixueCd-reg-dev',
             # 'db': 'haixue_cms'

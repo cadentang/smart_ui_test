@@ -2,9 +2,10 @@
 import requests
 import json
 
-# webhook = 'https://oapi.dingtalk.com/robot/send?access_token=fa283adfa1e14a6239245c0c611f3453691bdf6654da29336c07ae4e57240d88'
+# caden之家
+webhook = 'https://oapi.dingtalk.com/robot/send?access_token=fa283adfa1e14a6239245c0c611f3453691bdf6654da29336c07ae4e57240d88'
 # 用户平台测试群
-webhook = 'https://oapi.dingtalk.com/robot/send?access_token=f27935f9b3ee25b0528cfb0a37ca254c83c996bdabac1a306d33fb5909c1c69f'
+# webhook = 'https://oapi.dingtalk.com/robot/send?access_token=f27935f9b3ee25b0528cfb0a37ca254c83c996bdabac1a306d33fb5909c1c69f'
 message =  {
         "title": "ui自动化测试报告",
         "project": "main_station",

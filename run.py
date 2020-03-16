@@ -98,15 +98,13 @@ if __name__ == "__main__":
     # 将环境信息置于xml报告路径下，转化为html报告后在html中呈现
     build_environment_file(xml_report_path, get_environment_list())
 
-    # pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH])
-    # pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH, '--workers=1','--tests-per-worker=5'])
+    pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH])
+    pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH, '--workers=1','--tests-per-worker=5'])
     time.sleep(10)
 
     # 使用allure将xml报告生成为html报告
-    # change_to_html(xml_report_path, html_report_path)
+    change_to_html(xml_report_path, html_report_path)
     logger.info("测试任务完成！")
-
-
 
 
 
