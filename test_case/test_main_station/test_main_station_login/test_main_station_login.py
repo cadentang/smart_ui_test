@@ -22,19 +22,18 @@ class TestMainStationLogin:
     @allure.testcase("https://www.tapd.cn/21492081/sparrow/tcase/view/1121492081001060614?url_cache_key=8662d02ef87d3c98ec427ad7967c7c2b", "正确账号+正确密码登录")
     @allure.link("https://www.tapd.cn/21492081/prong/stories/view/1121492081001051127?url_cache_key=99f5c5016553580e8040b1bc2b0d5cb5&action_entry_type=story_tree_list", "link需求问题链接")
     @allure.issue("https://www.tapd.cn/21492081/sparrow/tcase/view/1121492081001060614?url_cache_key=8662d02ef87d3c98ec427ad7967c7c2b", "bug问题链接")
-    def test_phone_logion_success(self, get_driver, data):
+    def test_phone_logion_success(self, get_driver, data, go_to_logout_fixture):
         home_page = MainStationHomePage(get_driver)
         page = home_page.go_to_login_page().to_login(data[0], data[1], data[2])
         with allure.step("截图"):
             PageScreenShot(login_data["success_phone_data"][1], get_driver)
-        get_driver.get("http://w1.highso.com.cn/v5/my")
-        assert "/v5/my" in get_driver.current_url
-        page.logout()
+        get_driver.get("http://w2.highso.com.cn/v5/my/course")
+        assert "/v5/my/course" in get_driver.current_url
 
     @allure.story("测试登录成功")
     @allure.title("邮箱账号密码正确")
     @allure.description("主站登录，邮箱账号登录成功")
-    @allure.severity(allure.severity_level.CRITICAL)
+    @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.parametrize("data", login_data["success_email_data"][0])
     def test_email_logion_success(self, get_driver, data):
         home_page = MainStationHomePage(get_driver)

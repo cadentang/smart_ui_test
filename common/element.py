@@ -35,7 +35,7 @@ LOCATOR_LIST = {
 
 class Element:
     """单个页面元素"""
-    def __init__(self, context=False, timeout=5,
+    def __init__(self, context=False, timeout=20,
                  describe=None, **kwargs):
         self.time_out = timeout
         self.describe = describe
@@ -154,7 +154,8 @@ class Element:
         return self.get_element(driver).get_attribute(attur_name)
 
     def get_text(self):
-        pass
+        text = self.get_element(deiver).text
+        return text
 
 class Elements(Element):
     """

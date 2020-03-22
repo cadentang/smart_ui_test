@@ -44,6 +44,8 @@ if __name__ == "__main__":
         pytest -k "key_words_1 and not key_words_1"	执行符合key_words_1命名规则的文件、类及方法，
         忽略key_words_2命名规则的文件、类及方法
         pytest -m "mark_name"	需要在指定case方法上添加@pytest.mark.mark_name来指定方法属于哪个mark
+        blocker，critical，normal，minor，trivial。用例等级
+
     """
     # 检查目录，目录不存在则新建
     if not os.path.exists(LOG_PATH):

@@ -16,7 +16,7 @@ from pages.main_station.main_station_home_page import MainStationHomePage
 from data.main_station.main_station_business_data import login_study_data
 
 # # 本地调试可设置该URL
-MAIN_STATION_URL = "http://w1.highso.com.cn/v5"
+MAIN_STATION_URL = "http://w2.highso.com.cn/v5"
 driver = None
 
 globle_arg = get_value("config_dict")
@@ -66,7 +66,6 @@ def get_url():
     else:
         driver.get(MAIN_STATION_URL)
 
-# @pytest.fixture(scope="function", autouse=False)
 @pytest.fixture(scope="function", autouse=False)
 def login_for_function(get_driver):
     """在每个函数执行前登录，需主动调用"""
@@ -83,53 +82,46 @@ def login_for_function(get_driver):
     MainStationHomePage(get_driver).logout()
 
 @pytest.fixture(scope="class", autouse=False)
-def login_for_class():
+def login_for_class(get_driver):
     """在每个class执行前登录，执行后登出，需主动调用"""
+    time.sleep(1)
+    if "/course/progressive/index.do" in get_driver.current_url:
+        if judg_dicit():
+            get_driver.get(globle_arg["env_config"]["main_station_url"] + "/my/course")
+        else:
+            get_driver.get(MAIN_STATION_URL + "/my/course")
     MainStationHomePage(get_driver).go_to_login_page().to_login(login_study_data["login_type"], login_study_data["phone"],
                                                                 login_study_data["password"])
     yield login_for_class
     MainStationHomePage(get_driver).logout()
 
 @pytest.fixture(scope="module", autouse=False)
-def login_for_module():
+def login_for_module(get_driver):
     """在每个py文件执行前登录，执行后登出，需主动调用"""
+    time.sleep(1)
+    if "/course/progressive/index.do" in get_driver.current_url:
+        if judg_dicit():
+            get_driver.get(globle_arg["env_config"]["main_station_url"] + "/my/course")
+        else:
+            get_driver.get(MAIN_STATION_URL + "/my/course")
     MainStationHomePage(get_driver).go_to_login_page().to_login(login_study_data["login_type"], login_study_data["phone"],
                                                                 login_study_data["password"])
     yield login_for_module
     MainStationHomePage(get_driver).logout()
 
 @pytest.fixture(scope="session", autouse=False)
-def login_for_session():
+def login_for_session(get_driver):
     """在每个测试session执行前登录, 执行后登出，需主动调用"""
+    time.sleep(1)
+    if "/course/progressive/index.do" in get_driver.current_url:
+        if judg_dicit():
+            get_driver.get(globle_arg["env_config"]["main_station_url"] + "/my/course")
+        else:
+            get_driver.get(MAIN_STATION_URL + "/my/course")
     MainStationHomePage(get_driver).go_to_login_page().to_login(login_study_data["login_type"], login_study_data["phone"],
                                                                 login_study_data["password"])
     yield login_for_session
     MainStationHomePage(get_driver).logout()
-
-
-# @pytest.fixture(scope="function", autouse=False)
-# def logout_for_function():
-#     """在每个函数执行后退出登录， 需主动调用"""
-#     MainStationHomePage(get_driver).logout()
-#
-# @pytest.fixture(scope="class", autouse=False)
-# def logout_for_class():
-#     """在每个class执行后退出登录， 需主动调用"""
-#     yield logout_for_class
-#     MainStationHomePage(get_driver).logout()
-#
-# @pytest.fixture(scope="module", autouse=False)
-# def logout_for_module():
-#     """在每个py文件执行后退出登录, 需主动调用"""
-#     MainStationHomePage(get_driver).logout()
-#
-# @pytest.fixture(scope="session", autouse=False)
-# def logout_for_session():
-#     """在每个py文件执行后退出登录, 需主动调用"""
-#     MainStationHomePage(get_driver).logout()
-
-
-
 
 
 # @pytest.mark.hookwrapper

@@ -78,23 +78,25 @@ class MainStationHomePage(MainStationBasePage):
     @allure.step("根据dict遍历所有的链接, 返回跳转链接的URL")
     def traverse_page(self, target_page_ele_dict):
         for i in target_page_ele_dict.values():
-            window_handle = PageSwitchWindowOrFrame(self.driver)
-            first_handle = window_handle.current_window
-            Element(xpath=i["location"]).find(self.driver).click()
-            handles = self.driver.window_handles
-            sleep(1)
-            if len(handles) == 1:
-                i["result_url"] = self.driver.current_url
-                self.driver.back()
+            print(i)
+            for j in i.values():
+                window_handle = PageSwitchWindowOrFrame(self.driver)
+                first_handle = window_handle.current_window
+                Element(xpath=j["location"]).find(self.driver).click()
+                handles = self.driver.window_handles
                 sleep(1)
-            elif len(handles) > 1:
-                for handle in handles:
-                    if window_handle.current_window !=handle:
-                        window_handle.switch_handle(handle)
-                        i["result_url"] = self.driver.current_url
-                        self.driver.close()
-                        window_handle.switch_handle(first_handle)
-                        sleep(1)
+                if len(handles) == 1:
+                    j["result_url"] = self.driver.current_url
+                    self.driver.back()
+                    sleep(1)
+                elif len(handles) > 1:
+                    for handle in handles:
+                        if window_handle.current_window !=handle:
+                            window_handle.switch_handle(handle)
+                            j["result_url"] = self.driver.current_url
+                            self.driver.close()
+                            window_handle.switch_handle(first_handle)
+                            sleep(1)
         return target_page_ele_dict
 
     @allure.step("首页进入登录页面")
@@ -116,19 +118,19 @@ class MainStationHomePage(MainStationBasePage):
         return MainStaionRegisterPage(self.driver)
 
 
-# if __name__ == "__main__":
-#     driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
-#     driver.maximize_window()
-#
-#     driver.get("http://w1.highso.com.cn/v5")
-#     sleep(3)
-#     from pages.main_station.main_station_home_page import MainStationHomePage
-#
-#     aa = MainStationHomePage(driver)
-#     print(aa.get_sku())
-    # print(aa.traverse_page(aa.get_not_login_home_top_navigation()))
-    # sleep(3)
-    # # PageScroll(driver).js_scroll_end()
+if __name__ == "__main__":
+    driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
+    driver.maximize_window()
+
+    driver.get("http://w1.highso.com.cn/v5")
+    sleep(3)
+    from pages.main_station.main_station_home_page import MainStationHomePage
+
+    aa = MainStationHomePage(driver)
+    print(aa.get_sku())
+    print(aa.traverse_page(aa.get_sku()))
+    sleep(3)
+    # PageScroll(driver).js_scroll_end()
     # end_height = driver.execute_script('return document.body.scrollHeight')
     # while True:
     #     driver.execute_script('window.scrollTo(0, document.body.scrollHeight)')

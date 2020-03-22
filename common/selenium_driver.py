@@ -44,10 +44,14 @@ class SeleniumDriver(BaseDriver):
 
     def driver(self):
         """实例化返回一个driver"""
+        chromeOptions = webdriver.ChromeOptions()
+        prefs = {"download.default_directory": "D:\haixue_work\script\haixue_git\haixue-test-ui\\resource\\file"}
+        chromeOptions.add_experimental_option("prefs", prefs)
         if self.pattern == "local":
             if self.browser_type == "chrome":
                 self.driver = webdriver.Chrome(executable_path=self.get_driver_path(self.browser_type,
-                                                                                    self.version, self.platform))
+                                                                                    self.version, self.platform),
+                                               chrome_options=chromeOptions)
             elif self.browser_type == "firefox":
                 self.driver = webdriver.Firefox(executable_path=self.get_driver_path(self.browser_type,
                                                                                      self.version, self.platform))

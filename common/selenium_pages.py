@@ -202,7 +202,7 @@ class PageMouse:
         :param element_location: 元素对象定位信息
         :return:
         """
-        sleep(1)
+        sleep(2)
         element = self.driver.find_element(*element_location)
         try:
             ActionChains(self.driver).move_to_element(element).perform()

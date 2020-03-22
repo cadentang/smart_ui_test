@@ -6,3 +6,9 @@ login_study_data = {
     "phone": "19983271081",
     "password": "123456"
 }
+
+login_course_data = {
+    "login_type": "haixue",
+    "phone": "19983271081",
+    "password": "123456"
+}

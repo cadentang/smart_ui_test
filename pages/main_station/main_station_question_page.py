@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import time
 from datetime import datetime
 import allure
@@ -66,6 +67,10 @@ class MainStationQuestionPage(MainStationBasePage):
     _question_confire_button = Element(xpath="//div[starts-with(@class,'src-components-HxEditor-index')]/button[contains(text(), '提问')]", describe="提问确定按钮")
     _question_alter_button = Element(xpath="//button/span[contains(text(), '知道了')]", describe="提问确认弹窗")
 
+    # 无权限和超过提问次数权限弹窗
+    _question_no_perssion = (By.XPATH, "//div/div[contains(text(),'您未购买课程无法提问，请购买后体验！')]")  # 无提问权限
+
+
     # 问题详情页面
     _question_supplementary_span = Element(xpath='//div/span[contains(text(), "补充问题 》")]', describe="补充问题")
     _question_append_span = Element(xpath='//div/span[contains(text(), "继续追问 》")]', describe="追问问题")
@@ -75,17 +80,28 @@ class MainStationQuestionPage(MainStationBasePage):
 
     def get_compent_list(self, index=1):
         """获取列表页的问题组件, 默认返回第一个问题，如果没有则返回false"""
-        try:
-            question_compent_location = self._question_list_component_lis + f"[{index}]"
-            return MainStationQuestionComponent(self.driver, question_compent_location)
-        except NoSuchElementException:
-            return False
+
+        question_compent_location = (By.XPATH, self._question_list_component_lis + f"[{index}]")
+        return MainStationQuestionComponent(self.driver, question_compent_location)
 
     def get_question_count(self):
-        """获取问题列表中有多少条问题"""
+        """获取问题列表中有多少条主问题"""
+        self.driver.refresh()
         PageScroll(self.driver).js_scroll_end()
+        PageScroll(self.driver).js_scroll_top()
         try:
             count = len(self.driver.find_elements_by_xpath(self._question_list_component_lis))
+        except NoSuchElementException:
+            count = 0
+        return count
+
+    def get_append_question_count(self):
+        """获取列表中有多少追问问题"""
+        self.driver.refresh()
+        PageScroll(self.driver).js_scroll_end()
+        PageScroll(self.driver).js_scroll_top()
+        try:
+            count = len(self.driver.find_elements(*MainStationQuestionComponent._question_appent_content_span))
         except NoSuchElementException:
             count = 0
         return count
@@ -100,17 +116,19 @@ class MainStationQuestionPage(MainStationBasePage):
     def question_for_course(self, content, file=False):
         """file为False不上传图片，为True上传图片"""
         self._question_button.click()
-
         try:
             self._question_first_course_button.click()
             if file == True:
                 self.upload_picture()
-
             text = str(datetime.now().strftime("%Y_%m_%d_%H_%M_%S")) + content +  "【测试自动化课程提问】"
             self._question_input_div =  text
             self._question_confire_button.click()
             ele = self.driver.find_element_by_xpath("//button/span[contains(text(), '知道了')]")
             self.driver.execute_script("arguments[0].click();", ele)
+            time.sleep(2)
+            self.driver.refresh()
+            time.sleep(2)
+            return text
         except:
             self._question_go_course_page_button.click()
 
@@ -118,18 +136,23 @@ class MainStationQuestionPage(MainStationBasePage):
     def question_for_textbook(self, content, file=False):
         self._question_button.click()
         self._question_go_textbook_div.click()
+        time.sleep(1)
         self._question_1_textbook_div.click()
+        time.sleep(1)
         self._question_2_textbook_div.click()
+        time.sleep(1)
         self._question_first_textbook_button.click()
         self._question_page_code_button = "12"
         if file == True:
             self.upload_picture()
-
         text = str(datetime.now().strftime("%Y_%m_%d_%H_%M_%S")) + content +  "【测试自动化教材提问】"
         self._question_input_div = text
         self._question_confire_button.click()
         ele = self.driver.find_element_by_xpath("//button/span[contains(text(), '知道了')]")
         self.driver.execute_script("arguments[0].click();", ele)
+        time.sleep(2)
+        self.driver.refresh()
+        return text
 
     @allure.step("对试题提问(默认第一条做题记录，如没有则跳转至题库做题页面)")
     def question_for_examrecord(self, content, file=False):
@@ -138,27 +161,98 @@ class MainStationQuestionPage(MainStationBasePage):
             self._question_first_exam_button.click()
             if file == True:
                 self.upload_picture()
-
             text = str(datetime.now().strftime("%Y_%m_%d_%H_%M_%S")) + content +  "【测试自动化试题提问】"
             self._question_input_div =  text
             self._question_confire_button.click()
             ele = self.driver.find_element_by_xpath("//button/span[contains(text(), '知道了')]")
             self.driver.execute_script("arguments[0].click();", ele)
+            time.sleep(2)
+            self.driver.refresh()
+            return text
         except:
             self._question_go_exam_page_button.click()
 
     @allure.step("对提的问题补充问题")
-    def question_for_supplement(self):
-        com = self.get_compent_list()
+    def question_for_supplement(self, supplementary_content, file=False):
+        # 先提问，再对提的问题补充问题
+        first_content = self.question_for_course(content="测试补充问题", file=True)
+        self.driver.refresh()
+        com = self.get_compent_list(index=1)
         if com:
-           com.question_detail()
-           # 页面切换到问题详情页
+            com.question_detail()
+            self._question_supplementary_span.click()
+
+            if file == True:
+                self.upload_picture()
+            text = str(datetime.now().strftime("%Y_%m_%d_%H_%M_%S")) + supplementary_content + "【测试自动化试题提问-补充问题】"
+            self._question_input_div = text
+            self._question_confire_button.click()
         else:
             logger.info("列表中没有问题")
 
     @allure.step("对老师回复的问题再次追问")
-    def question_for_append(self, append_content):
-        pass
+    def question_for_append(self, append_content, file=False):
+        # count = self.get_question_count()
+        # for i in range(count):
+        #     logger.info(f"i:{i}")
+        #     com = self.get_compent_list(index=i+1)
+        #     logger.info(f"组件文本: {com.get_main_content()}")
+            # logger.info(f"组件文本: {com.get_question_id()}")
+
+        # 获取列表中第一个问题，如果已回复则追问，未回复则先回复再追问
+        # 只有当主问题已回复且无追问问题或者追问问题已回复才能继续追问
+        com = self.get_compent_list()
+        result = com.judge_is_answer()
+        logger.info(f"com.judge_is_answer()的结果:{result}")
+        if result in [2, 3]:
+            com.question_detail()
+            self._question_append_span.click()
+            if file == True:
+                self.upload_picture()
+            text = str(datetime.now().strftime("%Y_%m_%d_%H_%M_%S")) + append_content + "【测试自动化提问-追问】"
+            self._question_input_div = text
+            self._question_confire_button.click()
+            self.driver.execute_script("arguments[0].click();",
+                                       self.driver.find_element_by_xpath("//button/span[contains(text(), '知道了')]"))
+            self.go_question()
+            return text
+        else:
+            self.question_teacher_replay()
+            self.driver.refresh()
+            time.sleep(2)
+            com.question_detail()
+            self._question_append_span.click()
+            if file == True:
+                self.upload_picture()
+            text = str(datetime.now().strftime("%Y_%m_%d_%H_%M_%S")) + append_content + "【测试自动化提问-追问】"
+            self._question_input_div = text
+            self._question_confire_button.click()
+            self.driver.execute_script("arguments[0].click();",
+                                       self.driver.find_element_by_xpath("//button/span[contains(text(), '知道了')]"))
+            self.go_question()
+            return text
+
+    @allure.step("对学员提的问题进行回复")
+    def question_teacher_replay(self, index=1):
+        """默认回复第一个问题，若第一个已回复则依次向下寻找能够回复的问题"""
+        # count = self.get_question_count()
+        compent = self.get_compent_list(index)
+        if compent.judge_is_answer() in [0,1]:
+            compent.question_detail()
+            self.question_answer(compent.get_question_id())
+            self.go_question()
+            time.sleep(2)
+            self.driver.refresh()
+            try:
+                if self.get_no_read_question() == "1" or compent.judg_new_mark() == True:
+                    return True
+                else:
+                    return False
+            except:
+                return False
+        else:
+            return False
+
 
     @allure.step("列表页对问题点赞")
     def question_dianzan(self):
@@ -190,13 +284,68 @@ class MainStationQuestionPage(MainStationBasePage):
         com = self.get_compent_list()
         com.score_main_question(4, content)
 
-    @allure.step("学术创新中台老师回复问题")
-    def question_answer(self):
-        com = self.get_compent_list()
+    def question_answer(self, question_id):
+        """根据question_id回复学生的提问"""
+        import requests
+        # question-service问答接口
+        if "w0" in self.driver.current_url:
+            url = "http://192.168.16.250:32000/h/com.haixue.question.api.AnswerApi/saveAnswer"
+            create_by = "120425"
+        elif "w1" in self.driver.current_url:
+            url = "http://192.168.16.247:32000/h/com.haixue.question.api.AnswerApi/saveAnswer"
+            create_by = "120751"
+        elif "w2" in self.driver.current_url:
+            url = "http://123.126.133.237:32000/h/com.haixue.question.api.AnswerApi/saveAnswer"
+            create_by = "138725"
+        else:
+            logger.info("不支持的回复")
 
-    def check_question(self, content):
-        """根据问题内容检查列表是否有该问题"""
-        pass
+        header = {
+            "Content-Type": "application/x-www-form-urlencoded",
+        }
+
+        answer_request = {
+                "questionId": question_id,
+                "createBy": create_by,
+                "createByName": "tangkun4379",
+                "content": "测试正常回答问题12345678",
+                "isEssence": "No",
+                "isPrivateVisible": "No",
+                "outlineInitialIds": 126711
+            }
+
+        data = {
+            "answerRequest": json.dumps(answer_request)
+        }
+        re = requests.post(url, headers=header, data=data)
+        code = re.json()["code"]
+        if code == 204:
+            logger.info("回复成功！")
+            return True
+        else:
+            logger.info(f"回复失败，失败信息: {re.json()['msg']}")
+            return False
+
+    def check_question(self, content, is_append=False):
+        """根据问题内容检查列表是否有该主问题或追问问题"""
+        if is_append == False:
+            count = self.get_question_count()
+            for i in range(count):
+                compent_text = self.get_compent_list(index=i+1).get_main_content()
+                logger.info(f"提问内容: {content}")
+                logger.info(f"列表里面主内容: {compent_text}")
+                if compent_text == content:
+                    return True
+                else:
+                    return False
+        else:
+            count = self.get_append_question_count()
+            for i in range(count):
+                compent_text = self.get_compent_list(index=i+1).get_append_content()
+                if compent_text == compent_text:
+                    return True
+                else:
+                    return False
 
     def upload_picture(self):
         """上传图片"""
@@ -213,25 +362,43 @@ class MainStationQuestionPage(MainStationBasePage):
         time.sleep(5)
         self.driver.execute_script("arguments[0].click();", ele)
 
+    def question_for_no_perssion(self):
+        """无提问权限"""
+        pass
+
 
 if __name__ == "__main__":
     driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
     driver.maximize_window()
 
     driver.get("http://w2.highso.com.cn/v5")
-    driver.implicitly_wait(5)
+    driver.current_url
+    driver.implicitly_wait(10)
+    # driver.refresh()
     # driver.find_element_by_css_selector()
     time.sleep(3)
     from pages.main_station.main_station_home_page import MainStationHomePage
 
     aa = MainStationHomePage(driver)
     bb = aa.go_to_login_page().to_login("haixue", "19983271081", "123456")
-    bb.driver.get("http://w2.highso.com.cn/v5/my/course")
+    # bb.driver.get("http://w2.highso.com.cn/v5/my/course")
     # aa.get_bottom_list_navigations()
     # aa.logout()
     # bb.go_message()
     time.sleep(1)
     cc = bb.go_question()
+    # cc.go_question_detail()
+    # dd = cc.driver.current_url
+    # t = int(dd.split("/")[-1])
+    # cc.question_for_course("追问")
+    # print(cc.question_teacher_replay())
+    # cc.question_for_append("追问")
+    cc.question_for_supplement("这个是补充问题")
+    # print(cc.get_compent_list(3).judge_is_answer())
+    # cc.question_for_examrecord("222222")
+
+
+
     time.sleep(1)
     # question_list_component_lis = (By.CSS_SELECTOR, "ul.ant-list-items>li")  # 定位问题列表组件,有可能有多个
     # eles = driver.find_elements(*question_list_component_lis)
@@ -241,5 +408,6 @@ if __name__ == "__main__":
     #     compent = MainStationQuestionComponent(driver, (By.CSS_SELECTOR, f"ul.ant-list-items>li:nth-child({i + 1})"))
     #
     # cc.question_for_course("测试上传图片")
-    cc.get_question_count()
+    # cc.get_question_count()
     time.sleep(1)
+    # MainStationQuestionPage.question_answer(1460183)
