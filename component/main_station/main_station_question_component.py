@@ -23,10 +23,10 @@ class MainStationQuestionComponent(BaseWebComponents):
     _question_content_span = (By.CSS_SELECTOR, 'h3>div>span:nth-child(2)')  # 列表页收起状态学员提问的内容
     _question_appent_content_span = (By.CSS_SELECTOR, 'div>h4>span:nth-child(2)')  # 列表页和详情页追问问题内容，详情页可能会有多个
     _question_button_span = (By.CSS_SELECTOR, 'h3>div>span:nth-child(3)')  # 显示详情和收起按钮
-    _question_answer_span = (By.CSS_SELECTOR, 'h3>div>span:nth-child(2)')  # 老师回复的内容
+    _question_answer_span = (By.XPATH, '//div[starts-with(@class, "src-pages-question-index__answerContent")]')  # 老师回复的内容
     _question_content_li = (By.CSS_SELECTOR, 'div>ul>li.ant-rate-star.ant-rate-star-zero')  # 评分的星星
     _question_rate_content_span = (By.CSS_SELECTOR, 'h3>div>span:nth-child(2)')  # 评分标签
-    _question_content_input = (By.CSS_SELECTOR, 'h3>div>span:nth-child(2)')  # 评分内容输入框
+    _question_content_input = (By.CSS_SELECTOR, 'div>textarea')  # 评分内容输入框
     _question_content_button = (By.CSS_SELECTOR, 'div>button')  # 评分提交按钮
     _main_question = (By.XPATH, "//p[text()='学员您好！我们的老师正在为您解答中，请耐心等候！']")
     _append_question = (By.XPATH, "//div[text()='学员您好！我们的老师正在为您解答中，请耐心等候！']")
@@ -38,7 +38,7 @@ class MainStationQuestionComponent(BaseWebComponents):
     _append_no_score_span = (By.XPATH, '//li/div/div/div/div/div/div/div/span[contains(text(), "请对此次回答评分：")]')  # 列表追问问题未评分标识
     _append_question_mark_span = (By.XPATH, "//h4/span[text()='追问：']")  #  判断问题是否有追问问题标志
 
-    def __init__(self, driver: webdriver, component_location):
+    def __init__(self, driver: webdriver, component_location, index):
         """
         :param driver:
         :param component_location: 组件定位信息,为一个dict，如{"xpath": "*//div/a"]
@@ -46,6 +46,7 @@ class MainStationQuestionComponent(BaseWebComponents):
         self.component_location = component_location
         super().__init__(driver)
         self.component_element = self.driver.find_element(*self.component_location)
+        self.index = index
 
     @allure.step("点赞/取消点赞")
     def dianzan(self):
@@ -74,12 +75,13 @@ class MainStationQuestionComponent(BaseWebComponents):
         """
         :param score: 分数
         :param content: 评分的内容
-        :return:
+        :return: find_element(*self._question_content_li).
         """
         score_list = [1, 2, 3, 4, 5]
         if score in score_list:
-            sc = (By.CSS_SELECTOR, f"li>div[aria-posinset={str(score)}][aria-checked='false']")
-            self.component_element.find_element(*self._question_content_li).find_element(*sc).click()
+            sc = (By.CSS_SELECTOR, "ul>li")
+            # sc = (By.CSS_SELECTOR, f"li>div[aria-posinset={str(score)}][aria-checked='false']")
+            self.component_element.find_elements(*sc)[score-1].click()
             self.component_element.find_element(*self._question_content_input).send_keys(content)
             self.component_element.find_element(*self._question_content_button).click()
         else:
@@ -105,7 +107,7 @@ class MainStationQuestionComponent(BaseWebComponents):
         wait_answer_text = "学员您好！我们的老师正在为您解答中，请耐心等候！"
         # logger.info(f"self.component_element.find_element(*self._main_question): {self.component_element.find_element(*self._main_question).text}")
         try:
-            print(self.component_element.find_element(*self._main_no_score_span).text)
+            print(self.component_element.find_element(*self._question_answer_span).text)
             if self.judge_is_append() == True:
 
                 try:
@@ -134,8 +136,9 @@ class MainStationQuestionComponent(BaseWebComponents):
     def judge_is_score(self, is_append=False):
         """判断问题是否评分"""
         if is_append == False:
+            print(self.judge_is_answer())
             if self.judge_is_answer() in [1,2,3]:
-                if self.component_element.find_element(*self._main_score).text == "已评分：":
+                if self.component_element.find_element(*self._main_score_span).text == "已评分：":
                     return True
                 else:
                     return False
@@ -146,7 +149,7 @@ class MainStationQuestionComponent(BaseWebComponents):
                 logger.info("出现异常")
         else:
             if self.judge_is_answer() == 2:
-                if self.component_element.find_element(*self._append_score).text == "已评分：":
+                if self.component_element.find_element(*self._append_score_span).text == "已评分：":
                     return True
                 else:
                     return False

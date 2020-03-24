@@ -7,6 +7,12 @@ login_study_data = {
     "password": "123456"
 }
 
+# login_course_data = {
+#     "login_type": "haixue",
+#     "phone": "15889501911",
+#     "password": "123456"
+# }
+
 login_course_data = {
     "login_type": "haixue",
     "phone": "19983271081",

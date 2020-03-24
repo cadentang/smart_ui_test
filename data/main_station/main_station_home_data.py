@@ -4,8 +4,9 @@ from utils.operation_mysql import Mysql
 my = Mysql()
 
 
-def get_top_navigations():
+def get_top_navigations(env):
     """获取顶部导航有哪些栏目"""
+    """env: ['test0', 'reg', 'stage']"""
     top_nav_sql = """SELECT b.id, b.title, b.show_pos, b.parent_id FROM haixue_cms.navigation b WHERE b.id in 
     (SELECT DISTINCT c.parent_id FROM haixue_cms.navigation c WHERE 
     c.parent_id in 
@@ -99,5 +100,5 @@ def get_sku_detail():
     """获取首页sku数据"""
     pass
 
-# if __name__ == "__main__":
-#     print(get_bottom_navigations())
+if __name__ == "__main__":
+    print(get_top_navigations())

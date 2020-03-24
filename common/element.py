@@ -89,6 +89,12 @@ class Element:
         if not elem:
             raise ValueError("元素未找到，不能设置值")
         elem.send_keys(value)
+    #
+    # def __getattribute__(self, item):
+    #     if item == "text":
+    #         return self.get_element(driver).text
+    #     else:
+    #         return  object.__getattribute__(self, item)
 
     # def __getattribute__(self, attr):
     #     if attr.startswith('p_') or attr.startswith('_p_'):
@@ -153,9 +159,10 @@ class Element:
         """
         return self.get_element(driver).get_attribute(attur_name)
 
-    def get_text(self):
-        text = self.get_element(deiver).text
-        return text
+    # @property
+    # def text(self):
+    #     text = self.get_element(driver).text
+    #     return text
 
 class Elements(Element):
     """

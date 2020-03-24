@@ -59,10 +59,13 @@ class MainStationCoursePage(MainStationBasePage):
         compent_lists = self.driver.find_elements(*self._live_list_compent_div)
         for i in range(len(compent_lists)-1, -1,-1):
             if "直播回放" in compent_lists[i].text:
+                text = compent_lists[i].text
                 sleep(2)
                 element = compent_lists[i].find_elements(*MainStationLiveListComponent._live_playback_button)
                 self.driver.execute_script("arguments[0].click();", element[-1])
-                return compent_lists[i].text
+                sleep(2)
+                self.switch_target_page()
+                return text
 
     @allure.step("日历列表预约直播")
     def go_list_subscribe_live(self):
@@ -89,13 +92,40 @@ class MainStationCoursePage(MainStationBasePage):
                 sleep(2)
                 element = compent_lists[i].find_elements(*MainStationLiveListComponent._live_have_lecture_div)
                 self.driver.execute_script("arguments[0].click();", element[-1])
+                sleep(2)
                 return compent_lists[i].text
 
     @allure.step("日历列表进入模块详情页")
     def go_live_module_live_list(self):
         compent_lists = self.driver.find_elements(*self._live_list_compent_div)
+        sleep(2)
         for i in range(len(compent_lists)-1, -1,-1):
-            pass
+            text = compent_lists[i].text
+            list_text = text.split("\n")
+            # print(list_text[5])
+            # print(list_text[6])
+            if "讲义" in list_text[6]:
+                live_name = list_text[5]
+                element = compent_lists[i].find_elements(*MainStationLiveListComponent._live_module_div)
+                # print(element[-1].text)
+                self.driver.execute_script("arguments[0].click();", element[-1])
+                sleep(2)
+                self.switch_target_page()
+                return live_name
+            # try:
+            #     element = compent_lists[i].find_elements(*MainStationLiveListComponent._live_subject_div)
+            #     print(element.text)
+            #     self.driver.execute_script("arguments[0].click();", element[-1])
+            # except:
+            #     continue
+            # if "直播回放" in compent_lists[i].text:
+            #     text = compent_lists[i].text
+            #     sleep(2)
+            #     element = compent_lists[i].find_elements(*MainStationLiveListComponent._live_playback_button)
+            #     self.driver.execute_script("arguments[0].click();", element[-1])
+            #     sleep(2)
+            #     self.switch_target_page()
+            #     return text
 
     @allure.step("签到")
     def go_sign(self):
@@ -175,6 +205,7 @@ class MainStationCoursePage(MainStationBasePage):
         """判断是否下载成功"""
         lecture_file = os.listdir(DOWNLOAD_LECTURE_PATH)
         logger.info(f"下载讲义：{lecture_file}")
+        logger.info(f"下载讲义地址：{DOWNLOAD_LECTURE_PATH}")
         if len(lecture_file) >= 1:
             # shutil.rmtree(DOWNLOAD_LECTURE_PATH)
             # os.mkdir(DOWNLOAD_LECTURE_PATH)
@@ -282,41 +313,37 @@ class MainStationCoursePage(MainStationBasePage):
 
 
 if __name__ == "__main__":
-    # from pages.main_station.main_station_home_page import MainStationHomePage
-    # aa = MainStationCoursePage("aaa")
-    # aa.judge_is_download_lecture()
-
-
-    # chromeOptions = webdriver.ChromeOptions()
-    # prefs = {"download.default_directory": "D:\haixue_work\script\haixue_git\haixue-test-ui\\resource\\lecture"}
-    # chromeOptions.add_experimental_option("prefs", prefs)
-    # driver = webdriver.Chrome(executable_path="D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe",
-    #                           chrome_options=chromeOptions)
-    # driver.maximize_window()
-    # driver.get("http://w2.highso.com.cn/v5")
+    chromeOptions = webdriver.ChromeOptions()
+    prefs = {"download.default_directory": "D:\haixue_work\script\haixue_git\haixue-test-ui\\resource\\lecture"}
+    chromeOptions.add_experimental_option("prefs", prefs)
+    driver = webdriver.Chrome(executable_path="D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe",
+                              chrome_options=chromeOptions)
+    driver.maximize_window()
+    driver.get("http://w2.highso.com.cn/v5")
     # aa = MainStationHomePage(driver)
-    MainStationCoursePage("111").set_live()
+    # MainStationCoursePage("111").set_live()
     # bb = aa.go_to_login_page().to_login("haixue", "19983271081", "123456")
 
 
-    # # print(driver.current_url)
-    # # driver.find_element_by_css_selector()
-    # sleep(3)
-    # from pages.main_station.main_station_home_page import MainStationHomePage
-    #
-    # aa = MainStationHomePage(driver)
-    # bb = aa.go_to_login_page().to_login("haixue", "19983271081", "123456")
-    # # aa.get_bottom_list_navigations()
-    # sleep(3)
-    # bb.download_lecture()
-    # # element = bb.driver.find_element(*(By.XPATH, "//div/section/main/div/main/div[1]/div[1]/div[3]/div/div/div[15]/div[2]/div/div[2]/button"))
-    # # driver.execute_script("arguments[0].click();", element)
-    #
-    # # aa.switch_category("二级建造师")
-    # # from common.selenium_pages import PageScroll
-    # # PageScroll(aa.driver).js_scroll_end()
-    # # print(aa.driver.find_element(By.XPATH, "//div/section/main/div/main/div[6]/div[3]/div/div[2]/div[2]/div[1]/div[3]/button").text)
-    # sleep(1)
-    # # bb.go_date_more_course_page()
-    # # aa.logout()
+    # print(driver.current_url)
+    # driver.find_element_by_css_selector()
+    sleep(3)
+    from pages.main_station.main_station_home_page import MainStationHomePage
+
+    aa = MainStationHomePage(driver)
+    bb = aa.go_to_login_page().to_login("haixue", "19983271081", "123456")
+    # aa.get_bottom_list_navigations()
+    sleep(3)
+
+    bb.go_live_module_live_list()
+    # element = bb.driver.find_element(*(By.XPATH, "//div/section/main/div/main/div[1]/div[1]/div[3]/div/div/div[15]/div[2]/div/div[2]/button"))
+    # driver.execute_script("arguments[0].click();", element)
+
+    # aa.switch_category("二级建造师")
+    # from common.selenium_pages import PageScroll
+    # PageScroll(aa.driver).js_scroll_end()
+    # print(aa.driver.find_element(By.XPATH, "//div/section/main/div/main/div[6]/div[3]/div/div[2]/div[2]/div[1]/div[3]/button").text)
+    sleep(1)
+    # bb.go_date_more_course_page()
+    # aa.logout()
 

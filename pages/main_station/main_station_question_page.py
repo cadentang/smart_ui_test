@@ -80,9 +80,9 @@ class MainStationQuestionPage(MainStationBasePage):
 
     def get_compent_list(self, index=1):
         """获取列表页的问题组件, 默认返回第一个问题，如果没有则返回false"""
-
+        print(self._question_list_component_lis + f"[{index}]")
         question_compent_location = (By.XPATH, self._question_list_component_lis + f"[{index}]")
-        return MainStationQuestionComponent(self.driver, question_compent_location)
+        return MainStationQuestionComponent(self.driver, question_compent_location, index)
 
     def get_question_count(self):
         """获取问题列表中有多少条主问题"""
@@ -95,6 +95,10 @@ class MainStationQuestionPage(MainStationBasePage):
             count = 0
         return count
 
+    def get_no_score(self):
+        """获取列表中未评分的主问题"""
+        pass
+
     def get_append_question_count(self):
         """获取列表中有多少追问问题"""
         self.driver.refresh()
@@ -106,11 +110,12 @@ class MainStationQuestionPage(MainStationBasePage):
             count = 0
         return count
 
-    def go_question_detail(self):
+    def go_question_detail(self, i=1):
         """进入问题详情页, 返回问题详情页组件"""
-        com = self.get_compent_list()
+        com = self.get_compent_list(i)
         com.question_detail()
-        return MainStationQuestionComponent(self.driver, self._question_list_component_detail_div)
+        # return MainStationQuestionComponent(self.driver, self._question_list_component_detail_div)
+        return MainStationQuestionPage(self.driver)
 
     @allure.step("对课程提问(默认第一条观看记录，如没有则跳转至个人中心页)")
     def question_for_course(self, content, file=False):
@@ -157,6 +162,7 @@ class MainStationQuestionPage(MainStationBasePage):
     @allure.step("对试题提问(默认第一条做题记录，如没有则跳转至题库做题页面)")
     def question_for_examrecord(self, content, file=False):
         self._question_button.click()
+        self._question_go_exam_div.click()
         try:
             self._question_first_exam_button.click()
             if file == True:
@@ -191,7 +197,7 @@ class MainStationQuestionPage(MainStationBasePage):
             logger.info("列表中没有问题")
 
     @allure.step("对老师回复的问题再次追问")
-    def question_for_append(self, append_content, file=False):
+    def question_for_append(self, append_content, i=1, file=False):
         # count = self.get_question_count()
         # for i in range(count):
         #     logger.info(f"i:{i}")
@@ -201,35 +207,41 @@ class MainStationQuestionPage(MainStationBasePage):
 
         # 获取列表中第一个问题，如果已回复则追问，未回复则先回复再追问
         # 只有当主问题已回复且无追问问题或者追问问题已回复才能继续追问
-        com = self.get_compent_list()
+        com = self.get_compent_list(index=i)
+        # print(com.get_main_content())
+        time.sleep(2)
         result = com.judge_is_answer()
         logger.info(f"com.judge_is_answer()的结果:{result}")
         if result in [2, 3]:
-            com.question_detail()
-            self._question_append_span.click()
+            question_detail_page = self.go_question_detail(i)
+            # com.question_detail()
+            time.sleep(2)
+            question_detail_page._question_append_span.click()
+            # self._question_append_span.click()
             if file == True:
-                self.upload_picture()
+                question_detail_page.upload_picture()
             text = str(datetime.now().strftime("%Y_%m_%d_%H_%M_%S")) + append_content + "【测试自动化提问-追问】"
-            self._question_input_div = text
-            self._question_confire_button.click()
-            self.driver.execute_script("arguments[0].click();",
+            question_detail_page._question_input_div = text
+            question_detail_page._question_confire_button.click()
+            question_detail_page.driver.execute_script("arguments[0].click();",
                                        self.driver.find_element_by_xpath("//button/span[contains(text(), '知道了')]"))
-            self.go_question()
+            question_detail_page.go_question()
             return text
         else:
-            self.question_teacher_replay()
+            self.question_teacher_replay(index=i)
+            time.sleep(2)
             self.driver.refresh()
             time.sleep(2)
-            com.question_detail()
-            self._question_append_span.click()
+            question_detail_page = self.go_question_detail(i)
+            question_detail_page._question_append_span.click()
             if file == True:
-                self.upload_picture()
+                question_detail_page.upload_picture()
             text = str(datetime.now().strftime("%Y_%m_%d_%H_%M_%S")) + append_content + "【测试自动化提问-追问】"
-            self._question_input_div = text
-            self._question_confire_button.click()
-            self.driver.execute_script("arguments[0].click();",
-                                       self.driver.find_element_by_xpath("//button/span[contains(text(), '知道了')]"))
-            self.go_question()
+            question_detail_page._question_input_div = text
+            question_detail_page._question_confire_button.click()
+            question_detail_page.driver.execute_script("arguments[0].click();",
+                                                       question_detail_page.driver.find_element_by_xpath("//button/span[contains(text(), '知道了')]"))
+            question_detail_page.go_question()
             return text
 
     @allure.step("对学员提的问题进行回复")
@@ -276,7 +288,7 @@ class MainStationQuestionPage(MainStationBasePage):
 
     @allure.step("列表页对老师评一星+评价")
     def question_appraise_one_star(self, content):
-        com = self.get_compent_list()
+        com = self.get_compent_list(index=3)
         com.score_main_question(1, content)
 
     @allure.step("列表页对老师评四星+评价")
@@ -393,7 +405,11 @@ if __name__ == "__main__":
     # cc.question_for_course("追问")
     # print(cc.question_teacher_replay())
     # cc.question_for_append("追问")
-    cc.question_for_supplement("这个是补充问题")
+    # cc.question_for_supplement("这个是补充问题")
+    # print(cc.get_compent_list(3).score_main_question(1, "一星评价"))
+    # print(cc.get_compent_list(2).get_main_content())
+    print(cc.question_for_append(append_content="这个是追问", i=3))
+    # print(cc.question_for_append(append_content="这个是补充问题"))
     # print(cc.get_compent_list(3).judge_is_answer())
     # cc.question_for_examrecord("222222")
 

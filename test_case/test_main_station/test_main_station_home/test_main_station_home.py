@@ -2,27 +2,48 @@
 import allure
 from pages.main_station.main_station_home_page import MainStationHomePage
 
+@allure.epic("官网")
+@allure.feature("官网首页")
+class TestMainStationHomePage:
 
-@allure.feature("官网功能测试，导航栏、栏目及sku")
-class TestMainStationHome:
-
-    @allure.story("上导航未登录状态下点击及数据对比测试")
+    @allure.story("官网首页-上导航")
+    @allure.title("官网首页-上导航-未登录状态-点击遍历测试")
     @allure.severity(allure.severity_level.BLOCKER)
-    def test_top_nav_not_login(self, get_driver):
+    def test_main_station_home_top_nav_not_login(self, get_driver):
         home_page = MainStationHomePage(get_driver)
-        for i in home_page.get_not_login_home_top_navigation().values():
-            home_page.traverse_page(i)
+        result = home_page.traverse_top_dav(home_page.get_not_login_home_top_navigation())
+        assert len(result) > 0
 
-    @allure.story("下导航点击及数据对比测试")
+    @allure.story("官网首页-下导航")
+    @allure.title("官网首页-下导航-点击遍历测试")
     @allure.severity(allure.severity_level.BLOCKER)
-    def test_bottom_nav(self, get_driver):
+    def test_main_station_home_bottom_nav(self, get_driver):
         home_page = MainStationHomePage(get_driver)
-        for i in home_page.get_home_bottom_navigation().values():
-            home_page.traverse_page(i)
+        result = home_page.traverse_page(home_page.get_home_bottom_navigation())
+        assert len(result) > 0
 
-    @allure.story("sku点击及数据对比测试")
+    @allure.story("官网首页-sku")
+    @allure.title("官网首页-sku-点击遍历测试")
     @allure.severity(allure.severity_level.BLOCKER)
-    def test_sku(self, get_driver):
+    def test_main_statione_home_sku(self, get_driver):
         home_page = MainStationHomePage(get_driver)
-        for i in home_page.get_sku().values():
-            home_page.traverse_page(i)
+        result = home_page.traverse_page(home_page.get_sku())
+        assert len(result) > 0
+
+
+@allure.epic("官网")
+@allure.feature("sku详情页测试")
+class TestMainStationHomeSkuDetail:
+    pass
+
+
+@allure.epic("官网")
+@allure.feature("官网首页上导航详情")
+class TestMainStationHomeTopNavDetail:
+    pass
+
+
+@allure.epic("官网")
+@allure.feature("官网首页下导航详情")
+class TestMainStationHomeBottomNavDetail:
+    pass

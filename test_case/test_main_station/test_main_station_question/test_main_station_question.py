@@ -32,7 +32,7 @@ class TestAskQuestion:
         assert go_to_question_page.check_question(text)
 
     @allure.story("追问")
-    @allure.title("对老师回复的问题进行追问")
+    @allure.title("追问-对老师回复的主问题进行追问")
     @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.parametrize("content", ["老师，你的回答我不太明白，请再解释下"])
     def test_ask_question_append_ask(self, go_to_question_page, content):
@@ -40,7 +40,7 @@ class TestAskQuestion:
         assert go_to_question_page.check_question(text, is_append=True)
 
     @allure.story("补充问题")
-    @allure.title("对自己提的问题做补充问题")
+    @allure.title("补充问题-对自己提的问题做补充问题")
     @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.parametrize("content", ["老师，这个题目里面提到的建筑经济如何计算？"])
     def test_ask_question_supplement(self, go_to_question_page, content):
@@ -48,7 +48,7 @@ class TestAskQuestion:
         assert go_to_question_page.check_question(content)
 
     @allure.story("老师回复问题")
-    @allure.title("对自己提的问题做补充问题")
+    @allure.title("老师回复问题-对自己提的问题老师回复问题")
     @allure.severity(allure.severity_level.BLOCKER)
     @pytest.mark.parametrize("content", ["同学，你好！这个题目很简单？"])
     def test_ask_question_teacher_answer(self, go_to_question_page, content):

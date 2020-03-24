@@ -8,7 +8,7 @@ from selenium.webdriver.chrome import options
 
 from common.base_driver import BaseDriver
 from utils.get_log import logger
-from utils.base_path import DRIVER_PATH
+from utils.base_path import DRIVER_PATH, DOWNLOAD_LECTURE_PATH
 
 CHROME_DRIVER_PATH = DRIVER_PATH + '\\chrome\\'
 IEDRIVER_PATH = DRIVER_PATH + '\\ie\\'
@@ -29,7 +29,7 @@ class SeleniumDriver(BaseDriver):
         if browser_type == "chrome" and version == None:
             self.version = "79"
         elif browser_type == "firefox" and version == None:
-            self.version = "70"
+            self.version = "72"
         elif browser_type == "ie" and version == None:
             self.version = "11"
         elif browser_type == "safari" and version == None:
@@ -45,8 +45,11 @@ class SeleniumDriver(BaseDriver):
     def driver(self):
         """实例化返回一个driver"""
         chromeOptions = webdriver.ChromeOptions()
-        prefs = {"download.default_directory": "D:\haixue_work\script\haixue_git\haixue-test-ui\\resource\\file"}
+        prefs = {"download.default_directory": DOWNLOAD_LECTURE_PATH}
         chromeOptions.add_experimental_option("prefs", prefs)
+        # print(f"self.browser_type: {self.browser_type}")
+        # print(f"self.version: {self.version}")
+        # print(f"self.platform: {self.platform}")
         if self.pattern == "local":
             if self.browser_type == "chrome":
                 self.driver = webdriver.Chrome(executable_path=self.get_driver_path(self.browser_type,

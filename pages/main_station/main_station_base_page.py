@@ -106,7 +106,10 @@ class MainStationBasePage(SeleniumPages):
     def go_course_url(self):
         """通过URL进入个人中心页"""
         sleep(3)
-        self.driver.get(self.driver.current_url.split("course")[0] + "v5/my/course")
+        if "v5" in self.driver.current_url:
+            self.driver.get(self.driver.current_url.split("v5")[0] + "v5/my/course")
+        else:
+            self.driver.get(self.driver.current_url.split("course")[0] + "v5/my/course")
         from pages.main_station.main_station_course_page import MainStationCoursePage
         return MainStationCoursePage(self.driver)
 

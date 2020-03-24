@@ -31,6 +31,8 @@ from utils import global_variable
 from utils.get_allure import change_to_html
 from utils.get_allure import build_environment_file, get_environment_list
 
+Module_list = []
+
 
 if __name__ == "__main__":
 
@@ -100,8 +102,9 @@ if __name__ == "__main__":
     # 将环境信息置于xml报告路径下，转化为html报告后在html中呈现
     build_environment_file(xml_report_path, get_environment_list())
 
-    pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH])
-    pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH, '--workers=1','--tests-per-worker=5'])
+    case_path = TEST_CASE_PATH + "/test_main_station/test_main_station_course"
+    pytest.main([f"--alluredir={xml_report_path}", case_path])
+    # pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH, '--workers=1','--tests-per-worker=5'])
     time.sleep(10)
 
     # 使用allure将xml报告生成为html报告

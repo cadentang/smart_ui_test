@@ -50,6 +50,10 @@ def get_driver():
                                           })
         else:
             driver = SeleniumDriver().driver()
+            # driver.get(MAIN_STATION_URL)
+        if judg_dicit():
+            driver.get(globle_arg["env_config"]["main_station_url"])
+        else:
             driver.get(MAIN_STATION_URL)
 
     yield driver
@@ -57,14 +61,14 @@ def get_driver():
         time.sleep(1)
         driver.quit()
 
-@pytest.fixture(scope="function", autouse=True)
-def get_url():
-    """浏览器输入url访问相应的网站"""
-    time.sleep(2)
-    if judg_dicit():
-        driver.get(globle_arg["env_config"]["main_station_url"])
-    else:
-        driver.get(MAIN_STATION_URL)
+# @pytest.fixture(scope="function", autouse=True)
+# def get_url():
+#     """浏览器输入url访问相应的网站"""
+#     time.sleep(2)
+#     if judg_dicit():
+#         driver.get(globle_arg["env_config"]["main_station_url"])
+#     else:
+#         driver.get(MAIN_STATION_URL)
 
 @pytest.fixture(scope="function", autouse=False)
 def login_for_function(get_driver):
@@ -123,7 +127,7 @@ def login_for_session(get_driver):
     yield login_for_session
     MainStationHomePage(get_driver).logout()
 
-
+#
 # @pytest.mark.hookwrapper
 # def pytest_runtest_makereport(item):
 #     """错误自动截图到报告中"""

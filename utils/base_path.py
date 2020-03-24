@@ -15,4 +15,4 @@ ERROR_PICTURE_PATH = os.path.join(PROJECT_ROOT_DIR, "report/error_picture")  # �
 PAGES_PATH = os.path.join(PROJECT_ROOT_DIR, "pages")  # 页面对象路径
 BUSINESS_PATH = os.path.join(PROJECT_ROOT_DIR, "business")  # 业务层封装路径
 APP_PATH = os.path.join(PROJECT_ROOT_DIR, "app")  # app安装包放置的路径
-DOWNLOAD_LECTURE_PATH = os.path.join(PROJECT_ROOT_DIR, "resource/lecture/")  # 讲义下载路径
+DOWNLOAD_LECTURE_PATH = os.path.join(PROJECT_ROOT_DIR, "resource\lecture")  # 讲义下载路径
