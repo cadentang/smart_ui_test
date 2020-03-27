@@ -98,20 +98,31 @@ if __name__ == "__main__":
     global_variable.set_value("get_arg", globle_arg)
     global_variable.set_value("platform", platform_target)
     global_variable.set_value("config_dict", ReadConfig(globle_arg).get_config())
+    logger.info(f"运行的全局变量: {globle_arg}")
 
-    # 将环境信息置于xml报告路径下，转化为html报告后在html中呈现
-    build_environment_file(xml_report_path, get_environment_list())
+    # 获取运行的模块
+    run_module = globle_arg["module"]
+    case_list = []
+    path = os.listdir(TEST_CASE_PATH + "/test_main_station")
+    if globle_arg["project"] == "main_station" and "all" in globle_arg["project"]:
+        case_path = TEST_CASE_PATH + "/test_main_station"
+    elif globle_arg["project"] == "main_station":
+        for i in range(len(run_module.split(","))):
+            for j in range(len(path)):
+                if run_module.split(",")[i] == path[j]:
+                    case_list.append(TEST_CASE_PATH + "/test_main_station/" + run_module.split(",")[i])
+    logger.info(f"运行的测试模块: {case_list}")
 
     case_path = TEST_CASE_PATH + "/test_main_station/test_main_station_course"
     pytest.main([f"--alluredir={xml_report_path}", case_path])
     # pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH, '--workers=1','--tests-per-worker=5'])
-    time.sleep(10)
 
+    # 将环境信息置于xml报告路径下，转化为html报告后在html中呈现
+    build_environment_file(xml_report_path, get_environment_list())
     # 使用allure将xml报告生成为html报告
+    time.sleep(10)
     change_to_html(xml_report_path, html_report_path)
     logger.info("测试任务完成！")
-
-
 
 
 

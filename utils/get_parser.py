@@ -24,20 +24,25 @@ def get_arg():
     9.--app_path: 运行appium脚本时app安装包所在的路径
     """
     run_arg = {}
-    ENV_LIST = ["test0", "test1", "test2", "reg", "stage", "auto", "prod"]
-    PROJECT_LIST = ["all", "main_station", "haixue_app"]
+    ENV_LIST = ["test0", "reg", "stage", "auto", "prod"]
+    PROJECT_LIST = ["main_station", "haixue_app"]
     USER_PORT = ["pc", "andriod", "ios", "h5", "mini_program"]
     PATTERN = ["local", "distributed"]
     BROWSER = ["chrome", "firefox", "ie"]
+    MODULE = ["main_station_home", "main_station_login", "main_station_register", "main_station_course", "main_station_exam",
+              "main_station_question"]
     parser = argparse.ArgumentParser(description="自定义HaiXue项目python命令行参数")
-    parser.add_argument('--env', type=str, default="reg")
-    parser.add_argument('--project', type=str, default="main_station")
-    parser.add_argument('--user_port', type=str, default="pc")
-    parser.add_argument('--pattern', type=str, default="local")
-    parser.add_argument('--browser', type=str, default="chrome")
+    parser.add_argument('--env', type=str, default="reg", choices=ENV_LIST)
+    parser.add_argument('--project', type=str, default="main_station", choices=PROJECT_LIST)
+    parser.add_argument('--module', type=str, default="main_station")
+    parser.add_argument('--user_port', type=str, default="pc", choices=USER_PORT)
+    parser.add_argument('--pattern', type=str, default="local", choices=PATTERN)
+    parser.add_argument('--browser', type=str, default="chrome", choices=BROWSER)
     parser.add_argument('--version', type=str, default=None)
     parser.add_argument('--log_path', type=str, default=LOG_PATH)
     parser.add_argument('--driver_path', type=str, default=DRIVER_PATH)
+
+    # app相关参数
     parser.add_argument('--app_path', type=str, default=None)
     parser.add_argument('--platformName', type=str, default=None)
     parser.add_argument('--platformVersion', type=str, default=None)
@@ -50,6 +55,7 @@ def get_arg():
     parser.add_argument('--resetKeyboard', type=str, default=False)
     parser.add_argument('--automationName', type=str, default=False)
     parser.add_argument('--bundleId', type=str, default=False)
+    # parser.add_argument('--bundleId', type=list, default=False)
 
     args = parser.parse_args()
     if args.env in ENV_LIST:
@@ -71,6 +77,13 @@ def get_arg():
     else:
         run_arg["pattern"] = "local"
 
+    # if args.module in MODULE:
+    #     run_arg["module"] = args.module
+    # else:
+    #     run_arg["module"] = "all"
+
+    run_arg["module"] = args.module
+
     if args.browser in BROWSER:
         run_arg["browser"] = args.browser
     else:
@@ -79,6 +92,8 @@ def get_arg():
     run_arg["version"] = args.version
     run_arg["log_path"] = args.log_path
     run_arg["driver_path"] = args.driver_path
+
+    # app相关参数
     run_arg["app_path"] = args.app_path
     run_arg["platformName"] = args.platformName
     run_arg["platformVersion"] = args.platformVersion
@@ -92,4 +107,8 @@ def get_arg():
     run_arg["bundleId"] = args.bundleId
 
     return run_arg
+
+
+if __name__ == "__main__":
+    print(get_arg())
 
