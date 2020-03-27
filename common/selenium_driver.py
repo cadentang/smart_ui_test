@@ -20,7 +20,7 @@ class SeleniumDriver(BaseDriver):
     """selenium driver类"""
     def __init__(self, maximize_window=True, implicitly_wait=10,
                  selenium_grid_url=None,browser_type="chrome",
-                 version=None, pattern="local", platform="win"):
+                 version=None, pattern="local", platform="win", user_port="win"):
 
         self.browser_type = browser_type
         self.platform = platform
@@ -41,6 +41,7 @@ class SeleniumDriver(BaseDriver):
         self.maximize_window = maximize_window
         self.implicitly_wait = implicitly_wait
         self.pattern = pattern
+        self.user_port = user_port
 
     def driver(self):
         """实例化返回一个driver"""
@@ -68,20 +69,9 @@ class SeleniumDriver(BaseDriver):
                 raise ValueError(f"暂不支持{self.browser_type}该浏览器!")
 
         elif self.pattern == "distributed":
-            if self.browser_type == "chrome":
-                self.driver = webdriver.Remote(command_executor=self.selenium_grid_url,
-                                               desired_capabilities=DesiredCapabilities.CHROME)
-            elif self.browser_type == "firefox":
-                self.driver = webdriver.Remote(command_executor=self.selenium_grid_url,
-                                               desired_capabilities=DesiredCapabilities.FIREFOX)
-            elif self.browser_type == "ie":
-                self.driver = webdriver.Remote(command_executor=self.selenium_grid_url,
-                                               desired_capabilities=DesiredCapabilities.INTERNETEXPLORER)
-            elif self.browser_type == "safari":
-                self.driver = webdriver.Remote(command_executor=self.selenium_grid_url,
-                                               desired_capabilities=DesiredCapabilities.SAFARI)
-            else:
-                raise ValueError(f"暂不支持{self.browser_type}该浏览器!")
+            self.driver = webdriver.Remote(command_executor=self.selenium_grid_url,
+                                           desired_capabilities=self.get_selenium_desired_capabilities(
+                                               self.browser_type, self.user_port))
         else:
             raise ValueError(f"暂不支持{self.pattern}该浏览器!")
 
@@ -175,3 +165,12 @@ class SeleniumDriver(BaseDriver):
     #         if not self.__instance:
     #             self.__instance = self.driver()
     #     return self.__instance
+
+    def get_selenium_desired_capabilities(self, browser, platform, version=None):
+        """获取selenium grid desired_capabilities"""
+        capabilities = {
+            "browserName": browser, # 浏览器名称
+            "version": version, # 浏览器版本
+            "platform": platform, # node节点所处在的平台
+        }
+        return capabilities

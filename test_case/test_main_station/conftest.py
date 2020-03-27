@@ -41,13 +41,13 @@ def get_driver():
                                         platform=get_value("platform")).driver()
             elif globle_arg["pattern"] == "distributed":
                 # selenium_grid方式运行
-                driver = webdriver.Remote(command_executor="http://39.107.127.90:9999/wd/hub", desired_capabilities={
-                                              'platform': 'windows',
-                                              'browserName': globle_arg["browser"],
-                                              'version': '79',
-                                              'javascriptEnabled': True,
-                                              'webdriver.chrome.driver': 'D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe'
-                                          })
+                driver = SeleniumDriver(browser_type=globle_arg["browser"],
+                                        version=globle_arg["version"],
+                                        implicitly_wait=globle_arg["time_out"],
+                                        pattern="distributed",
+                                        platform=get_value("platform"),
+                                        selenium_grid_url=globle_arg["selenium_grid"],
+                                        user_port=globle_arg["user_port"]).driver()
         else:
             driver = SeleniumDriver().driver()
             # driver.get(MAIN_STATION_URL)

@@ -47,7 +47,6 @@ if __name__ == "__main__":
         忽略key_words_2命名规则的文件、类及方法
         pytest -m "mark_name"	需要在指定case方法上添加@pytest.mark.mark_name来指定方法属于哪个mark
         blocker，critical，normal，minor，trivial。用例等级
-
     """
     # 检查目录，目录不存在则新建
     if not os.path.exists(LOG_PATH):
@@ -80,7 +79,7 @@ if __name__ == "__main__":
     if not os.path.exists(html_report_path):
         os.mkdir(html_report_path)
 
-    # 获取运行的平台信息
+    # 获取代码运行的平台信息
     platform_name = platform.platform()
     logger.info(f"platform_name: {platform_name}" )
     if "Windows" in platform_name:
@@ -88,7 +87,7 @@ if __name__ == "__main__":
     elif "Linux" in platform_name:
         platform_target = "linux"
     elif "Mac" in platform_name:
-        platform_target = "win"
+        platform_target = "mac"
     else:
         ValueError("注意检查程序运行平台信息")
 
@@ -103,19 +102,28 @@ if __name__ == "__main__":
     # 获取运行的模块
     run_module = globle_arg["module"]
     case_list = []
-    path = os.listdir(TEST_CASE_PATH + "/test_main_station")
-    if globle_arg["project"] == "main_station" and "all" in globle_arg["project"]:
-        case_path = TEST_CASE_PATH + "/test_main_station"
-    elif globle_arg["project"] == "main_station":
-        for i in range(len(run_module.split(","))):
-            for j in range(len(path)):
-                if run_module.split(",")[i] == path[j]:
-                    case_list.append(TEST_CASE_PATH + "/test_main_station/" + run_module.split(",")[i])
+    base_command_arg = [f"--alluredir={xml_report_path}"]
+
+    if globle_arg["project"] == "main_station":
+        path = os.listdir(TEST_CASE_PATH + "/test_main_station")
+        if "all" in globle_arg["module"]:
+            case_path = TEST_CASE_PATH + "/test_main_station"
+            case_list.append(case_path)
+            base_command_arg.append(case_path)
+        elif globle_arg["module"] is not "":
+            for i in range(len(run_module.split(","))):
+                for j in range(len(path)):
+                    if run_module.split(",")[i] == path[j]:
+                        case_list.append(TEST_CASE_PATH + "/test_main_station/" + run_module.split(",")[i])
+                        base_command_arg.append(TEST_CASE_PATH + "/test_main_station/" + run_module.split(",")[i])
+        else:
+            logger.info("所选用例模块为空，不能运行！")
+
     logger.info(f"运行的测试模块: {case_list}")
 
-    case_path = TEST_CASE_PATH + "/test_main_station/test_main_station_course"
-    pytest.main([f"--alluredir={xml_report_path}", case_path])
-    # pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH, '--workers=1','--tests-per-worker=5'])
+    pytest.main(base_command_arg)
+    # pytest.main([f"--alluredir={xml_report_path}", case_path_home,case_path_login])
+    # pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH+"/test_main_station/test_main_station_home", '--workers=1','--tests-per-worker=2'])
 
     # 将环境信息置于xml报告路径下，转化为html报告后在html中呈现
     build_environment_file(xml_report_path, get_environment_list())

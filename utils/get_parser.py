@@ -10,7 +10,7 @@ def get_arg():
     2.--project: 指定运行项目，支持传入多个项目，如：python run.py --project project01，project02
             项目名称取/test_case下的一级名称，如主站：test_main_station,项目名则为main_station
             项目列表：["all", "main_station"]
-    3.--user_port:指定项目运行的端，支持多端运行，端列表：["pc", "andriod", "ios", "h5", "mini_program"]
+    3.--user_port:指定项目运行的平台，平台列表：["win", "mac", "andriod", "ios", "linux"], 分布式运行有效
     4.--pattern: 指定用例运行模式，运行模式列表：["local", "distributed"]
             local: selenium,appium服务均在本地启动
             distributed：分布式执行，selenium，appium服务在远端运行，执行时临时注册node节点
@@ -21,12 +21,13 @@ def get_arg():
     8.--driver_path: 运行selenium脚本所需的driver路径
     9.--app_path: 运行appium脚本时app安装包所在的路径
     10.--app_path: 运行appium脚本时app安装包所在的路径
-    9.--app_path: 运行appium脚本时app安装包所在的路径
+    11.--app_path: 运行appium脚本时app安装包所在的路径
+    12.--selenium_grid: 分布式运行时hub节点地址
     """
     run_arg = {}
     ENV_LIST = ["test0", "reg", "stage", "auto", "prod"]
     PROJECT_LIST = ["main_station", "haixue_app"]
-    USER_PORT = ["pc", "andriod", "ios", "h5", "mini_program"]
+    USER_PORT = ["win", "mac", "andriod", "ios", "linux"]
     PATTERN = ["local", "distributed"]
     BROWSER = ["chrome", "firefox", "ie"]
     MODULE = ["main_station_home", "main_station_login", "main_station_register", "main_station_course", "main_station_exam",
@@ -35,7 +36,7 @@ def get_arg():
     parser.add_argument('--env', type=str, default="reg", choices=ENV_LIST)
     parser.add_argument('--project', type=str, default="main_station", choices=PROJECT_LIST)
     parser.add_argument('--module', type=str, default="main_station")
-    parser.add_argument('--user_port', type=str, default="pc", choices=USER_PORT)
+    parser.add_argument('--user_port', type=str, default="win", choices=USER_PORT)
     parser.add_argument('--pattern', type=str, default="local", choices=PATTERN)
     parser.add_argument('--browser', type=str, default="chrome", choices=BROWSER)
     parser.add_argument('--version', type=str, default=None)
@@ -55,6 +56,7 @@ def get_arg():
     parser.add_argument('--resetKeyboard', type=str, default=False)
     parser.add_argument('--automationName', type=str, default=False)
     parser.add_argument('--bundleId', type=str, default=False)
+    parser.add_argument('--selenium_grid', type=str, default="")
     # parser.add_argument('--bundleId', type=list, default=False)
 
     args = parser.parse_args()
@@ -77,11 +79,6 @@ def get_arg():
     else:
         run_arg["pattern"] = "local"
 
-    # if args.module in MODULE:
-    #     run_arg["module"] = args.module
-    # else:
-    #     run_arg["module"] = "all"
-
     run_arg["module"] = args.module
 
     if args.browser in BROWSER:
@@ -92,6 +89,7 @@ def get_arg():
     run_arg["version"] = args.version
     run_arg["log_path"] = args.log_path
     run_arg["driver_path"] = args.driver_path
+    run_arg["selenium_grid"] = args.selenium_grid
 
     # app相关参数
     run_arg["app_path"] = args.app_path

@@ -33,13 +33,13 @@ if __name__ == "__main__":
     chrome_driver = "D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe"
     chrome_capabilities = {
         "browserName": "chrome",  # 浏览器名称
-        "version": "80",  # 操作系统版本
-        "platform": "windows",  # 平台，这里可以是windows、linux、andriod等等
+        "version": "",  # 操作系统版本
+        "platform": "mac",  # 平台，这里可以是windows、linux、andriod等等
         "javascriptEnabled": True,  # 是否启用js
         # "webdriver.chrome.driver": chrome_driver
     }
-    driver = webdriver.Remote(command_executor="http://192.168.124.10:5555/wd/hub", desired_capabilities=chrome_capabilities)
+    driver = webdriver.Remote(command_executor="http://192.168.63.136:4444/wd/hub", desired_capabilities=chrome_capabilities)
     # driver = webdriver.Chrome(executable_path=chrome_driver)
     driver.maximize_window()
     driver.implicitly_wait(10)
-    driver.get("http://w2.highso.com.cn/v5")
+    driver.get("http://w1.highso.com.cn/v5")
