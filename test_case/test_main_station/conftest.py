@@ -44,12 +44,14 @@ def get_driver():
                 # selenium_grid方式运行
                 print("===========:" + str(get_arg()))
                 print("===========:" + get_arg()["user_port"])
+                print("===========:" + get_value("selenium_grid"))
+                print("===========:" + type(get_value("selenium_grid")))
                 driver = SeleniumDriver(browser_type=globle_arg["browser"],
                                         version=globle_arg["version"],
                                         implicitly_wait=globle_arg["time_out"],
                                         pattern="distributed",
                                         platform=get_value("platform"),
-                                        selenium_grid_url=get_value("selenium_grid"),
+                                        selenium_grid_url=str(get_value("selenium_grid")),
                                         user_port="win").driver()
         else:
             driver = SeleniumDriver().driver()
