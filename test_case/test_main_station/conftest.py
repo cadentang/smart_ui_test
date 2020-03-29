@@ -46,12 +46,14 @@ def get_driver():
                 print("===========:" + get_arg()["user_port"])
                 print("===========:" + get_value("selenium_grid"))
                 print("===========:" + str(type(get_value("selenium_grid"))))
+                selenium_grid_url = get_value("selenium_grid").split("hub")[0] + "hub"
+                print(selenium_grid_url)
                 driver = SeleniumDriver(browser_type=globle_arg["browser"],
                                         version=globle_arg["version"],
                                         implicitly_wait=globle_arg["time_out"],
                                         pattern="distributed",
                                         platform=get_value("platform"),
-                                        selenium_grid_url=str(get_value("selenium_grid")),
+                                        selenium_grid_url=selenium_grid_url,
                                         user_port="win").driver()
         else:
             driver = SeleniumDriver().driver()
