@@ -25,7 +25,7 @@ import pytest
 from utils.config import ReadConfig
 from utils.get_log import logger
 from utils.base_path import LOG_PATH, BASE_LOG_PATH, ALLURE_REPORT_PATH, HTML_REPORT_PATH, \
-    TEST_CASE_PATH, ERROR_PICTURE_PATH
+    TEST_CASE_PATH, ERROR_PICTURE_PATH, PROJECT_ROOT_DIR
 from utils.get_parser import get_arg
 from utils import global_variable
 from utils.get_allure import change_to_html
@@ -130,7 +130,9 @@ if __name__ == "__main__":
     # pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH+"/test_main_station/test_main_station_home", '--workers=1','--tests-per-worker=2'])
 
     # 将环境信息置于xml报告路径下，转化为html报告后在html中呈现
-    build_environment_file(xml_report_path, get_environment_list())
+    # build_environment_file(xml_report_path, get_environment_list())
+    local_path = PROJECT_ROOT_DIR + "/allure-results"
+    build_environment_file(local_path, get_environment_list())
     # 使用allure将xml报告生成为html报告
     time.sleep(10)
     change_to_html(xml_report_path, html_report_path)
