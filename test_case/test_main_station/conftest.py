@@ -46,7 +46,7 @@ def get_driver():
                                         implicitly_wait=globle_arg["time_out"],
                                         pattern="distributed",
                                         platform=get_value("platform"),
-                                        selenium_grid_url=globle_arg["selenium_grid"],
+                                        selenium_grid_url=get_value("selenium_grid"),
                                         user_port=globle_arg["user_port"]).driver()
         else:
             driver = SeleniumDriver().driver()
@@ -127,21 +127,21 @@ def login_for_session(get_driver):
     yield login_for_session
     MainStationHomePage(get_driver).logout()
 
-#
-# @pytest.mark.hookwrapper
-# def pytest_runtest_makereport(item):
-#     """错误自动截图到报告中"""
-#     outcome = yield
-#     report = outcome.get_result()
-#
-#     if report.when == 'call' or report.when == "setup":
-#         xfail = hasattr(report, 'wasxfail')
-#         if (report.skipped and xfail) or (report.failed and not xfail):
-#             screen_shot_path = os.path.join(ERROR_PICTURE_PATH, str(datetime.now().strftime("%Y%m%d")))
-#             if not os.path.exists(screen_shot_path):
-#                 os.makedirs(screen_shot_path)
-#             file_name = screen_shot_path + report.nodeid.replace(":", "_").replace("/", "_") + ".png"
-#             driver.get_screenshot_as_file(file_name)
-#             with open(file_name, mode='rb') as f:
-#                 file = f.read()
-#             allure.attach(file, "错误截图", allure.attachment_type.PNG)
+
+@pytest.mark.hookwrapper
+def pytest_runtest_makereport(item):
+    """错误自动截图到报告中"""
+    outcome = yield
+    report = outcome.get_result()
+
+    if report.when == 'call' or report.when == "setup":
+        xfail = hasattr(report, 'wasxfail')
+        if (report.skipped and xfail) or (report.failed and not xfail):
+            screen_shot_path = os.path.join(ERROR_PICTURE_PATH, str(datetime.now().strftime("%Y%m%d")))
+            if not os.path.exists(screen_shot_path):
+                os.makedirs(screen_shot_path)
+            file_name = screen_shot_path + report.nodeid.replace(":", "_").replace("/", "_") + ".png"
+            driver.get_screenshot_as_file(file_name)
+            with open(file_name, mode='rb') as f:
+                file = f.read()
+            allure.attach(file, "错误截图", allure.attachment_type.PNG)

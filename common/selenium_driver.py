@@ -166,11 +166,23 @@ class SeleniumDriver(BaseDriver):
     #             self.__instance = self.driver()
     #     return self.__instance
 
-    def get_selenium_desired_capabilities(self, browser, platform, version=None):
+    def get_selenium_desired_capabilities(self, browser, platform, version=""):
         """获取selenium grid desired_capabilities"""
-        capabilities = {
-            "browserName": browser, # 浏览器名称
-            "version": version, # 浏览器版本
-            "platform": platform, # node节点所处在的平台
-        }
+        if platform == "win":
+            capabilities = {
+                "browserName": browser, # 浏览器名称
+                "version": version, # 浏览器版本
+                "platform": "windows", # node节点所处在的平台
+                "javascriptEnabled": True
+            }
+        elif platform == "mac":
+            capabilities = {
+                "browserName": browser, # 浏览器名称
+                "version": version, # 浏览器版本
+                "platform": "mac", # node节点所处在的平台
+                "javascriptEnabled": True
+            }
+        else:
+            logger.info("未知的平台信息")
+            raise ValueError("未知的平台信息")
         return capabilities

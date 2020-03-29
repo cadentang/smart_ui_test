@@ -94,8 +94,11 @@ if __name__ == "__main__":
     # 设置全局变量值
     global_variable._init()
     globle_arg = get_arg()
+    print(globle_arg)
     global_variable.set_value("get_arg", globle_arg)
     global_variable.set_value("platform", platform_target)
+    global_variable.set_value("selenium_grid", globle_arg["selenium_grid"])
+    print(ReadConfig(globle_arg).get_config())
     global_variable.set_value("config_dict", ReadConfig(globle_arg).get_config())
     logger.info(f"运行的全局变量: {globle_arg}")
 
