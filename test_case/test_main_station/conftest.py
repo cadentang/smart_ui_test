@@ -130,20 +130,20 @@ def login_for_session(get_driver):
 
 
 # @pytest.mark.hookwrapper
-@pytest.hookimpl(tryfirst=True, hookwrapper=True)
-def pytest_runtest_makereport(item):
-    """错误自动截图到报告中"""
-    outcome = yield
-    report = outcome.get_result()
-
-    if report.when == 'call' or report.failed:
-        xfail = hasattr(report, 'wasxfail')
-        if (report.skipped and xfail) or (report.failed and not xfail):
-            screen_shot_path = os.path.join(ERROR_PICTURE_PATH, str(datetime.now().strftime("%Y%m%d")))
-            if not os.path.exists(screen_shot_path):
-                os.makedirs(screen_shot_path)
-            file_name = screen_shot_path + report.nodeid.replace(":", "_").replace("/", "_") + ".png"
-            driver.get_screenshot_as_file(file_name)
-            with open(file_name, mode='rb') as f:
-                file = f.read()
-            allure.attach(file, "错误截图", allure.attachment_type.PNG)
+# @pytest.hookimpl(tryfirst=True, hookwrapper=True)
+# def pytest_runtest_makereport(item):
+#     """错误自动截图到报告中"""
+#     outcome = yield
+#     report = outcome.get_result()
+#
+#     if report.when == 'call' or report.failed:
+#         xfail = hasattr(report, 'wasxfail')
+#         if (report.skipped and xfail) or (report.failed and not xfail):
+#             screen_shot_path = os.path.join(ERROR_PICTURE_PATH, str(datetime.now().strftime("%Y%m%d")))
+#             if not os.path.exists(screen_shot_path):
+#                 os.makedirs(screen_shot_path)
+#             file_name = screen_shot_path + report.nodeid.replace(":", "_").replace("/", "_") + ".png"
+#             driver.get_screenshot_as_file(file_name)
+#             with open(file_name, mode='rb') as f:
+#                 file = f.read()
+#             allure.attach(file, "错误截图", allure.attachment_type.PNG)
