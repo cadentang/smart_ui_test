@@ -20,7 +20,7 @@ class SeleniumDriver(BaseDriver):
     """selenium driver类"""
     def __init__(self, maximize_window=True, implicitly_wait=10,
                  selenium_grid_url=None,browser_type="chrome",
-                 version=None, pattern="local", platform="win", user_port="win"):
+                     version=None, pattern="local", platform="win", user_port="win"):
 
         self.browser_type = browser_type
         self.platform = platform
