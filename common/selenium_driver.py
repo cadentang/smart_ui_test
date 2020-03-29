@@ -183,6 +183,10 @@ class SeleniumDriver(BaseDriver):
                 "javascriptEnabled": True
             }
         else:
-            logger.info("未知的平台信息")
-            raise ValueError("未知的平台信息")
+            capabilities = {
+                "browserName": browser, # 浏览器名称
+                "version": version, # 浏览器版本
+                "platform": "ANY", # node节点所处在的平台
+                "javascriptEnabled": True
+            }
         return capabilities

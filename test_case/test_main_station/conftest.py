@@ -42,6 +42,8 @@ def get_driver():
                                         platform=get_value("platform")).driver()
             elif globle_arg["pattern"] == "distributed":
                 # selenium_grid方式运行
+                print("===========:" + str(get_arg()))
+                print("===========:" + get_arg()["user_port"])
                 driver = SeleniumDriver(browser_type=globle_arg["browser"],
                                         version=globle_arg["version"],
                                         implicitly_wait=globle_arg["time_out"],
