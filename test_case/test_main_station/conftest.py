@@ -55,6 +55,7 @@ def get_driver():
             driver.get(globle_arg["env_config"]["main_station_url"])
         else:
             driver.get(MAIN_STATION_URL)
+        globle_driver = driver
 
     yield driver
     with allure.step("关闭浏览器"):
@@ -128,13 +129,14 @@ def login_for_session(get_driver):
     MainStationHomePage(get_driver).logout()
 
 
-@pytest.mark.hookwrapper
+# @pytest.mark.hookwrapper
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item):
     """错误自动截图到报告中"""
     outcome = yield
     report = outcome.get_result()
 
-    if report.when == 'call' or report.when == "setup":
+    if report.when == 'call' or report.failed:
         xfail = hasattr(report, 'wasxfail')
         if (report.skipped and xfail) or (report.failed and not xfail):
             screen_shot_path = os.path.join(ERROR_PICTURE_PATH, str(datetime.now().strftime("%Y%m%d")))
