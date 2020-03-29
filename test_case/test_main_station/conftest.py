@@ -50,7 +50,7 @@ def get_driver():
                                         pattern="distributed",
                                         platform=get_value("platform"),
                                         selenium_grid_url=get_value("selenium_grid"),
-                                        user_port=get_arg()["user_port"]).driver()
+                                        user_port="win").driver()
         else:
             driver = SeleniumDriver().driver()
             # driver.get(MAIN_STATION_URL)

@@ -172,7 +172,7 @@ class SeleniumDriver(BaseDriver):
             capabilities = {
                 "browserName": browser, # 浏览器名称
                 "version": version, # 浏览器版本
-                "platform": "ANY", # node节点所处在的平台
+                "platform": "windows", # node节点所处在的平台
                 "javascriptEnabled": True
             }
         elif platform == "mac":
