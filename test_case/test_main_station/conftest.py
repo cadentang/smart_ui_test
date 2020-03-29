@@ -11,6 +11,7 @@ from common.selenium_driver import SeleniumDriver
 from common.selenium_pages import PageScreenShot
 from utils.base_path import ERROR_PICTURE_PATH
 from utils.global_variable import get_value, judg_dicit
+from utils.get_parser import get_arg
 from utils.get_log import logger
 from pages.main_station.main_station_home_page import MainStationHomePage
 from data.main_station.main_station_business_data import login_study_data
@@ -47,7 +48,7 @@ def get_driver():
                                         pattern="distributed",
                                         platform=get_value("platform"),
                                         selenium_grid_url=get_value("selenium_grid"),
-                                        user_port=get_value("user_port")).driver()
+                                        user_port=get_arg()["user_port"]).driver()
         else:
             driver = SeleniumDriver().driver()
             # driver.get(MAIN_STATION_URL)
