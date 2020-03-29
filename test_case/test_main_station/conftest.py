@@ -45,7 +45,7 @@ def get_driver():
                 print("===========:" + str(get_arg()))
                 print("===========:" + get_arg()["user_port"])
                 print("===========:" + get_value("selenium_grid"))
-                print("===========:" + type(get_value("selenium_grid")))
+                print("===========:" + str(type(get_value("selenium_grid"))))
                 driver = SeleniumDriver(browser_type=globle_arg["browser"],
                                         version=globle_arg["version"],
                                         implicitly_wait=globle_arg["time_out"],
