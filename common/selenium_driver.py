@@ -57,6 +57,7 @@ class SeleniumDriver(BaseDriver):
                                                                                     self.version, self.platform),
                                                chrome_options=chromeOptions)
             elif self.browser_type == "firefox":
+                print("====================firefox===============")
                 self.driver = webdriver.Firefox(executable_path=self.get_driver_path(self.browser_type,
                                                                                      self.version, self.platform))
             elif self.browser_type == "ie":
@@ -169,12 +170,23 @@ class SeleniumDriver(BaseDriver):
     def get_selenium_desired_capabilities(self, browser, platform, version=""):
         """获取selenium grid desired_capabilities"""
         if platform == "win":
-            capabilities = {
-                "browserName": browser, # 浏览器名称
-                "version": version, # 浏览器版本
-                "platform": "windows", # node节点所处在的平台
-                "javascriptEnabled": True
-            }
+            if browser == "firefox":
+                capabilities = {
+                    "browserName": browser, # 浏览器名称
+                    "version": version, # 浏览器版本
+                    "platform": "windows", # node节点所处在的平台
+                    "javascriptEnabled": True,
+                    'marionette': False
+                }
+                print(capabilities)
+
+            else:
+                capabilities = {
+                    "browserName": browser, # 浏览器名称
+                    "version": version, # 浏览器版本
+                    "platform": "windows", # node节点所处在的平台
+                    "javascriptEnabled": True
+                }
         elif platform == "mac":
             capabilities = {
                 "browserName": browser, # 浏览器名称

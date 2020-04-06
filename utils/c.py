@@ -43,3 +43,4 @@ if __name__ == "__main__":
     driver.maximize_window()
     driver.implicitly_wait(10)
     driver.get("http://w1.highso.com.cn/v5")
+    driver.get_screenshot_as_file("123.png")

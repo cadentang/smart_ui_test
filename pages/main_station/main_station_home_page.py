@@ -140,16 +140,16 @@ class MainStationHomePage(MainStationBasePage):
         return MainStaionRegisterPage(self.driver)
 
 
-# if __name__ == "__main__":
-#     driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
-#     driver.maximize_window()
-#     driver.get("http://w2.highso.com.cn/v5")
-#     sleep(3)
-#     from pages.main_station.main_station_home_page import MainStationHomePage
-#     aa = MainStationHomePage(driver)
-#     bb = aa.get_not_login_home_top_navigation()
-#     print(bb)
-#     print(aa.traverse_top_dav(bb))
-#     sleep(3)
+if __name__ == "__main__":
+    driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
+    driver.maximize_window()
+    driver.get("http://w2.highso.com.cn/v5")
+    sleep(3)
+    from pages.main_station.main_station_home_page import MainStationHomePage
+    aa = MainStationHomePage(driver)
+    bb = aa.get_sku()
+    print(bb)
+    print(aa.traverse_page(bb))
+    sleep(3)
 
 

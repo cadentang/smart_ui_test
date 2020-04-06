@@ -130,6 +130,7 @@ def login_for_session(get_driver):
             get_driver.get(globle_arg["env_config"]["main_station_url"] + "/my/course")
         else:
             get_driver.get(MAIN_STATION_URL + "/my/course")
+
     MainStationHomePage(get_driver).go_to_login_page().to_login(login_study_data["login_type"], login_study_data["phone"],
                                                                 login_study_data["password"])
     yield login_for_session
@@ -150,7 +151,13 @@ def login_for_session(get_driver):
 #             if not os.path.exists(screen_shot_path):
 #                 os.makedirs(screen_shot_path)
 #             file_name = screen_shot_path + report.nodeid.replace(":", "_").replace("/", "_") + ".png"
+#             # driver.get_screenshot_as_file(file_name)
+#             _capture_screenshot(file_name)
 #             driver.get_screenshot_as_file(file_name)
 #             with open(file_name, mode='rb') as f:
 #                 file = f.read()
 #             allure.attach(file, "错误截图", allure.attachment_type.PNG)
+
+
+# def _capture_screenshot(filepath):
+#     driver.get_screenshot_as_file(filepath)

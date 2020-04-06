@@ -33,12 +33,12 @@ def get_arg():
     MODULE = ["main_station_home", "main_station_login", "main_station_register", "main_station_course", "main_station_exam",
               "main_station_question"]
     parser = argparse.ArgumentParser(description="自定义HaiXue项目python命令行参数")
-    parser.add_argument('--env', type=str, default="reg", choices=ENV_LIST)
+    parser.add_argument('--env', type=str, default="stage", choices=ENV_LIST)
     parser.add_argument('--project', type=str, default="main_station", choices=PROJECT_LIST)
-    parser.add_argument('--module', type=str, default="main_station")
+    parser.add_argument('--module', type=str, default="test_main_station_home")
     parser.add_argument('--user_port', type=str, default="win", choices=USER_PORT)
-    parser.add_argument('--pattern', type=str, default="local", choices=PATTERN)
-    parser.add_argument('--browser', type=str, default="chrome", choices=BROWSER)
+    parser.add_argument('--pattern', type=str, default="distributed", choices=PATTERN)
+    parser.add_argument('--browser', type=str, default="firefox", choices=BROWSER)
     parser.add_argument('--version', type=str, default=None)
     parser.add_argument('--log_path', type=str, default=LOG_PATH)
     parser.add_argument('--driver_path', type=str, default=DRIVER_PATH)
@@ -56,7 +56,7 @@ def get_arg():
     parser.add_argument('--resetKeyboard', type=str, default=False)
     parser.add_argument('--automationName', type=str, default=False)
     parser.add_argument('--bundleId', type=str, default=False)
-    parser.add_argument('--selenium_grid', type=str, default="")
+    parser.add_argument('--selenium_grid', type=str, default="http://192.168.124.10:4444/wd/hub")
     # parser.add_argument('--bundleId', type=list, default=False)
 
     args = parser.parse_args()
