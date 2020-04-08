@@ -150,29 +150,29 @@ class HaiXueLoginPageFactory:
 
 
 def aaa():
-    from appium import webdriver
-    from pages.haixue_app.haixue_app_base_page import HaiXueBasePageFactory
-    desired_caps = {}
-    desired_caps['platformName'] = 'Android' #android的apk还是IOS的ipa
-    desired_caps['platformVersion'] = '10' #android系统的版本号
-    desired_caps['deviceName'] = 'device' #手机设备名称，通过adb devices 查看
-    desired_caps['appPackage'] = 'com.haixue.app.android.HaixueAcademy.h4' #apk的包名
-    desired_caps['appActivity'] = 'com.haixue.academy.main.WelcomeActivity' #apk的launcherActivity
-    desired_caps['unicodeKeyboard'] = True # 使用unicodeKeyboard的编码方式来发送字符串
-    desired_caps['resetKeyboard'] = True  # # 将键盘给隐藏起来
-    desired_caps['reset'] = True  # # 将键盘给隐藏起来
-    driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
-    # driver.find_element().get_attribute()
-    # driver.back()
-    andriod_page = HaiXueBasePageFactory(driver, "andriod").page
-    andriod_page.allow_perssion()
-    time.sleep(1)
-    login_page = andriod_page.to_login_page().page
-    time.sleep(1)
-    # cc = login_page.switch_env("stage")
-
-    time.sleep(3)
-    # driver.find_element(*(By.ID, "com.haixue.app.android.HaixueAcademy.h4:id/et_username")).clear()
+    # from appium import webdriver
+    # from pages.haixue_app.haixue_app_base_page import HaiXueBasePageFactory
+    # desired_caps = {}
+    # desired_caps['platformName'] = 'Android' #android的apk还是IOS的ipa
+    # desired_caps['platformVersion'] = '10' #android系统的版本号
+    # desired_caps['deviceName'] = 'device' #手机设备名称，通过adb devices 查看
+    # desired_caps['appPackage'] = 'com.haixue.app.android.HaixueAcademy.h4' #apk的包名
+    # desired_caps['appActivity'] = 'com.haixue.academy.main.WelcomeActivity' #apk的launcherActivity
+    # desired_caps['unicodeKeyboard'] = True # 使用unicodeKeyboard的编码方式来发送字符串
+    # desired_caps['resetKeyboard'] = True  # # 将键盘给隐藏起来
+    # desired_caps['reset'] = True  # # 将键盘给隐藏起来
+    # driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub', desired_caps)
+    # # driver.find_element().get_attribute()
+    # # driver.back()
+    # andriod_page = HaiXueBasePageFactory(driver, "andriod").page
+    # andriod_page.allow_perssion()
+    # time.sleep(1)
+    # login_page = andriod_page.to_login_page().page
+    # time.sleep(1)
+    # # cc = login_page.switch_env("stage")
+    #
+    # time.sleep(3)
+    # # driver.find_element(*(By.ID, "com.haixue.app.android.HaixueAcademy.h4:id/et_username")).clear()
 
     # cc.login("19983271081", "123456")
     # found_page = login_page.login("19983271081", "123456").page
@@ -180,7 +180,9 @@ def aaa():
     # found_page.close_popup_windows()
     # time.sleep(1)
     # found_page.go_live_calendar()
-
+    import json
+    ac = '{"platformName": "Android","platformVersion": "10"}'
+    print(json.loads(ac))
 
 
 if __name__ == "__main__":

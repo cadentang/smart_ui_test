@@ -1,6 +1,7 @@
 # # -*- coding: utf-8 -*-
 import os
 import time
+import json
 from datetime import datetime
 
 import pytest
@@ -25,7 +26,6 @@ debug_desired_caps = {
 }
 
 globle_arg = get_value("config_dict")
-# print("============" + globle_arg)
 
 @pytest.fixture(scope="session", autouse=True)
 def get_appium_driver():
@@ -50,12 +50,12 @@ def get_appium_driver():
                 driver = AppiumDriver(url="http://127.0.0.1:4723/wd/hub",
                                       platform_type=platform_type,
                                       implicitly_wait=globle_arg["time_out"],
-                                      desired_caps=get_value("desired_caps")).driver()
+                                      desired_caps=json.loads(get_value("desired_caps"))).driver()
             elif globle_arg["pattern"] == "distributed":
                 driver = AppiumDriver(url=get_value("selenium_grid"),
                                       platform_type=platform_type,
                                       implicitly_wait=globle_arg["time_out"],
-                                      desired_caps=get_value("desired_caps")).driver()
+                                      desired_caps=json.loads(get_value("desired_caps"))).driver()
 
             # 切换环境，进入登录页面
             base_page = HaiXueBasePageFactory(driver, globle_arg["user_port"]).page
@@ -64,7 +64,7 @@ def get_appium_driver():
             login_page.switch_env(globle_arg["env"])
 
         else:
-            # 调试模式
+            # 本地调试模式
             driver = AppiumDriver(url="http://127.0.0.1:4723/wd/hub",
                                   platform_type="andriod",
                                   implicitly_wait=10,
