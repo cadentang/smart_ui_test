@@ -181,8 +181,9 @@ def aaa():
     # time.sleep(1)
     # found_page.go_live_calendar()
     import json
-    ac = '{"platformName": "Android","platformVersion": "10"}'
-    print(json.loads(ac))
+    ac = "{'platformName': 'Android','platformVersion': '10'}"
+    print(eval(ac))
+    # print(json.loads(ac))
 
 
 if __name__ == "__main__":

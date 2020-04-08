@@ -56,7 +56,7 @@ def get_appium_driver():
                                       implicitly_wait=globle_arg["time_out"],
                                       desired_caps=eval(get_value("desired_caps"))).driver()
             elif globle_arg["pattern"] == "distributed":
-                driver = AppiumDriver(url=get_value("selenium_grid"),
+                driver = AppiumDriver(url=get_value("selenium_grid").split("hub")[0] + "hub",
                                       platform_type=platform_type,
                                       implicitly_wait=globle_arg["time_out"],
                                       desired_caps=eval(get_value("desired_caps"))).driver()
