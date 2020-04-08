@@ -46,6 +46,8 @@ def get_appium_driver():
             print(globle_arg["pattern"])
             print(get_value("desired_caps"))
             print(type(get_value("desired_caps")))
+            print(eval(get_value("desired_caps")))
+            print(type(eval(get_value("desired_caps"))))
             if globle_arg["pattern"] == "local":
                 driver = AppiumDriver(url="http://127.0.0.1:4723/wd/hub",
                                       platform_type=platform_type,
