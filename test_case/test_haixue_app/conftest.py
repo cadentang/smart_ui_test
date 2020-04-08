@@ -50,12 +50,12 @@ def get_appium_driver():
                 driver = AppiumDriver(url="http://127.0.0.1:4723/wd/hub",
                                       platform_type=platform_type,
                                       implicitly_wait=globle_arg["time_out"],
-                                      desired_caps=get_value("desired_caps")).driver()
+                                      desired_caps=eval(get_value("desired_caps"))).driver()
             elif globle_arg["pattern"] == "distributed":
                 driver = AppiumDriver(url=get_value("selenium_grid"),
                                       platform_type=platform_type,
                                       implicitly_wait=globle_arg["time_out"],
-                                      desired_caps=get_value("desired_caps")).driver()
+                                      desired_caps=eval(get_value("desired_caps"))).driver()
 
             # 切换环境，进入登录页面
             base_page = HaiXueBasePageFactory(driver, globle_arg["user_port"]).page
