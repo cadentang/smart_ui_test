@@ -36,16 +36,30 @@ class HaiXueBasePage(AppiumPages):
             except:
                 pass
 
+    def isElementPresent(self, driver, by, value):
+        try:
+            driver.find_element(by=by, value=value)
+        except Exception as e:
+            # 打印异常信息
+            print(e)
+            return False
+        else:
+            return True
+
     @allure.step("滑动欢迎页面, 进入登录页面")
     def to_login_page(self):
+
         for i in range(10):
             try:
+                self.driver.implicitly_wait(1)
                 now_button = self.driver.find_element(*self._now_experience_button)
                 now_button.click()
                 break
             except NoSuchElementException:
                 self.swipe_left()
                 continue
+
+        self.driver.implicitly_wait(1)
         time.sleep(1)
         self.driver.find_element(*self._disagree_button).click()
         from pages.haixue_app.haixue_app_login_page import HaiXueLoginPageFactory

@@ -25,44 +25,46 @@ debug_desired_caps = {
 }
 
 globle_arg = get_value("config_dict")
+# print("============" + globle_arg)
 
 @pytest.fixture(scope="session", autouse=True)
-def get_driver():
+def get_appium_driver():
     global driver, login_page
     desired_caps = {}
     platform_type = "andriod"
     with allure.step("启动appium的driver"):
         # 如果全局变量字典为{}则代表使用调式模式
         if judg_dicit():
-            if globle_arg["platform_type"] == "andriod":
+            if globle_arg["user_port"] == "andriod":
                 platform_type = "Andriod"
-            elif globle_arg["platform_type"] == "ios":
+            elif get_value["user_port"] == "ios":
                 platform_type = "IOS"
             else:
                 ValueError("platform_type类型错误")
+            print(globle_arg["env"])
+            print(globle_arg["user_port"])
+            print(globle_arg["pattern"])
+            print(get_value("desired_caps"))
+            print(type(get_value("desired_caps")))
+            if globle_arg["pattern"] == "local":
+                driver = AppiumDriver(url="http://127.0.0.1:4723/wd/hub",
+                                      platform_type=platform_type,
+                                      implicitly_wait=globle_arg["time_out"],
+                                      desired_caps=get_value("desired_caps")).driver()
+            elif globle_arg["pattern"] == "distributed":
+                driver = AppiumDriver(url=get_value("selenium_grid"),
+                                      platform_type=platform_type,
+                                      implicitly_wait=globle_arg["time_out"],
+                                      desired_caps=get_value("desired_caps")).driver()
 
-            desired_caps = {
-                "platformName": platform_type,
-                "platformVersion": "10",
-                "deviceName": "device",
-                "appPackage": "com.haixue.app.android.HaixueAcademy.h4",
-                "appActivity": "com.haixue.academy.main.WelcomeActivity",
-                # "noReset": True,
-                "unicodeKeyboard": True,
-                "resetKeyboard": True
-            }
-
-            driver = AppiumDriver(url=get_value("selenium_grid"),
-                                  platform_type=platform_type,
-                                  implicitly_wait=globle_arg["time_out"],
-                                  desired_caps=desired_caps).driver()
             # 切换环境，进入登录页面
-            base_page = HaiXueBasePageFactory(driver, platform_type).page
+            base_page = HaiXueBasePageFactory(driver, globle_arg["user_port"]).page
             base_page.allow_perssion()
-            login_page = base_page.to_login_page()
-            login_page.switch_env(get_value("env"))
+            login_page = base_page.to_login_page().page
+            login_page.switch_env(globle_arg["env"])
 
         else:
+            # 调试模式
             driver = AppiumDriver(url="http://127.0.0.1:4723/wd/hub",
                                   platform_type="andriod",
                                   implicitly_wait=10,
@@ -72,7 +74,6 @@ def get_driver():
             base_page.allow_perssion()
             login_page = base_page.to_login_page().page
             login_page.switch_env("stage")
-        # login_page.login("19983271081", "123456")
     yield driver, login_page
 
     with allure.step("关闭app"):

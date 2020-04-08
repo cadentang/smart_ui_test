@@ -29,9 +29,9 @@ def get_arg():
     PROJECT_LIST = ["main_station", "haixue_app"]
     USER_PORT = ["win", "mac", "andriod", "ios", "linux"]
     PATTERN = ["local", "distributed"]
-    BROWSER = ["chrome", "firefox", "ie"]
-    MODULE = ["main_station_home", "main_station_login", "main_station_register", "main_station_course", "main_station_exam",
-              "main_station_question"]
+    BROWSER = ["chrome", "firefox", "ie", "safari"]
+    MODULE = ["test_main_station_home", "test_main_station_login", "test_main_station_register", "test_main_station_course",
+              "test_main_station_exam", "test_main_station_question"]
     parser = argparse.ArgumentParser(description="自定义HaiXue项目python命令行参数")
     parser.add_argument('--env', type=str, default="stage", choices=ENV_LIST)
     parser.add_argument('--project', type=str, default="main_station", choices=PROJECT_LIST)
@@ -56,8 +56,17 @@ def get_arg():
     parser.add_argument('--resetKeyboard', type=str, default=False)
     parser.add_argument('--automationName', type=str, default=False)
     parser.add_argument('--bundleId', type=str, default=False)
-    parser.add_argument('--selenium_grid', type=str, default="http://192.168.124.10:4444/wd/hub")
-    # parser.add_argument('--bundleId', type=list, default=False)
+    parser.add_argument('--selenium_grid', type=str, default="http://127.0.0.1:4723/wd/hub")
+    parser.add_argument('--desired_caps', type=str, default={
+                                                                "platformName": "Android",
+                                                                "platformVersion": "10",
+                                                                "deviceName": "device",
+                                                                "appPackage": "com.haixue.app.android.HaixueAcademy.h4",
+                                                                "appActivity": "com.haixue.academy.main.WelcomeActivity",
+                                                                # "noReset": True,
+                                                                "unicodeKeyboard": True,
+                                                                "resetKeyboard": True
+                                                            })
 
     args = parser.parse_args()
     if args.env in ENV_LIST:
@@ -103,6 +112,7 @@ def get_arg():
     run_arg["resetKeyboard"] = args.resetKeyboard
     run_arg["automationName"] = args.automationName
     run_arg["bundleId"] = args.bundleId
+    run_arg["desired_caps"] = args.desired_caps
 
     return run_arg
 

@@ -10,3 +10,4 @@ login_data = {
     "not_input_username_password": [[("phone", "", "")], "不输入用户名和密码"],
     "fail_data_password_error": [[("phone", "19983271081", "457999")], "手机号正确，密码错误"]
 }
+

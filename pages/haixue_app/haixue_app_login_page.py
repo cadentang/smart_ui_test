@@ -4,11 +4,13 @@ import allure
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from common.appium_pages import AppiumPages
+from pages.haixue_app.haixue_app_base_page import HaiXueBasePage
 from common.element import Element
 from data.haixue_app.haixue_app_login_data import login_data
 
+
 # 嗨学课堂APP登录页面
-class HaiXueLoginPage(AppiumPages):
+class HaiXueLoginPage(HaiXueBasePage):
     _phone_input = None  # 用户名输入框
     _password_input = None # 密码输入框
     _login_button = None  # 登录按钮
@@ -92,7 +94,6 @@ class AndriodHaiXueLoginPage(HaiXueLoginPage):
             traget_env = "正式环境"
         else:
             ValueError(f"环境参数{env}错误！")
-        print(traget_env)
 
         try:
             if self.driver.find_element(*self._env_textview).get_attribute("text") == traget_env:
@@ -109,7 +110,6 @@ class AndriodHaiXueLoginPage(HaiXueLoginPage):
             set_page = self.login("18780127566", "123456").page.switch_my_page().page.go_set_page().page
             set_page.go_dev_tools_page()
             set_page.set_debug()
-            # set_page.swipe_left()
             self.driver.back()
             time.sleep(1)
             set_page.logout()
@@ -123,7 +123,6 @@ class AndriodHaiXueLoginPage(HaiXueLoginPage):
                 self.driver.find_element(*self._env_textview).click()
                 time.sleep(1)
                 traget_env_element = (By.XPATH, f"//*[@text='{traget_env}']")
-                print(traget_env_element)
                 self.driver.find_element(*traget_env_element).click()
                 self.driver.find_element(*self._swicth_env_text_view).click()
                 time.sleep(3)
@@ -170,12 +169,12 @@ def aaa():
     time.sleep(1)
     login_page = andriod_page.to_login_page().page
     time.sleep(1)
-    cc = login_page.switch_env("stage")
+    # cc = login_page.switch_env("stage")
 
     time.sleep(3)
-    driver.find_element(*(By.ID, "com.haixue.app.android.HaixueAcademy.h4:id/et_username")).clear()
+    # driver.find_element(*(By.ID, "com.haixue.app.android.HaixueAcademy.h4:id/et_username")).clear()
 
-    cc.login("19983271081", "123456")
+    # cc.login("19983271081", "123456")
     # found_page = login_page.login("19983271081", "123456").page
     # time.sleep(1)
     # found_page.close_popup_windows()

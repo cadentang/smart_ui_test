@@ -98,7 +98,8 @@ if __name__ == "__main__":
     global_variable.set_value("get_arg", globle_arg)
     global_variable.set_value("platform", platform_target)
     global_variable.set_value("selenium_grid", globle_arg["selenium_grid"])
-    print(ReadConfig(globle_arg).get_config())
+    global_variable.set_value("desired_caps", globle_arg["desired_caps"])
+    # print(ReadConfig(globle_arg).get_config())
     global_variable.set_value("config_dict", ReadConfig(globle_arg).get_config())
     logger.info(f"运行的全局变量: {globle_arg}")
 
@@ -122,6 +123,22 @@ if __name__ == "__main__":
                         base_command_arg.append(TEST_CASE_PATH + "/test_main_station/" + run_module.split(",")[i])
         else:
             logger.info("所选用例模块为空，不能运行！")
+    elif globle_arg["project"] == "haixue_app":
+        path = os.listdir(TEST_CASE_PATH + "/test_haixue_app")
+        if "all" in globle_arg["module"]:
+            case_path = TEST_CASE_PATH + "/test_haixue_app"
+            case_list.append(case_path)
+            base_command_arg.append(case_path)
+        elif globle_arg["module"] is not "":
+            for i in range(len(run_module.split(","))):
+                for j in range(len(path)):
+                    if run_module.split(",")[i] == path[j]:
+                        case_list.append(TEST_CASE_PATH + "/test_haixue_app/" + run_module.split(",")[i])
+                        base_command_arg.append(TEST_CASE_PATH + "/test_haixue_app/" + run_module.split(",")[i])
+        else:
+            logger.info("所选用例模块为空，不能运行！")
+    else:
+        ValueError("未知的project，不运行项目")
 
     logger.info(f"运行的测试模块: {case_list}")
 
