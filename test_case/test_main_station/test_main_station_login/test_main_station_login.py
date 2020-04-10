@@ -79,6 +79,7 @@ class TestMainStationLogin:
         PageScreenShot(login_data["not_input_username"][1], get_driver)
         assert page.judg_username_empty()
         get_driver.refresh()
+        get_driver.get(get_driver.current_url.split("course")[0] + "/v5/")
 
     @allure.story("登录失败")
     @allure.title("登录失败-用户名及密码为空")
@@ -91,6 +92,7 @@ class TestMainStationLogin:
         assert page.judg_password_empty()
         assert page.judg_username_empty()
         get_driver.refresh()
+        get_driver.get(get_driver.current_url.split("course")[0] + "/v5/")
 
     @allure.story("登录失败")
     @allure.title("登录失败-密码错误")
@@ -102,6 +104,8 @@ class TestMainStationLogin:
         PageScreenShot(login_data["fail_data_password_error"][1], get_driver)
         assert page.judg_password_or_username_error()
         get_driver.refresh()
+        get_driver.get(get_driver.current_url.split("course")[0] + "/v5/")
+
 
 
 

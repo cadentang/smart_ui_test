@@ -111,7 +111,7 @@ class TestMyQuestion:
     @allure.story("评分")
     @allure.title("对我的问题主问题回复进行评分-评4星")
     @allure.severity(allure.severity_level.BLOCKER)
-    @pytest.mark.parametrize("content", "对我的问题主问题回复进行评分-评4星")
+    @pytest.mark.parametrize("content", ["对我的问题主问题回复进行评分-评4星"])
     def test_my_question_main_pingfen_4(self, go_to_question_page, content):
         go_to_question_page.question_appraise_four_star(content)
         assert go_to_question_page.get_compent_list().judge_is_score()
