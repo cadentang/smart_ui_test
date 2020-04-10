@@ -62,6 +62,7 @@ class TestMainStaionCourseOrther:
         result = go_to_course.go_last_learn()
         assert "/course/newlive/newPlaybackPage.do" in result
 
+    @pytest.mark.skip("未实现，暂时不执行")
     @allure.story("签到")
     @allure.title("签到")
     @allure.severity(allure.severity_level.MINOR)

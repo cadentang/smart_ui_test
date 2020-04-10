@@ -114,7 +114,6 @@ class MainStationQuestionPage(MainStationBasePage):
         """进入问题详情页, 返回问题详情页组件"""
         com = self.get_compent_list(i)
         com.question_detail()
-        # return MainStationQuestionComponent(self.driver, self._question_list_component_detail_div)
         return MainStationQuestionPage(self.driver)
 
     @allure.step("对课程提问(默认第一条观看记录，如没有则跳转至个人中心页)")
@@ -181,7 +180,7 @@ class MainStationQuestionPage(MainStationBasePage):
     @allure.step("对提的问题补充问题")
     def question_for_supplement(self, supplementary_content, file=False):
         # 先提问，再对提的问题补充问题
-        first_content = self.question_for_course(content="测试补充问题", file=True)
+        first_content = self.question_for_course(content=supplementary_content, file=False)
         self.driver.refresh()
         com = self.get_compent_list(index=1)
         if com:
@@ -249,7 +248,9 @@ class MainStationQuestionPage(MainStationBasePage):
         """默认回复第一个问题，若第一个已回复则依次向下寻找能够回复的问题"""
         # count = self.get_question_count()
         compent = self.get_compent_list(index)
-        if compent.judge_is_answer() in [0,1]:
+        print(compent)
+        print(compent.judge_is_answer())
+        if compent.judge_is_answer() == 0:
             compent.question_detail()
             self.question_answer(compent.get_question_id())
             self.go_question()
@@ -288,8 +289,15 @@ class MainStationQuestionPage(MainStationBasePage):
 
     @allure.step("列表页对老师评一星+评价")
     def question_appraise_one_star(self, content):
-        com = self.get_compent_list(index=3)
-        com.score_main_question(1, content)
+        for i in range(100):
+            self.question_teacher_replay(index=i+1)
+            com = self.get_compent_list(index=1+1)
+            print(com.judge_is_score())
+            if com.judge_is_score() == False:
+                com.score_main_question(1, content)
+                break
+            else:
+                continue
 
     @allure.step("列表页对老师评四星+评价")
     def question_appraise_four_star(self, content):
@@ -346,7 +354,7 @@ class MainStationQuestionPage(MainStationBasePage):
                 compent_text = self.get_compent_list(index=i+1).get_main_content()
                 logger.info(f"提问内容: {content}")
                 logger.info(f"列表里面主内容: {compent_text}")
-                if compent_text == content:
+                if content in compent_text:
                     return True
                 else:
                     return False
@@ -354,7 +362,7 @@ class MainStationQuestionPage(MainStationBasePage):
             count = self.get_append_question_count()
             for i in range(count):
                 compent_text = self.get_compent_list(index=i+1).get_append_content()
-                if compent_text == compent_text:
+                if content in compent_text:
                     return True
                 else:
                     return False
@@ -408,7 +416,8 @@ if __name__ == "__main__":
     # cc.question_for_supplement("这个是补充问题")
     # print(cc.get_compent_list(3).score_main_question(1, "一星评价"))
     # print(cc.get_compent_list(2).get_main_content())
-    print(cc.question_for_append(append_content="这个是追问", i=3))
+    cc.question_appraise_one_star("这个是评分")
+    # cc.question_teacher_replay()
     # print(cc.question_for_append(append_content="这个是补充问题"))
     # print(cc.get_compent_list(3).judge_is_answer())
     # cc.question_for_examrecord("222222")

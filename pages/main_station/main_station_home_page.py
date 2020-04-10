@@ -5,7 +5,7 @@ import allure
 from selenium import webdriver
 from common.element import Element
 from pages.main_station.main_station_base_page import MainStationBasePage
-from common.selenium_pages import PageSwitchWindowOrFrame
+from common.selenium_pages import PageSwitchWindowOrFrame, PageScroll
 
 
 class MainStationHomePage(MainStationBasePage):
@@ -99,6 +99,7 @@ class MainStationHomePage(MainStationBasePage):
     @allure.step("根据dict遍历所有的链接, 返回跳转链接的URL")
     def traverse_page(self, target_page_ele_dict):
         """本方法适合sku和下导航遍历"""
+        PageScroll(self.driver).js_scroll_end()
         for i in target_page_ele_dict.values():
             # print(i)
             for j in i.values():

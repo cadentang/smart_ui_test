@@ -5,6 +5,7 @@ import pytest
 
 from data.main_station.main_station_login_data import login_data
 from pages.main_station.main_station_home_page import MainStationHomePage
+from pages.main_station.main_station_login_page import MainStationLoginPage
 from common.selenium_pages import PageScreenShot
 from utils.get_log import logger
 from utils.global_variable import get_value
@@ -26,6 +27,7 @@ class TestMainStationLogin:
         page = home_page.go_to_login_page().to_login(data[0], data[1], data[2])
         with allure.step("截图"):
             PageScreenShot(login_data["success_phone_data"][1], get_driver)
+        logger.info(f"当前URL：{get_driver.current_url}")
         if "/course/progressive/index.do" in get_driver.current_url or "/v5/my/course" in get_driver.current_url:
             assert True
         else:
@@ -51,9 +53,10 @@ class TestMainStationLogin:
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.parametrize("data", login_data["fail_data_phone_error"][0])
     def test_phone_logion_phone_error(self, get_driver, data):
-        page = MainStationHomePage(get_driver).go_to_login_page().to_login_failure(data[1], data[2])
+        page = MainStationLoginPage(get_driver).to_login_failure(data[1], data[2])
         PageScreenShot(login_data["fail_data_phone_error"][1], get_driver)
         assert page.judg_password_or_username_error()
+        get_driver.refresh()
 
     @allure.story("登录失败")
     @allure.title("登录失败-不输入密码登录")
@@ -61,9 +64,10 @@ class TestMainStationLogin:
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.parametrize("data", login_data["not_input_password"][0])
     def test_phone_not_input_password(self, get_driver, data):
-        page = MainStationHomePage(get_driver).go_to_login_page().to_login_failure(data[1], data[2])
+        page = MainStationLoginPage(get_driver).to_login_failure(data[1], data[2])
         PageScreenShot(login_data["not_input_password"][1], get_driver)
         assert page.judg_password_empty()
+        get_driver.refresh()
 
     @allure.story("登录失败")
     @allure.title("登录失败-不输入用户名登录")
@@ -71,9 +75,10 @@ class TestMainStationLogin:
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.parametrize("data", login_data["not_input_username"][0])
     def test_phone_not_input_username(self, get_driver, data):
-        page = MainStationHomePage(get_driver).go_to_login_page().to_login_failure(data[1], data[2])
+        page = MainStationLoginPage(get_driver).to_login_failure(data[1], data[2])
         PageScreenShot(login_data["not_input_username"][1], get_driver)
         assert page.judg_username_empty()
+        get_driver.refresh()
 
     @allure.story("登录失败")
     @allure.title("登录失败-用户名及密码为空")
@@ -81,10 +86,11 @@ class TestMainStationLogin:
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.parametrize("data", login_data["not_input_username_password"][0])
     def test_phone_not_input(self, get_driver, data):
-        page = MainStationHomePage(get_driver).go_to_login_page().to_login_failure(data[1], data[2])
+        page = MainStationLoginPage(get_driver).to_login_failure(data[1], data[2])
         PageScreenShot(login_data["not_input_username_password"][1], get_driver)
         assert page.judg_password_empty()
         assert page.judg_username_empty()
+        get_driver.refresh()
 
     @allure.story("登录失败")
     @allure.title("登录失败-密码错误")
@@ -92,9 +98,11 @@ class TestMainStationLogin:
     @allure.severity(allure.severity_level.CRITICAL)
     @pytest.mark.parametrize("data", login_data["fail_data_password_error"][0])
     def test_phone_logion_password_error(self, get_driver, data):
-        page = MainStationHomePage(get_driver).go_to_login_page().to_login_failure(data[1], data[2])
+        page = MainStationLoginPage(get_driver).to_login_failure(data[1], data[2])
         PageScreenShot(login_data["fail_data_password_error"][1], get_driver)
         assert page.judg_password_or_username_error()
+        get_driver.refresh()
+
 
 
 

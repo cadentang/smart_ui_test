@@ -129,6 +129,7 @@ class MainStationBasePage(SeleniumPages):
     def go_question(self):
         self._question_a.click()
         from pages.main_station.main_station_question_page import MainStationQuestionPage
+        sleep(2)
         return MainStationQuestionPage(self.driver)
 
     @allure.step("进入资讯页面")

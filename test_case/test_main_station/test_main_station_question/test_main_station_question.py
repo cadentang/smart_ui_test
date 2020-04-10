@@ -31,6 +31,7 @@ class TestAskQuestion:
         text = go_to_question_page.question_for_examrecord(content)
         assert go_to_question_page.check_question(text)
 
+    @pytest.mark.skip("未实现，暂时不执行")
     @allure.story("追问")
     @allure.title("追问-对老师回复的主问题进行追问")
     @allure.severity(allure.severity_level.BLOCKER)
@@ -45,6 +46,7 @@ class TestAskQuestion:
     @pytest.mark.parametrize("content", ["老师，这个题目里面提到的建筑经济如何计算？"])
     def test_ask_question_supplement(self, go_to_question_page, content):
         text = go_to_question_page.question_for_supplement(content)
+        go_to_question_page.go_question()
         assert go_to_question_page.check_question(content)
 
     @allure.story("老师回复问题")
@@ -105,6 +107,7 @@ class TestMyQuestion:
         go_to_question_page.question_appraise_one_star(content)
         assert go_to_question_page.get_compent_list().judge_is_score()
 
+    @pytest.mark.skip("未实现，暂时不执行")
     @allure.story("评分")
     @allure.title("对我的问题主问题回复进行评分-评4星")
     @allure.severity(allure.severity_level.BLOCKER)

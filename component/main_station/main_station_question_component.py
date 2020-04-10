@@ -81,6 +81,7 @@ class MainStationQuestionComponent(BaseWebComponents):
         if score in score_list:
             sc = (By.CSS_SELECTOR, "ul>li")
             # sc = (By.CSS_SELECTOR, f"li>div[aria-posinset={str(score)}][aria-checked='false']")
+            print(self.component_element.find_elements(*sc))
             self.component_element.find_elements(*sc)[score-1].click()
             self.component_element.find_element(*self._question_content_input).send_keys(content)
             self.component_element.find_element(*self._question_content_button).click()
@@ -105,29 +106,47 @@ class MainStationQuestionComponent(BaseWebComponents):
         """判断问题老师是否回答,
         0:主问题老师未回复， 1:追问问题老师未回复， 2:追问问题老师已回复， 3：主问题老师已回复无追问问题"""
         wait_answer_text = "学员您好！我们的老师正在为您解答中，请耐心等候！"
-        # logger.info(f"self.component_element.find_element(*self._main_question): {self.component_element.find_element(*self._main_question).text}")
-        try:
-            print(self.component_element.find_element(*self._question_answer_span).text)
-            if self.judge_is_append() == True:
-
-                try:
-                    self.component_element.find_element(*self._append_question)
-                    return 1
-                except ex.NoSuchElementException:
-                    return 2
-            else:
+        print(self.component_element.text)
+        if self.judge_is_append() == True:
+            try:
+                self.component_element.find_element(*self._append_question)
+                return 1
+            except ex.NoSuchElementException:
+                return 2
+        else:
+            try:
+                self.component_element.find_element(*self._main_question)
+                return 0
+            except ex.NoSuchElementException:
                 return 3
-        except ex.NoSuchElementException:
-            return 0
+
+
+        # try:
+        #     print(self.component_element.find_element(*self._question_answer_span).text)
+        #     if self.judge_is_append() == True:
+        #
+        #         try:
+        #             self.component_element.find_element(*self._append_question)
+        #             return 1
+        #         except ex.NoSuchElementException:
+        #             return 2
+        #     else:
+        #         return 3
+        # except ex.NoSuchElementException:
+        #     return 0
 
     def judge_is_append(self):
         """判断列表是否存在追问问题"""
         append_mark = "追问："
-        try:
-            self.component_element.find_element(*self._append_question_mark_span)
+        if append_mark in self.component_element.text:
             return True
-        except ex.NoSuchElementException:
+        else:
             return False
+        # try:
+        #     self.component_element.find_element(*self._append_question_mark_span)
+        #     return True
+        # except ex.NoSuchElementException:
+        #     return False
         # if self.component_element.find_element(*self._append_question_mark_span).text == append_mark:
         #     return True
         # else:
@@ -138,7 +157,7 @@ class MainStationQuestionComponent(BaseWebComponents):
         if is_append == False:
             print(self.judge_is_answer())
             if self.judge_is_answer() in [1,2,3]:
-                if self.component_element.find_element(*self._main_score_span).text == "已评分：":
+                if "已评分：" in self.component_element.text:
                     return True
                 else:
                     return False
