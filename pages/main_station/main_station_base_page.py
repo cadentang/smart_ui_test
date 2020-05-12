@@ -173,20 +173,27 @@ class MainStationBasePage(SeleniumPages):
         """获取未读数量"""
         return self.driver.find_element(*self._question_no_read_span).text
 
-# if __name__ == "__main__":
-#     driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
-#     driver.maximize_window()
-#     driver.get("http://w2.highso.com.cn/v5")
-#     print(driver.current_url)
-#     # driver.find_element_by_css_selector()
-#     sleep(3)
-#     from pages.main_station.main_station_home_page import MainStationHomePage
-#
-#     aa = MainStationHomePage(driver)
-#     aa.go_to_login_page().to_login("haixue", "19983271083", "123456")
-#     # aa.get_bottom_list_navigations()
-#     sleep(1)
-#     # aa.switch_category("二级建造师")
-#     sleep(1)
-#     aa.logout()
+if __name__ == "__main__":
+    driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
+    driver.maximize_window()
+    driver.get("http://w2.highso.com.cn/v5")
+    print(driver.current_url)
+    print(driver.get_cookies())
+    # # driver.find_element_by_css_selector()
+    # sleep(3)
+    from pages.main_station.main_station_home_page import MainStationHomePage
+
+    aa = MainStationHomePage(driver)
+    aa.go_to_login_page().to_login("haixue", "19983271081", "123456")
+    print(driver.get_cookies())
+    sleep(3)
+    aa.go_question()
+    sleep(3)
+    print(driver.get_cookies())
+
+    # # aa.get_bottom_list_navigations()
+    # sleep(1)
+    # # aa.switch_category("二级建造师")
+    # sleep(1)
+    # aa.logout()
 
