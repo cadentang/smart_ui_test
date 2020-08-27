@@ -9,8 +9,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from utils.get_log import logger
 
+
 LOCATOR_LIST = {
-    # selenium
+    # selenium和appium均有
     'css': By.CSS_SELECTOR,
     'id_': By.ID,
     'name': By.NAME,
@@ -20,7 +21,7 @@ LOCATOR_LIST = {
     'tag': By.TAG_NAME,
     'class_name': By.CLASS_NAME,
 
-    # appium-andriod特有元素定位方法
+    # appium特有元素定位方法
     'ios_uiautomation': MobileBy.IOS_UIAUTOMATION,
     'ios_predicate': MobileBy.IOS_PREDICATE,
     'ios_class_chain': MobileBy.IOS_CLASS_CHAIN,

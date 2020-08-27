@@ -235,7 +235,7 @@ class MainStationCoursePage(MainStationBasePage):
         time_confirm = (By.XPATH, "//ul/li/button/span[contains(text(), '确定')]")
         # time_confirm = (By.XPATH, "/html/body/div[6]/div/div/div/div[2]/div[2]/ul/li/button")
 
-        driver = SeleniumDriver().driver()
+        driver = SeleniumDriver(version='80').driver()
         # if "w0" in self.driver.current_url:
         #     driver.get("https://antd-study-admin.test0.highso.com.cn/")
         # elif "w1" in self.driver.current_url:
@@ -247,103 +247,100 @@ class MainStationCoursePage(MainStationBasePage):
         driver.get("https://antd-study-admin.stage.highso.com.cn/")
 
         driver.find_element(*(By.ID, "username")).send_keys("tangkun4379")
-        driver.find_element(*(By.ID, "password")).send_keys("123456")
+        driver.find_element(*(By.ID, "password")).send_keys("tk_haixue_123456")
         driver.find_element(*(By.ID, "login-submit")).click()
         sleep(2)
-        driver.refresh()
-        driver.find_element(*(By.CSS_SELECTOR, "span.anticon.anticon-play-square")).click()
-        driver.find_element(*(By.CSS_SELECTOR, "a[href='/live/manage']")).click()
-        driver.find_element(*(By.CSS_SELECTOR, "a[href='/live/create']")).click()
-        driver.find_element(*(By.XPATH, "//div[contains(text(), '创建学术直播')]")).click()
+        # driver.refresh()
 
+        driver.find_element(*(By.XPATH, "//li/div/span/span[contains(text(), '直播系统')]")).click()
+        driver.find_element(*(By.CSS_SELECTOR, "a[href='/livesystem/manage']")).click()
         sleep(2)
-        # js = "$('categoryId').removeAttr('readonly')"
-        js_category = 'document.getElementById("categoryId").removeAttribute("readonly")'
-        js_subject = 'document.getElementById("subjectId").removeAttribute("readonly")'
-        js_source = 'document.getElementById("sourceId").removeAttribute("readonly")'
-        js_type = 'document.getElementById("type").removeAttribute("readonly")'
-
-        driver.execute_script(js_category)
-        driver.execute_script(js_subject)
-        driver.execute_script(js_source)
-        driver.execute_script(js_type)
-        driver.find_element(*categroy).send_keys("一级建造师")
-        driver.find_element(*(By.XPATH, "//span[contains(text(), '一级建造师')]")).click()
-        driver.find_element(*subject).send_keys("建设工程经济")
-        driver.find_element(*(By.XPATH, "//span[contains(text(), '建设工程经济')]")).click()
-
-        driver.find_element(*source).click()
-        # driver.find_element(*source).send_keys("嗨学")
-        driver.find_element(*(By.XPATH, "//div[contains(text(), '嗨学')]")).click()
-
-        driver.find_element(*module).click()
-        driver.find_element(*module_id).send_keys("17229")
+        driver.find_element(*(By.ID, "keyword")).send_keys("57429")
+        driver.find_element(*(By.XPATH, "//span[contains(text(), '查询')]/parent::button")).click()
         sleep(2)
-        driver.execute_script("arguments[0].click();", driver.find_element(*module_query))
-        sleep(2)
-        driver.execute_script("arguments[0].click();", driver.find_element(*module_checkbox))
-        driver.execute_script("arguments[0].click();", driver.find_element(*module_confirm))
-
-        driver.find_element(*live).send_keys("直播测试")
-        sleep(2)
-        from common.selenium_pages import PageScroll
-        PageScroll(driver).js_scroll_end()
-        driver.find_element(*teacher).click()
-        sleep(2)
-        driver.find_element(*teacher_name).send_keys("唐锟")
-        aa = driver.find_element(*teacher_query)
-        bb = driver.find_element(*teacher_checkbox)
-        cc = driver.find_element(*teacher_confirm)
-        driver.execute_script("arguments[0].click();", aa)
-        sleep(5)
-        driver.execute_script("arguments[0].click();", bb)
-        sleep(2)
-        driver.execute_script("arguments[0].click();", cc)
-        sleep(2)
-
-        driver.find_element(*start_time).send_keys("2020-03-22 16:00")
-        sleep(2)
-        driver.execute_script("arguments[0].click();",driver.find_element(*time_confirm))
-
-        driver.find_element(*end_time).send_keys("2020-03-22 16:30")
-        sleep(2)
-        driver.execute_script("arguments[0].click();",driver.find_element(*time_confirm))
-        # driver.quit()
+        driver.find_element(*(By.XPATH, "//li/div/div/span[contains(text(), '更多')]")).click()
+        # sleep(2)
+        driver.find_element(*(By.XPATH, "//li/div/div/span[contains(text(), '发布')]")).click()
         sleep(10)
 
 
+
+        # driver.find_element(*(By.XPATH, "//li/div//button/span[contains(text(), '创建直播')]")).click()
+        # driver.find_element(*(By.XPATH, "//div[contains(text(), '创建学术直播')]")).click()
+        #
+        # sleep(2)
+        # # js = "$('categoryId').removeAttr('readonly')"
+        # js_category = 'document.getElementById("categoryId").removeAttribute("readonly")'
+        # js_subject = 'document.getElementById("subjectId").removeAttribute("readonly")'
+        # js_source = 'document.getElementById("sourceId").removeAttribute("readonly")'
+        # js_type = 'document.getElementById("type").removeAttribute("readonly")'
+        #
+        # driver.execute_script(js_category)
+        # driver.execute_script(js_subject)
+        # driver.execute_script(js_source)
+        # driver.execute_script(js_type)
+        # driver.find_element(*categroy).send_keys("一级建造师")
+        # driver.find_element(*(By.XPATH, "//span[contains(text(), '一级建造师')]")).click()
+        # driver.find_element(*subject).send_keys("建设工程经济")
+        # driver.find_element(*(By.XPATH, "//span[contains(text(), '建设工程经济')]")).click()
+        #
+        # driver.find_element(*source).click()
+        # # driver.find_element(*source).send_keys("嗨学")
+        # driver.find_element(*(By.XPATH, "//div[contains(text(), '嗨学')]")).click()
+        #
+        # driver.find_element(*module).click()
+        # driver.find_element(*module_id).send_keys("17229")
+        # sleep(2)
+        # driver.execute_script("arguments[0].click();", driver.find_element(*module_query))
+        # sleep(2)
+        # driver.execute_script("arguments[0].click();", driver.find_element(*module_checkbox))
+        # driver.execute_script("arguments[0].click();", driver.find_element(*module_confirm))
+        #
+        # driver.find_element(*live).send_keys("直播测试")
+        # sleep(2)
+        # from common.selenium_pages import PageScroll
+        # PageScroll(driver).js_scroll_end()
+        # driver.find_element(*teacher).click()
+        # sleep(2)
+        # driver.find_element(*teacher_name).send_keys("唐锟")
+        # aa = driver.find_element(*teacher_query)
+        # bb = driver.find_element(*teacher_checkbox)
+        # cc = driver.find_element(*teacher_confirm)
+        # driver.execute_script("arguments[0].click();", aa)
+        # sleep(5)
+        # driver.execute_script("arguments[0].click();", bb)
+        # sleep(2)
+        # driver.execute_script("arguments[0].click();", cc)
+        # sleep(2)
+        #
+        # driver.find_element(*start_time).send_keys("2020-03-22 16:00")
+        # sleep(2)
+        # driver.execute_script("arguments[0].click();",driver.find_element(*time_confirm))
+        #
+        # driver.find_element(*end_time).send_keys("2020-03-22 16:30")
+        # sleep(2)
+        # driver.execute_script("arguments[0].click();",driver.find_element(*time_confirm))
+        # # driver.quit()
+        # sleep(10)
+
+
 if __name__ == "__main__":
-    chromeOptions = webdriver.ChromeOptions()
-    prefs = {"download.default_directory": "D:\haixue_work\script\haixue_git\haixue-test-ui\\resource\\lecture"}
-    chromeOptions.add_experimental_option("prefs", prefs)
-    driver = webdriver.Chrome(executable_path="D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe",
-                              chrome_options=chromeOptions)
-    driver.maximize_window()
-    driver.get("http://w2.highso.com.cn/v5")
+    # driver = webdriver.Chrome(executable_path="D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_80.exe")
+    # driver.maximize_window()
+    # driver.get("http://w2.highso.com.cn/v5")
+    MainStationCoursePage("111").set_live()
+
+
+    # # print(driver.current_url)
+    # # driver.find_element_by_css_selector()
+    # sleep(3)
+    # from pages.main_station.main_station_home_page import MainStationHomePage
+    #
     # aa = MainStationHomePage(driver)
-    # MainStationCoursePage("111").set_live()
     # bb = aa.go_to_login_page().to_login("haixue", "19983271081", "123456")
-
-
-    # print(driver.current_url)
-    # driver.find_element_by_css_selector()
-    sleep(3)
-    from pages.main_station.main_station_home_page import MainStationHomePage
-
-    aa = MainStationHomePage(driver)
-    bb = aa.go_to_login_page().to_login("haixue", "19983271081", "123456")
-    # aa.get_bottom_list_navigations()
-    sleep(3)
-
-    bb.go_live_module_live_list()
-    # element = bb.driver.find_element(*(By.XPATH, "//div/section/main/div/main/div[1]/div[1]/div[3]/div/div/div[15]/div[2]/div/div[2]/button"))
-    # driver.execute_script("arguments[0].click();", element)
-
-    # aa.switch_category("二级建造师")
-    # from common.selenium_pages import PageScroll
-    # PageScroll(aa.driver).js_scroll_end()
-    # print(aa.driver.find_element(By.XPATH, "//div/section/main/div/main/div[6]/div[3]/div/div[2]/div[2]/div[1]/div[3]/button").text)
-    sleep(1)
-    # bb.go_date_more_course_page()
-    # aa.logout()
+    # # aa.get_bottom_list_navigations()
+    # sleep(3)
+    #
+    # bb.go_live_module_live_list()
+    #
 

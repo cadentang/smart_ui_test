@@ -1,0 +1,22 @@
+version: "3"
+services:
+  selenium-hub:
+    image: selenium/hub
+    container_name: selenium-hub-test
+    ports:
+      - "4444:4444"
+    environment:
+      - GRID_MAX_SESSION=50
+      - GRID_TIMEOUT=900
+      - START_XVFB=false
+  chrome:
+    image: selenium/node-chrome-debug
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    environment:
+      - HUB_HOST=selenium-hub-test
+      - HUB_PORT=4444
+      - NODE_MAX_INSTANCES=5
+      - NODE_MAX_SESSION=5
