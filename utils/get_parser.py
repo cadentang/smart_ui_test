@@ -26,7 +26,7 @@ def get_arg():
     """
     run_arg = {}
     ENV_LIST = ["test0", "reg", "stage", "auto", "prod"]
-    PROJECT_LIST = ["main_station", "haixue_app"]
+    PROJECT_LIST = ["main_station", "haixue_app", "exam_api"]
     USER_PORT = ["win", "mac", "andriod", "ios", "linux"]
     PATTERN = ["local", "distributed"]
     BROWSER = ["chrome", "firefox", "ie", "safari"]

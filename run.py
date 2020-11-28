@@ -106,8 +106,8 @@ if __name__ == "__main__":
     # 获取运行的模块
     run_module = globle_arg["module"]
     case_list = []
-    # base_command_arg = [f"--alluredir={xml_report_path}"]
-    base_command_arg = ["--alluredir=./allure-results"]
+    base_command_arg = [f"--alluredir={xml_report_path}"]
+    # base_command_arg = ["--alluredir=./allure-results"]
 
     if globle_arg["project"] == "main_station":
         path = os.listdir(TEST_CASE_PATH + "/test_main_station")
@@ -121,6 +121,20 @@ if __name__ == "__main__":
                     if run_module.split(",")[i] == path[j]:
                         case_list.append(TEST_CASE_PATH + "/test_main_station/" + run_module.split(",")[i])
                         base_command_arg.append(TEST_CASE_PATH + "/test_main_station/" + run_module.split(",")[i])
+        else:
+            logger.info("所选用例模块为空，不能运行！")
+    elif globle_arg["project"] == "exam_api":
+        path = os.listdir(TEST_CASE_PATH + "/test_exam_api")
+        if "all" in globle_arg["module"]:
+            case_path = TEST_CASE_PATH + "/test_exam_api"
+            case_list.append(case_path)
+            base_command_arg.append(case_path)
+        elif globle_arg["module"] is not "":
+            for i in range(len(run_module.split(","))):
+                for j in range(len(path)):
+                    if run_module.split(",")[i] == path[j]:
+                        case_list.append(TEST_CASE_PATH + "/test_exam_api/" + run_module.split(",")[i])
+                        base_command_arg.append(TEST_CASE_PATH + "/test_exam_api/" + run_module.split(",")[i])
         else:
             logger.info("所选用例模块为空，不能运行！")
     elif globle_arg["project"] == "haixue_app":
@@ -142,14 +156,15 @@ if __name__ == "__main__":
 
     logger.info(f"运行的测试模块: {case_list}")
 
-    pytest.main(base_command_arg)
+    # pytest.main(base_command_arg)
     # pytest.main([f"--alluredir={xml_report_path}", case_path_home,case_path_login])
     # pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH+"/test_main_station/test_main_station_home", '--workers=1','--tests-per-worker=2'])
+    pytest.main([f"--alluredir={xml_report_path}", TEST_CASE_PATH+"/test_exam_api"])
 
     # 将环境信息置于xml报告路径下，转化为html报告后在html中呈现
-    # build_environment_file(xml_report_path, get_environment_list())
-    local_path = PROJECT_ROOT_DIR + "/allure-results"
-    build_environment_file(local_path, get_environment_list())
+    build_environment_file(xml_report_path, get_environment_list())
+    # local_path = PROJECT_ROOT_DIR + "/allure-results"
+    # build_environment_file(local_path, get_environment_list())
     # 使用allure将xml报告生成为html报告
     time.sleep(10)
     change_to_html(xml_report_path, html_report_path)

@@ -21,12 +21,12 @@ class Mysql:
         # self.password = database_config["password"]
         # self.database = database
         self.config = {
-            'host': '123.126.133.227',
-            'port': 3306,
-            'user': 'reg-dev',
-            'password': 'HaixueCd-reg-dev',
+            'host': '192.168.16.214',
+            'port': 3307,
+            'user': 'reg_com_svc',
+            'password': 'uRBvLGbrNS5uRDXZ',
             # 'db': 'haixue_cms'
-            'db': 'highso'
+            'db': 'wealth_activity'
         }
 
         # 数据库连接配置
