@@ -14,7 +14,7 @@ sys.path.append("..\\report")
 sys.path.append("..\\resource")
 sys.path.append("..\\script")
 sys.path.append("..\\service")
-sys.path.append("..\\test_case")
+sys.path.append("..\\case")
 sys.path.append("..\\utils")
 import os
 import time

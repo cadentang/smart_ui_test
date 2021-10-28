@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
-import allure
+# import allure
 import pytest
 import json
-from utils.get_log import logger
+# from utils.get_log import logger
 
 
-@allure.epic("测试haixue-study-api服务")
-@allure.feature("测试haixue-study-api服务的pc端接口")
-class TestHaixueStudyApi:
+# @allure.epic("测试haixue-study-api服务")
+# @allure.feature("测试haixue-study-api服务的pc端接口")
+class TestHaixueStudyApi1232:
 
-    @allure.story("获取用户直播日历数据")
-    @allure.title("获取用户直播日历数据-购买用户")
-    @allure.severity(allure.severity_level.BLOCKER)
-    def test_go_to_live_module(self, get_pc_session):
+    # @allure.story("获取用户直播日历数据")
+    # @allure.title("获取用户直播日历数据-购买用户")
+    # @allure.severity(allure.severity_level.BLOCKER)
+    def test_go_to_live_module_99(self, get_pc_session):
         rx = get_pc_session.get(url="http://w0.highso.com.cn/study/pc/live/timeLimitLive?categoryId=9")
         response = json.loads(rx.text)
         print(response)
-        logger.info(f"请求url地址:{rx.url}请求响应信息：{response}")
+        # logger.info(f"请求url地址:{rx.url}请求响应信息：{response}")
         assert response["code"] == 200
         assert response["msg"] == None
         assert response["data"] != ""

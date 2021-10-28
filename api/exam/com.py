@@ -9,7 +9,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 from utils.operation_cmd import RunCmd
-from utils.get_log import logger
+# from utils.get_log import logger
 
 
 def get(url, headers=None, params=None, timeout=10):
@@ -135,6 +135,7 @@ def pc_login():
     # print(csrf_token)
     return {"se":se, "csrf_token":csrf_token, "base_url": base_url}
 
+
 def app_login():
     app = AppAPIUser()
     se = requests.session()
@@ -164,7 +165,7 @@ def app_login():
 
 if __name__ == "__main__":
 
-    se = app_login()
+    # se = app_login()
 
     # print(se)
     # url = 'http://a1.highso.com.cn/outline/v1/showOutlinePage.do'
@@ -176,3 +177,27 @@ if __name__ == "__main__":
     # with self.client.post(url=url, json=data, params=query, name='app-/outline/v1/showOutlinePage.do',
     #                       headers=headers, catch_response=True) as res:
 
+    import pytz
+    import datetime
+
+    # 查询中国所拥有的时区
+    cn = pytz.country_timezones('cn')
+    # 查询美国所拥有的时区
+    us = pytz.country_timezones('us')
+    # 查询韩国所拥有的时区
+    kr = pytz.country_timezones('kr')
+    print(cn)
+    print(us)
+    print(kr)
+    # 选择时区，生成一个时区对象,首尔时区
+    tz = pytz.timezone('Asia/Shanghai')
+
+    # 需要传递一个时区，如果不传，就默认是当前用户所在时区
+    kr_time_str = datetime.datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
+    local_time_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(kr_time_str)
+    print(local_time_str)
+
+
+d = requests.get()
+d.elapsed
