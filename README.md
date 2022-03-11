@@ -1,3 +1,5 @@
+### 项目说明
+该项目适用于web前端页面的自动化测试项目和http接口的自动化项目，相关技术（python、selenium、allure、pytest、Jenkins、selenium grid、requerts）
 ### 运行项目
 - python版本>=3.7
 - 拉取代码：git clone http://git.highso.com.cn:81/haixue-auto-test/haixue-test-ui.git

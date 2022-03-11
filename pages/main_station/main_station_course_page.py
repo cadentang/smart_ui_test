@@ -324,23 +324,3 @@ class MainStationCoursePage(MainStationBasePage):
         # sleep(10)
 
 
-if __name__ == "__main__":
-    # driver = webdriver.Chrome(executable_path="D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_80.exe")
-    # driver.maximize_window()
-    # driver.get("http://w2.highso.com.cn/v5")
-    MainStationCoursePage("111").set_live()
-
-
-    # # print(driver.current_url)
-    # # driver.find_element_by_css_selector()
-    # sleep(3)
-    # from pages.main_station.main_station_home_page import MainStationHomePage
-    #
-    # aa = MainStationHomePage(driver)
-    # bb = aa.go_to_login_page().to_login("haixue", "19983271081", "123456")
-    # # aa.get_bottom_list_navigations()
-    # sleep(3)
-    #
-    # bb.go_live_module_live_list()
-    #
-

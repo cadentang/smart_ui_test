@@ -174,57 +174,6 @@ class MainStationBasePage(SeleniumPages):
         """获取未读数量"""
         return self.driver.find_element(*self._question_no_read_span).text
 
-if __name__ == "__main__":
-    # driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
-
-    from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
-    # driver = webdriver.Remote(command_executor="http://123.206.213.13:5555/wd/hub",
-    #                           desired_capabilities=DesiredCapabilities.CHROME)
-    driver = webdriver.Chrome(executable_path="D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_84.exe")
-    driver.maximize_window()
-    driver.get("http://w2.highso.com.cn/v5")
-    # print(driver.current_url)
-    # print(driver.get_cookies())
-    # # # driver.find_element_by_css_selector()
-    # # sleep(3)
-    from pages.main_station.main_station_home_page import MainStationHomePage
-    c = PageSwitchWindowOrFrame(driver)
-
-    aa = MainStationHomePage(driver)
-    aa.go_to_login_page().to_login("haixue", "15889501911", "123456")
-    sleep(1)
-    print(c.current_window)
-    driver.find_element_by_xpath("//div[contains(text(), '看课记录')]").click()
-
-    print(c.window_handles)
-    print(driver.current_window_handle)
-    c.switch_handle("课程-Haixue")
-    print(driver.current_window_handle)
-    # c.switch_handle(0)
-    driver.switch_to.window("Haixue")
-    driver.switch_to.alert.accept()
-    driver.execute("arguments[0].scrollIntoView();")
-
-    # print(driver.get_cookies())
-    # sleep(3)
-    # aa.go_question()
-    # sleep(3)
-    # print(driver.get_cookies())
-    #
-    # # # aa.get_bottom_list_navigations()
-    # # sleep(1)
-    # # # aa.switch_category("二级建造师")
-    # # sleep(1)
-    # # aa.logout()
-
-    # import docker
-    #
-    # client = docker.DockerClient(base_url='tcp://123.206.213.13:2375')
-    # print(client.images.list())
-    # print(client.containers.list())
-    # lo = client.containers.list()[0].logs()
-
 
 
 

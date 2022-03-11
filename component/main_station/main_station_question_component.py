@@ -210,39 +210,3 @@ class MainStationQuestionComponent(BaseWebComponents):
             logger.info("未进入问题详情页，不能获取到ID")
 
 
-#
-# if __name__ == "__main__":
-#     driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
-#     driver.maximize_window()
-#
-#     driver.get("http://w2.highso.com.cn/v5")
-#     # driver.find_element_by_css_selector()
-#     sleep(3)
-#     from pages.main_station.main_station_home_page import MainStationHomePage
-#
-#     aa = MainStationHomePage(driver)
-#     sleep(2)
-#     bb = aa.go_to_login_page().to_login("haixue", "19983271081", "123456")
-#     # aa.get_bottom_list_navigations()
-#     # aa.logout()
-#     # bb.go_message()
-#     sleep(1)
-#     bb.go_question()
-#     sleep(1)
-#     # question_list_component_lis = (By.CSS_SELECTOR, "ul.ant-list-items>li:nth-child(1)")  # 定位问题列表组件,有可能有多个
-#     # eles = driver.find_element(*question_list_component_lis)
-#     eles = MainStationQuestionComponent(driver, (By.CSS_SELECTOR, f"ul.ant-list-items>li:nth-child(1)"))
-#     sleep(1)
-#     # print(eles.dianzan())
-#     d = eles.judge_is_answer()
-#     print(d)
-#     # print(eles)
-#     # print(len(eles))
-#     # for i in range(len(eles)):
-#     #     print(eles[i].find_element(*(By.CSS_SELECTOR, 'h3>div>span:nth-child(2)')).text)
-#         # compent = MainStationQuestionComponent(driver, (By.CSS_SELECTOR, f"ul.ant-list-items>li:nth-child({i + 1})"))
-#         # print(compent.get_main_content())
-#
-#     # lo = (By.XPATH,'//*[@id="root"]/div/section/main/div/main/div/div[2]/div/div/div/div[1]/div[2]/div/div/div[1]/div/div/ul/li[2]')
-#     # com = MainStationQuestionComponent(bb.driver, lo)
-#     # com.question_detail()

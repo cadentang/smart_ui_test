@@ -81,15 +81,6 @@ class MainStationLiveListComponent(BaseWebComponents):
         live_subject = self.component_element.find_element(*self._live_subject_div).text
         live_status = self.component_element.find_element(*self._live_button).text
         watch_status = self.component_element.find_element(*self._live_no_watched_span).text
-        print(live_date)
-        print(live_start_time)
-        print(live_teacher)
-        print(live_module)
-        print(live_mark)
-        print(interactive_mark)
-        print(live_subject)
-        print(live_status)
-        print(watch_status)
 
     @allure.step("进入模块详情页")
     def go_to_model_detail_page(self):
@@ -125,23 +116,3 @@ class MainStationLiveListComponent(BaseWebComponents):
     @allure.step("获取直播是否为展示互动的直播, 如果是则点击按钮，关闭弹窗")
     def judge_hudong_live(self):
         pass
-
-
-
-if __name__ == "__main__":
-    driver = webdriver.Chrome("D:\haixue_work\script\haixue_git\haixue-test-ui\drivers\chrome\chromedriver_win_79.exe")
-    driver.maximize_window()
-    driver.implicitly_wait(10)
-    driver.get("http://w2.highso.com.cn/v5")
-    # driver.find_element_by_css_selector()
-    sleep(3)
-    from pages.main_station.main_station_home_page import MainStationHomePage
-
-    aa = MainStationHomePage(driver)
-    aa.go_to_login_page().to_login("haixue", "19983271083", "123456")
-    sleep(2)
-    location = (By.XPATH, "//div/section/main/div/main/div[1]/div[1]/div[3]/div/div/div[15]")
-    com = MainStationLiveListComponent(aa.driver, (By.XPATH, "//div/section/main/div/main/div[1]/div[1]/div[3]/div/div/div[15]"))
-    com.get_live_detail()
-    # aa.get_bottom_list_navigations()
-    # aa.logout()

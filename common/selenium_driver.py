@@ -178,7 +178,6 @@ class SeleniumDriver(BaseDriver):
                     "javascriptEnabled": True,
                     'marionette': False
                 }
-                print(capabilities)
 
             else:
                 capabilities = {
